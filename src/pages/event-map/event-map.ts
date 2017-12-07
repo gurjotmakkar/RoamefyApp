@@ -4,6 +4,7 @@ import { HttpProvider } from '../../providers/http/http';
 import 'rxjs/add/operator/map';
 
 declare var google: any;
+declare var $: any;
 
 @Component({
   selector: 'page-event-map',

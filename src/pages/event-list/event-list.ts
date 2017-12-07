@@ -19,15 +19,6 @@ export class EventListPage {
   }
 
   getdata(){
-    this.httpProvider.getJsonData().subscribe(data => {
-      this.eventData=JSON.parse(JSON.stringify(data));
-      console.log(this.eventData);
-    },
-    err =>{
-      console.error("Error : " +err);
-    },
-    () => {
-      console.log('getData completed');
-    });
+    this.eventData=JSON.parse(JSON.stringify(this.httpProvider.getJsonData()));
   } 
 }
