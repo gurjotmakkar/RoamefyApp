@@ -5,9 +5,10 @@
 </ion-header>
 <ion-content padding>
     <ion-list>
-        <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
+        <button ion-item *ngFor="let p of pages" (click)="openPage(p)">
           {{p.title}}
         </button>
-        <button menuClose ion-item *ngIf="checkUserRole()" (click)="openPage(userEventPage)">Add Event</button>
+        <button ion-item *ngIf="checkUserRole()" (click)="openPage(userEventPage)">Add Event</button>
+        <button ion-item (click)="logout()">logout</button>
   </ion-list>
 </ion-content>

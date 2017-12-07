@@ -12,7 +12,6 @@ export class TabsPage {
   setting = SettingsPage;
   user = UserProfilePage;
 
-  constructor() {
+  constructor() {}
 
-  }
 }

@@ -5,6 +5,8 @@ import { InterestPage } from '../interest/interest';
 import { TimeDistancePage } from '../time-distance/time-distance';
 import { UserCreatedEventPage } from '../user-created-event/user-created-event'
 
+import { LoginPage } from '../login/login'
+
 @IonicPage()
 @Component({
   selector: 'page-settings',
@@ -27,6 +29,11 @@ export class SettingsPage {
   }
 
   checkUserRole(){
-    return this.firebase.checkUserRole();
+    return false; //return this.firebase.checkUserRole();
+  }
+
+  logout(){
+    this.firebase.logoutUser();
+    this.navCtrl.setRoot(LoginPage);
   }
 }

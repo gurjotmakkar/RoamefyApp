@@ -18,7 +18,6 @@ export class MyApp {
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,
     public firebase: FirebaseProvider, public afAuth: AngularFireAuth) {
 
-      //this.firebase.logoutUser();
       const authObserver = this.afAuth.authState.subscribe( user => {
         if (user) {
           this.rootPage = TabsPage;
@@ -33,6 +32,7 @@ export class MyApp {
   }
   
   initializeApp() {
+    console.log('initializing app');
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
