@@ -1,0 +1,13 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>settings</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <ion-list>
+        <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
+          {{p.title}}
+        </button>
+        <button menuClose ion-item *ngIf="checkUserRole()" (click)="openPage(userEventPage)">Add Event</button>
+  </ion-list>
+</ion-content>

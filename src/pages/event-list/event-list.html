@@ -1,0 +1,11 @@
+<ion-content>
+  <ion-list>
+    <ion-item padding *ngFor="let event of eventData">
+      <div class="card-title">{{event.calEvent.eventName}}</div>
+      <div class="card-subtitle">Website: {{event.calEvent.eventWebsite}}</div>
+      <div class="card-subtitle"><ion-icon name="information-circle"></ion-icon>for more info: {{event.calEvent.eventWebsite}}</div>
+      <div class="card-subtitle"><ion-icon name="call"></ion-icon>{{event.calEvent.orgPhone}}</div>
+      <div>Categories: {{event.calEvent.categoryString}}</div>
+    </ion-item>   
+  </ion-list>
+</ion-content>

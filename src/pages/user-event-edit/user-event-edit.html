@@ -1,0 +1,87 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{event?.name}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>     
+  <ion-item>
+    <ion-label floating>Event Name</ion-label>
+    <ion-input [(ngModel)]="event.name"></ion-input>
+  </ion-item>
+        
+  <ion-item>
+    <ion-label floating>Event Description</ion-label>
+    <ion-input [(ngModel)]="event.description"></ion-input>
+  </ion-item>
+        
+  <ion-item>
+    <ion-label floating>Price</ion-label>
+    <ion-input [(ngModel)]="event.price" type="number"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label floating>Start Date</ion-label>
+    <ion-datetime [(ngModel)]="event.startDate" displayFormat="D MMMM YYYY" min="2017" max="2019-12-31">
+    </ion-datetime>
+  </ion-item>
+
+  <ion-item>
+    <ion-label floating>Start Time</ion-label>
+    <ion-datetime [(ngModel)]="event.startTime" displayFormat="hh:mm A">
+    </ion-datetime>
+  </ion-item>
+
+  <ion-item>
+    <ion-label floating>End Date</ion-label>
+    <ion-datetime [(ngModel)]="event.endDate" displayFormat="D MMMM YYYY" min="2017" max="2019-12-31">
+    </ion-datetime>
+  </ion-item>
+
+  <ion-item>
+    <ion-label floating>End Time</ion-label>
+    <ion-datetime [(ngModel)]="event.endTime" displayFormat="hh:mm A">
+    </ion-datetime>
+  </ion-item>
+
+  <ion-item>
+    <ion-label floating>Event Address</ion-label>
+    <ion-input [(ngModel)]="event.address"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label floating>Event Lat</ion-label>
+    <ion-input [(ngModel)]="event.latitude" type="number"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label floating>Event Long</ion-label>
+    <ion-input [(ngModel)]="event.longitude" type="number"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label floating>Website</ion-label>
+    <ion-input [(ngModel)]="event.website"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label floating>Contact Phone</ion-label>
+    <ion-input [(ngModel)]="event.phone"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Categories</ion-label>
+    <ion-select [(ngModel)]="categories" multiple="true" cancelText="Cancel" okText="Update">
+      <ion-option *ngFor="let item of interest" value={{item.$key}} [selected]="checkornot(item.$key)">{{item.name}}</ion-option>
+    </ion-select>
+  </ion-item>
+  
+  <button ion-button black clear (click) = "updateEvent(event, categories)">Update</button>       
+  
+  <button ion-button black clear color="danger" (click) = "removeEvent()">Remove</button>
+  
+  <button ion-button black clear color="danger" (click) = "cancel()">Cancel</button>  
+</ion-content>

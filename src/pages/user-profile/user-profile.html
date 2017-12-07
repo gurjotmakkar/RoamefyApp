@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-navbar>
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    <ion-title>User Profile</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="card-background-page">
+      <ion-card>
+        <img src="img/avatar.png"/>
+        <div class="card-title">{{userName}}</div>
+        <div class="card-subtitle">{{userEmail}}</div>
+      </ion-card>    
+      <button ion-button block (click)="edit()"> 
+        Update User Info
+      </button> 
+      <button ion-button block clear (click)="goToResetPassword()">
+        Update Password
+      </button>
+      <button ion-button block (click)="logout()">
+        Logout
+      </button>
+</ion-content>

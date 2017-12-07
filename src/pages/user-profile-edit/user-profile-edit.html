@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-navbar>
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    <ion-title>editUserProfile</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <form [formGroup]="editForm" (submit)="editUserProfile()" novalidate>
+        <ion-list>
+          <ion-item>
+            <ion-label stacked>First Name</ion-label>
+            <ion-input formControlName="firstName" type="text" placeholder="Your first name"
+              [class.invalid]="!editForm.controls.firstName.valid && (editForm.controls.firstName.dirty || submitAttempt)"></ion-input>
+          </ion-item>
+          <ion-item class="error-message" *ngIf="!editForm.controls.firstName.valid  && (editForm.controls.firstName.dirty || submitAttempt)">
+            <p>Please enter your first name.</p>
+          </ion-item>
+    
+          <ion-item>
+            <ion-label stacked>Last Name</ion-label>
+            <ion-input formControlName="lastName" type="text" placeholder="Your last name"
+              [class.invalid]="!editForm.controls.lastName.valid && (editForm.controls.lastName.dirty || submitAttempt)"></ion-input>
+          </ion-item>
+          <ion-item class="error-message" *ngIf="!editForm.controls.lastName.valid  && (editForm.controls.lastName.dirty || submitAttempt)">
+            <p>Please enter your last name.</p>
+          </ion-item>
+    
+          <ion-item>
+            <ion-label stacked>Email</ion-label>
+            <ion-input formControlName="email" type="email" placeholder="Your email address"
+              [class.invalid]="!editForm.controls.email.valid && (editForm.controls.email.dirty || submitAttempt)"></ion-input>
+          </ion-item>
+          <ion-item class="error-message" *ngIf="!editForm.controls.email.valid  && (editForm.controls.email.dirty || submitAttempt)">
+            <p>Please enter a valid email.</p>
+          </ion-item>    
+        </ion-list>
+    
+        <button ion-button block type="submit">
+          Verify Change
+        </button>
+        
+        <button ion-button block clear color="danger" (click) = "cancel()">Cancel</button>  
+    
+      </form>
+</ion-content>

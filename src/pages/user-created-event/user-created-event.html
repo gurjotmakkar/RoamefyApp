@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-navbar>
+    <button  ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      User Added Events
+    </ion-title>
+    <ion-buttons end>
+      <button (click)="addEventPage()" ion-button>
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-list>
+      <ion-list-header>
+        Events
+      </ion-list-header>
+      <ion-card padding *ngFor="let event of userEvents">
+        <div class="card-title">{{event.name}}<ion-icon item-right ios="ios-cog" md="md-cog" (click)="editUserEventPage(event.$key)"></ion-icon></div>
+        <div class="card-subtitle">Description: {{event.description}}</div>
+        <div class="card-subtitle">Price: ${{event.price}}</div>
+        <div class="card-subtitle">Starts: {{event.startDate}} at {{event.startTime}} </div>
+        <div class="card-subtitle">Ends: {{event.endDate}} at {{event.endTime}}</div>
+        <div class="card-subtitle">Location: {{event.address}}</div>
+        <div class="card-subtitle"><ion-icon name="information-circle"></ion-icon>for more info: {{event.website}}</div>
+        <div class="card-subtitle"><ion-icon name="call"></ion-icon>{{event.phone}}</div>
+        <div>Categories: {{getCategories(event.categories)}}</div>
+      </ion-card>   
+    </ion-list>
+</ion-content>
