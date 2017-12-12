@@ -1,11 +1,3 @@
-<ion-header>
-  <ion-navbar color="primary">
-    <ion-title>
-      Login
-    </ion-title>
-  </ion-navbar>
-</ion-header>
-
 <ion-content padding>
   <form [formGroup]="loginForm" (submit)="loginUser()" novalidate>
 
@@ -30,20 +22,27 @@
       loginForm.controls.password.dirty">
       <p>Your password needs more than 8 characters.</p>
     </ion-item>
-
+    <p></p>
+    <p></p>
     <button ion-button block type="submit">
       Login
     </button>
 
   </form>
+  <p></p>
+  <p></p>
 
   <button ion-button block clear (click)="goToResetPassword()">
     I forgot my password
   </button>
+  <p></p>
+  <p></p>
 
   <button ion-button block clear (click)="createAccount()">
     Create a new account
   </button>
+  <p></p>
+  <p></p>
 
   <button ion-button block clear (click)="createProAccount()">
     Create a pro account

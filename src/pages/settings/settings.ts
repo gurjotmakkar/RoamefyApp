@@ -15,6 +15,7 @@ import { LoginPage } from '../login/login'
 export class SettingsPage {
   pages: Array<{title: string, component: any}>;
   userEventPage: {title: string, component: any};
+  role: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public firebase: FirebaseProvider) {
     this.pages = [
@@ -22,6 +23,7 @@ export class SettingsPage {
       { title: "Time and Distance", component: TimeDistancePage }
     ];
     this.userEventPage = { title: "Add Event", component: UserCreatedEventPage };
+    this.role = this.firebase.checkUserRole();
   }
 
   openPage(page) {
@@ -29,7 +31,7 @@ export class SettingsPage {
   }
 
   checkUserRole(){
-    return false; //return this.firebase.checkUserRole();
+    return this.role;
   }
 
   logout(){

@@ -27,7 +27,7 @@ export class SignupProPage {
       address: ['', Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(40)])],
       dateOfBirth: ['', Validators.compose([Validators.required, Validators.pattern("[0-9]{2}/[0-9]{2}/[2][0][0-9]{2}")])],
       driverLicenceNumber: ['', Validators.compose([Validators.required, Validators.pattern("[0-9a-zA-Z]{15}")])],
-      phoneNumber: ['', Validators.compose([Validators.required, Validators.pattern("[0-9]{10}")])]
+      phoneNumber: ['', Validators.compose([Validators.required, Validators.pattern("[0-9]{10}"), Validators.maxLength(10)])]
     });
   }
 

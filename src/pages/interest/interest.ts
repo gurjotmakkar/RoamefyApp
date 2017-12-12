@@ -12,21 +12,23 @@ import { Subscription } from 'rxjs/Subscription'
 })
 export class InterestPage {
 
-  interest: any[] = [];
+  interest: any
   subscription: Subscription;
   userID: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private firebase: FirebaseProvider,
       public alertCtrl: AlertController) {
-    this.subscription = this.firebase.getInterestList().subscribe(x => {
-      this.interest = x;
-    });
+    
+
+    this.interest = this.firebase.getInterestList();
+    console.log(this.interest);
       this.userID = this.firebase.getUserId();
   }
 
-  checkornot(members){
-    for (var member in members) {
-      if(member == this.userID){
+  checkornot(obj){
+    for (var o in obj) {
+      console.log(o)
+      if(o == this.userID){
         return true;
       }else{
         return false;
@@ -34,24 +36,24 @@ export class InterestPage {
     }
   }
 
-  toggleCheck(members, key){
-    if(this.checkornot(members)){
+  toggleCheck(obj){
+    if(this.checkornot(obj)){
       console.log("checked")
-      this.firebase.removeInterest(this.userID, key);
+      this.firebase.removeInterest(obj.$key);
     } else {
       console.log("unchecked")
-      this.firebase.addInterest(this.userID, key);
+      this.firebase.addInterest(obj.$key);
     }
   }
 
   isConfigured(){
-    return this.firebase.isUserConfigured(this.userID);
+    return this.firebase.isUserConfigured();
   }
 
   interestCount(){
     var count = 0;
     this.interest.forEach(item => {
-        if(this.checkornot(item.members))
+        if(this.checkornot(item))
           count++;
     })
     return count;

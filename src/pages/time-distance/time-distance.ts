@@ -17,23 +17,25 @@ export class TimeDistancePage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, 
     private firebase: FirebaseProvider, public alertCtrl: AlertController) {
-    this.subscription = this.firebase.getObject().subscribe(x => {
+    /*
+      this.subscription = this.firebase.getObject().subscribe(x => {
       this.distance = x.distance;
       this.time = x.time;
     })
     this.userID = this.firebase.getUserId();
+    */
   }
 
   updateDistance(distance){
-    this.firebase.updateDistance(this.userID, distance);
+    this.firebase.updateDistance(distance);
   }
 
   updateTime(time){
-    this.firebase.updateTime(this.userID, time);
+    this.firebase.updateTime(time);
   }
 
   isConfigured(){
-    return this.firebase.isUserConfigured(this.userID);
+    return this.firebase.isUserConfigured();
     
   }
 

@@ -7,11 +7,17 @@ import { PasswordValidator } from '../../validators/password';
 import { HomePage } from '../home/home';
 import { InterestPage } from '../interest/interest';
 
+interface roles {
+  description: string;
+  members: string[];
+}
+
 @IonicPage()
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html'
 })
+
 export class LoginPage {
 
   public loginForm:FormGroup;
@@ -20,11 +26,14 @@ export class LoginPage {
   constructor(public navCtrl: NavController, public authData: FirebaseProvider,
     public formBuilder: FormBuilder, public alertCtrl: AlertController,
     public loadingCtrl: LoadingController, private menu: MenuController) {
-      this.menu.swipeEnable(false);
+      //this.menu.swipeEnable(false);
       this.loginForm = formBuilder.group({
         email: ['', Validators.compose([Validators.required, EmailValidator.isValid])],
         password: ['', Validators.compose([Validators.required, PasswordValidator.isValid])]
       });
+
+      
+
   }
 
   loginUser(){
@@ -48,20 +57,15 @@ export class LoginPage {
             alert.present();
           });
         } else {
-          var configured;
-          var db = this.authData.getObject()
-          .subscribe(x => {
-            configured = x.Configured;
+          var configured = this.authData.isUserConfigured();
             if(configured == false) {
               this.navCtrl.setRoot(InterestPage);
-              db.unsubscribe();
             }
             else{
               this.navCtrl.setRoot(HomePage);
-              db.unsubscribe();
             }
-          });
 
+          this.navCtrl.setRoot(HomePage);
         }
       }, error => {
         this.loading.dismiss().then( () => {

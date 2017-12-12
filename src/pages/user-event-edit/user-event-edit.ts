@@ -21,7 +21,7 @@ export class UserEventEditPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, private firebase: FirebaseProvider) {
     this.eventKey = this.navParams.get('id');
     this.subscription = this.firebase.getSpecifiedEvent(this.eventKey).subscribe(x => {
-      this.event = x;
+      //this.event = x;
     })
     this.categories = this.event.categories;
     this.subscription2 = this.firebase.getInterestList().subscribe(x => {
