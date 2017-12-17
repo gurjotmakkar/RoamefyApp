@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-list *ngFor="let item of interest">
+    <ion-list *ngFor="let item of interest">
       <ion-item>
         <ion-label>{{item.name}}</ion-label>
         <ion-checkbox [checked]="checkornot(item)" (click)="toggleCheck(item)">

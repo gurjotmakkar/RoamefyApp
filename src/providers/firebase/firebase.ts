@@ -6,15 +6,9 @@ import { AngularFirestore } from 'angularfire2/firestore';
 //import { AngularFireDatabase } from 'angularfire2/database';
 import 'rxjs/add/operator/map';
 
-interface roles{
-  desription: string;
-  members: string[];
-}
-
 @Injectable()
 export class FirebaseProvider {
   userID: string;
-  roles: roles;
 
   constructor(public afAuth: AngularFireAuth, 
     public afdOf: AngularFirestore) {
@@ -216,11 +210,21 @@ export class FirebaseProvider {
     //return this.afd.list('/Interests');
     //this.afdOf.list('/Interests');
 
-    this.afdOf.collection("interest").get().then( doc => {
- 
-    })
+    return this.afdOf.collection("interest").snapshotChanges();
+    /*
+    .map(actions => {
+      return actions.map(a => {
+        const id = a.payload.doc.id;
+        const data = a.payload.doc.data() as Interest;
+        return { id, ...data};
+      });
+    });
+    */
 
-    return null;
+  }
+
+  getUserInterestList() {
+    return this.afdOf.collection("users/" + this.userID + "/interest").snapshotChanges();
   }
 
   addInterest(itemKey) {
@@ -228,7 +232,8 @@ export class FirebaseProvider {
     //members.child(this.userID).set(true);
     //this.afdOf.object("/Interests/" + itemKey + "/members/" + this.userID).set(true);
 
-      this.afdOf.collection("interest/" + itemKey + "/members").add(this.userID);
+    this.afdOf.collection("interest/" + itemKey + "/members").add(this.userID);
+    this.afdOf.collection("users/" + this.userID + "/members").add(itemKey);
   }
 
   removeInterest(itemKey) {

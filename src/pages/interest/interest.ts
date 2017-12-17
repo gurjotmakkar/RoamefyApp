@@ -1,4 +1,3 @@
-
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { FirebaseProvider } from './../../providers/firebase/firebase';
@@ -10,44 +9,78 @@ import { Subscription } from 'rxjs/Subscription'
   selector: 'page-interest',
   templateUrl: 'interest.html',
 })
+
 export class InterestPage {
 
-  interest: any
+  interest: any[];
+  interestID: any[];
+  userInterest: any[];
   subscription: Subscription;
+  subscription2: Subscription;
   userID: string;
+  config: false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private firebase: FirebaseProvider,
       public alertCtrl: AlertController) {
-    
+    console.log("in constructor");
 
-    this.interest = this.firebase.getInterestList();
-    console.log(this.interest);
-      this.userID = this.firebase.getUserId();
+    var names = [];
+    var ids = [];
+    var ints = [];
+
+    this.subscription = this.firebase.getInterestList().subscribe(a => {
+      a.forEach(b => {
+      names.push(b.payload.doc.data());
+      ids.push(b.payload.doc.id);
+    });
+    },
+    err => {
+      console.log(err);
+    },
+    () => {
+      console.log("complete!");
+    });
+
+    this.subscription2 = this.firebase.getUserInterestList().subscribe(a => {
+      a.forEach(b => {
+        ints.push(b.payload.doc.id);
+    });
+    },
+    err => {
+      console.log(err);
+    },
+    () => {
+      console.log("complete!");
+    });
+
+    this.userInterest = ints;
+    this.interest = names;
+    this.interestID = ids;
+    this.userID = this.firebase.getUserId();
+    this.config = this.firebase.isUserConfigured();
   }
 
-  checkornot(obj){
-    for (var o in obj) {
-      console.log(o)
-      if(o == this.userID){
-        return true;
-      }else{
-        return false;
-      }
-    }
+  checkornot(item){
+    console.log(item.name);
+    var ind = this.userInterest.findIndex(item);
+    console.log(ind)
+    if (this.userInterest.find(this.interestID[ind]) != undefined)
+      return true;
+    return false;
   }
 
-  toggleCheck(obj){
-    if(this.checkornot(obj)){
+  toggleCheck(item){
+    if(this.checkornot(item)){
       console.log("checked")
-      this.firebase.removeInterest(obj.$key);
+      this.firebase.removeInterest(item.$key);
     } else {
       console.log("unchecked")
-      this.firebase.addInterest(obj.$key);
+      this.firebase.addInterest(item.$key);
     }
   }
 
   isConfigured(){
-    return this.firebase.isUserConfigured();
+    return this.config;
   }
 
   interestCount(){
@@ -95,8 +128,8 @@ export class InterestPage {
   }
     
   ngOnDestroy() {
-    this.interest = [];
     this.subscription.unsubscribe();
+    this.subscription2.unsubscribe();
   }
 
 
