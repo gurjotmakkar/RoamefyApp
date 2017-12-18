@@ -92,6 +92,7 @@ export class InterestPage {
 
   nextSetupPage(){
     if(this.interestCount() == 0){
+      this.navCtrl.setRoot(InterestPage);
       let alert = this.alertCtrl.create({
       message: "Please select at least 1 interests",
       buttons: [
@@ -102,7 +103,6 @@ export class InterestPage {
         ]
       });
       alert.present();
-      this.navCtrl.setRoot(InterestPage);
     } else {
       this.navCtrl.setRoot(TimeDistancePage);
     }
@@ -110,6 +110,7 @@ export class InterestPage {
 
   ionViewWillLeave(){
     if(this.interestCount() == 0){
+      this.navCtrl.setRoot(InterestPage);
       let alert = this.alertCtrl.create({
         message: "Please select at least 1 interests",
         buttons: [
@@ -120,7 +121,6 @@ export class InterestPage {
         ]
       });
       alert.present();
-      this.navCtrl.setRoot(InterestPage);
     } else {
       console.log("leaving page")
       this.navCtrl.setRoot(TabsPage);

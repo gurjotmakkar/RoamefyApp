@@ -5,6 +5,7 @@ import { AngularFirestore } from 'angularfire2/firestore';
 //import { AngularFireOfflineDatabase } from 'angularfire2-offline/database';
 //import { AngularFireDatabase } from 'angularfire2/database';
 import 'rxjs/add/operator/map';
+import { checkAndUpdateBinding } from '@angular/core/src/view/util';
 
 @Injectable()
 export class FirebaseProvider {
@@ -68,7 +69,8 @@ export class FirebaseProvider {
         joinDate: new Date(joinDate),
         configured: false,
         distance: 50,
-        time: 10
+        time: 10,
+        role: 'normal'
       });
 
     this.afdOf.collection("roles/normal/members").doc(newId)
@@ -109,7 +111,8 @@ export class FirebaseProvider {
         driverLicenceNumber: newDLN,
         phoneNumber: newPhoneNumber,
         distance: 50,
-        time: 10
+        time: 10,
+        role: 'pro'
       });
 
       this.afdOf.collection("roles/pro/members").doc(newId)
@@ -171,20 +174,23 @@ export class FirebaseProvider {
   }
 
   checkUserRole(){
-    var name;
-    var docRef = this.afdOf.collection('roles').doc('pro').collection('members').doc(this.userID).ref;
+    var checker = false;
+    var role;
+    var docRef = this.afdOf.collection('users').doc(this.userID).ref;
     docRef.get()
     .then(doc => {
       if (doc.exists) {
-        name = doc.data().name;
+        role = doc.data().role;
       } else {
         console.log('Document does not exists')
       }
     }).catch( err => {
       console.log('Error in getting data: ' + err)
     });
-    console.log(name);
-    return name == this.userID ? true : false;
+    if(role == 'pro')
+      checker = true;
+    console.log(checker + "  " + role);
+    return checker;
   }
 
   configureUser(id){
@@ -193,8 +199,6 @@ export class FirebaseProvider {
       { 
         configured: true
       });
-    //this.afd.app.database().ref('users').child(this.userID).child('Configured').set(true);
-    //this.afdOf.object("/users/" + this.userID + "/configured").set(true);
   }
 
   isUserConfigured(){
