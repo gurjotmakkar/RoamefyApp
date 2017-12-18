@@ -34,6 +34,42 @@
             <p>Please enter a valid email.</p>
           </ion-item>    
         </ion-list>
+
+        <ion-item *ngIf="isUserPro()">
+          <ion-label stacked>Address</ion-label>
+          <ion-input formControlName="address" type="text" placeholder="Your address"
+            [class.invalid]="!editForm.controls.address.valid && (editForm.controls.address.dirty || submitAttempt)"></ion-input>
+        </ion-item>
+        <ion-item class="error-message" *ngIf="!editForm.controls.address.valid  && (editForm.controls.address.dirty || submitAttempt) && isUserPro()">
+          <p>Please enter your address.</p>
+        </ion-item>
+  
+        <ion-item *ngIf="isUserPro()">
+          <ion-label stacked>Date of Birth</ion-label>
+          <ion-input formControlName="dateOfBirth" type="text" placeholder="Your date of birth"
+            [class.invalid]="!editForm.controls.dateOfBirth.valid && (editForm.controls.dateOfBirth.dirty || submitAttempt)"></ion-input>
+        </ion-item>
+        <ion-item class="error-message" *ngIf="!editForm.controls.dateOfBirth.valid  && (editForm.controls.dateOfBirth.dirty || submitAttempt) && isUserPro()">
+          <p>Please enter your date of birth.</p>
+        </ion-item>
+  
+        <ion-item *ngIf="isUserPro()">
+          <ion-label stacked>Driver Licence Number</ion-label>
+          <ion-input formControlName="driverLicenceNumber" type="text" placeholder="Your driver's licence number"
+            [class.invalid]="!editForm.controls.driverLicenceNumber.valid && (editForm.controls.driverLicenceNumber.dirty || submitAttempt)"></ion-input>
+        </ion-item>
+        <ion-item class="error-message" *ngIf="!editForm.controls.driverLicenceNumber.valid  && (editForm.controls.driverLicenceNumber.dirty || submitAttempt) && isUserPro()">
+          <p>Please enter your driver's licence number.</p>
+        </ion-item>
+  
+        <ion-item *ngIf="isUserPro()">
+          <ion-label stacked>Phone Number</ion-label>
+          <ion-input formControlName="phoneNumber" type="text" placeholder="Your phone number"
+            [class.invalid]="!editForm.controls.phoneNumber.valid && (editForm.controls.phoneNumber.dirty || submitAttempt)"></ion-input>
+        </ion-item>
+        <ion-item class="error-message" *ngIf="!editForm.controls.phoneNumber.valid  && (editForm.controls.phoneNumber.dirty || submitAttempt) && isUserPro()">
+          <p>Please enter your phone number.</p>
+        </ion-item>
     
         <button ion-button block type="submit">
           Verify Change

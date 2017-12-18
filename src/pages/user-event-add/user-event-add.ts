@@ -34,9 +34,11 @@ subscription: Subscription;
 userID: string;
 
 constructor(public navCtrl: NavController, public navParams: NavParams, private firebase: FirebaseProvider) {
+  /*
   this.subscription = this.firebase.getInterestList().subscribe(x => {
     this.interest = x;
   });
+  */
   this.userID = this.firebase.getUserId();
  }
 
@@ -57,6 +59,6 @@ cancel(){
 
 ngOnDestroy() {
   this.interest = [];
-  this.subscription.unsubscribe();
+  //this.subscription.unsubscribe();
 }
 }

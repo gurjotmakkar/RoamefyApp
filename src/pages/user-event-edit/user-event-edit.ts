@@ -24,9 +24,11 @@ export class UserEventEditPage {
       //this.event = x;
     })
     this.categories = this.event.categories;
+    /*
     this.subscription2 = this.firebase.getInterestList().subscribe(x => {
       this.interest = x;
     });
+    */
   }
 
   checkornot(interestKey){
@@ -57,8 +59,8 @@ export class UserEventEditPage {
 
   ngOnDestroy(){
     this.interest = [];
-    this.subscription.unsubscribe();
-    this.subscription2.unsubscribe();
+    //this.subscription.unsubscribe();
+    //this.subscription2.unsubscribe();
 }
 
 }

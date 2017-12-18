@@ -2,7 +2,16 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { FirebaseProvider } from './../../providers/firebase/firebase';
 import { TimeDistancePage } from '../time-distance/time-distance';
-import { Subscription } from 'rxjs/Subscription'
+import { TabsPage } from '../tabs/tabs';
+import { AngularFirestoreCollection, AngularFirestoreDocument, AngularFirestore } from 'angularfire2/firestore';
+
+interface Interest {
+  name: string;
+}
+
+interface userInterest {
+  name: string;
+}
 
 @IonicPage()
 @Component({
@@ -12,108 +21,95 @@ import { Subscription } from 'rxjs/Subscription'
 
 export class InterestPage {
 
-  interest: any[];
-  interestID: any[];
-  userInterest: any[];
-  subscription: Subscription;
-  subscription2: Subscription;
+  interestCollection: AngularFirestoreCollection<Interest>;
+  interest: any;
+  userInterestCollection: AngularFirestoreCollection<userInterest>;
+  userInterest: any;
+  interestArr: string[] = [];
   userID: string;
   config: false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private firebase: FirebaseProvider,
-      public alertCtrl: AlertController) {
+      public alertCtrl: AlertController, private afs: AngularFirestore) {
     console.log("in constructor");
-
-    var names = [];
-    var ids = [];
-    var ints = [];
-
-    this.subscription = this.firebase.getInterestList().subscribe(a => {
-      a.forEach(b => {
-      names.push(b.payload.doc.data());
-      ids.push(b.payload.doc.id);
-    });
-    },
-    err => {
-      console.log(err);
-    },
-    () => {
-      console.log("complete!");
-    });
-
-    this.subscription2 = this.firebase.getUserInterestList().subscribe(a => {
-      a.forEach(b => {
-        ints.push(b.payload.doc.id);
-    });
-    },
-    err => {
-      console.log(err);
-    },
-    () => {
-      console.log("complete!");
-    });
-
-    this.userInterest = ints;
-    this.interest = names;
-    this.interestID = ids;
+    
     this.userID = this.firebase.getUserId();
     this.config = this.firebase.isUserConfigured();
+
+    this.interestCollection = this.afs.collection<Interest>('interest', ref => {
+      return ref.orderBy('name')
+    });
+    this.interest = this.interestCollection.snapshotChanges().map(actions => {
+      return actions.map(snap => {
+        let id = snap.payload.doc.id;
+        let data = { id, ...snap.payload.doc.data() };
+        return data;
+      });
+    });
+    
+    this.userInterestCollection = this.afs.collection('users').doc(this.userID).collection<userInterest>('userInterest');
+    this.userInterest = this.userInterestCollection.valueChanges().forEach(a => {
+      this.interestArr = [];
+      for ( var i in a )
+        this.interestArr.push(a[i].name);
+    });
   }
 
-  checkornot(item){
-    console.log(item.name);
-    var ind = this.userInterest.findIndex(item);
-    console.log(ind)
-    if (this.userInterest.find(this.interestID[ind]) != undefined)
-      return true;
-    return false;
+  isChecked(id){
+    var checker = false;
+    this.interestArr.forEach(i => {
+      if ( i == id )
+        checker = true;
+    })
+    return checker;
   }
 
-  toggleCheck(item){
-    if(this.checkornot(item)){
-      console.log("checked")
-      this.firebase.removeInterest(item.$key);
+  toggleCheck(id){
+    console.log(id)
+    if(this.isChecked(id)){
+      console.log("uncheck")
+      this.afs.collection("interest").doc(id).collection('members').doc(this.userID).delete();
+      this.afs.collection("users").doc(this.userID).collection('userInterest').doc(id).delete();
     } else {
-      console.log("unchecked")
-      this.firebase.addInterest(item.$key);
+      console.log("check")
+      this.afs.collection("interest").doc(id).collection('members').doc(this.userID).set({
+        name: this.userID
+      });
+      this.afs.collection("users").doc(this.userID).collection('userInterest').doc(id).set({
+        name: id
+      });
     }
   }
 
   isConfigured(){
+    console.log(this.config);
     return this.config;
   }
 
   interestCount(){
-    var count = 0;
-    this.interest.forEach(item => {
-        if(this.checkornot(item))
-          count++;
-    })
-    return count;
+    return this.interestArr.length;
   }
 
   nextSetupPage(){
-    if(this.interestCount() >= 1){
-      this.navCtrl.setRoot(TimeDistancePage);
-    }else {
+    if(this.interestCount() == 0){
       let alert = this.alertCtrl.create({
       message: "Please select at least 1 interests",
       buttons: [
         {
           text: "Ok",
           role: 'cancel'
-        }
-      ]
-    });
-    alert.present();
+          }
+        ]
+      });
+      alert.present();
+      this.navCtrl.setRoot(InterestPage);
+    } else {
+      this.navCtrl.setRoot(TimeDistancePage);
     }
   }
 
   ionViewWillLeave(){
-    if(this.interestCount() >= 1){
-      console.log("leaving page")
-    } else {
-      this.navCtrl.setRoot(TimeDistancePage);
+    if(this.interestCount() == 0){
       let alert = this.alertCtrl.create({
         message: "Please select at least 1 interests",
         buttons: [
@@ -124,12 +120,15 @@ export class InterestPage {
         ]
       });
       alert.present();
+      this.navCtrl.setRoot(InterestPage);
+    } else {
+      console.log("leaving page")
+      this.navCtrl.setRoot(TabsPage);
     }
   }
     
   ngOnDestroy() {
-    this.subscription.unsubscribe();
-    this.subscription2.unsubscribe();
+
   }
 
 

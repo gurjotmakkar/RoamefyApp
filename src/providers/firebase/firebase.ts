@@ -71,7 +71,10 @@ export class FirebaseProvider {
         time: 10
       });
 
-    this.afdOf.collection("roles/normal/members").add(newId);
+    this.afdOf.collection("roles/normal/members").doc(newId)
+    .set({
+      name: newId
+    });
   }
 
    signupProUser(newEmail: string, newPassword: string, newFirstName: string, newLastName: string, 
@@ -109,26 +112,34 @@ export class FirebaseProvider {
         time: 10
       });
 
-      this.afdOf.collection("roles/pro/members").add(newId);
+      this.afdOf.collection("roles/pro/members").doc(newId)
+      .set({
+        name: newId
+      })
   }
 
-  editUserProfile(newEmail: string, newFirstName: string, newLastName: string): Promise<any> {
+  editUserProfile(newEmail: string, newFirstName: string, newLastName: string, 
+    address:string, dob: string, driverLicense: string, phone: number): Promise<any> {
     return this.afAuth.auth.currentUser.updateEmail(newEmail)
     .then(() => {
         this.afAuth.auth.currentUser.sendEmailVerification()
         .then(() => {
           console.log('verification email sent');
         });
-        this.updateUser(this.afAuth.auth.currentUser.uid, newFirstName, newLastName);
+        this.updateUser(this.afAuth.auth.currentUser.uid, newFirstName, newLastName, address, dob, driverLicense, phone);
         //this.logoutUser();
     });
   }
 
-  updateUser(Id, FirstName, LastName) {
+  updateUser(Id, FirstName, LastName, address = null, dob = null, driverLicense = null, phone = null) {
     this.afdOf.collection("users").doc(Id)
     .update({ 
         firstName: FirstName,
-        lastName: LastName
+        lastName: LastName,
+        address: addEventListener,
+        dateOfBirth: dob == null ? dob : new Date(dob),
+        driverLicenceNumber: driverLicense,
+        phoneNumber: phone 
       });
   }
 
@@ -160,22 +171,20 @@ export class FirebaseProvider {
   }
 
   checkUserRole(){
-    var checker = false;
-    var docRef = this.afdOf.doc("roles/pro/members/" + this.userID).ref;
-    docRef.get().then(doc => {
+    var name;
+    var docRef = this.afdOf.collection('roles').doc('pro').collection('members').doc(this.userID).ref;
+    docRef.get()
+    .then(doc => {
       if (doc.exists) {
-        checker = true;
+        name = doc.data().name;
       } else {
         console.log('Document does not exists')
       }
     }).catch( err => {
       console.log('Error in getting data: ' + err)
     });
-
-    console.log(checker);
-  
-    return checker;
-
+    console.log(name);
+    return name == this.userID ? true : false;
   }
 
   configureUser(id){
@@ -207,41 +216,23 @@ export class FirebaseProvider {
 
   //-------------- interest ----------------
   getInterestList() {
-    //return this.afd.list('/Interests');
-    //this.afdOf.list('/Interests');
-
-    return this.afdOf.collection("interest").snapshotChanges();
-    /*
-    .map(actions => {
-      return actions.map(a => {
-        const id = a.payload.doc.id;
-        const data = a.payload.doc.data() as Interest;
-        return { id, ...data};
-      });
-    });
-    */
-
-  }
-
-  getUserInterestList() {
-    return this.afdOf.collection("users/" + this.userID + "/interest").snapshotChanges();
+    return "interest";
   }
 
   addInterest(itemKey) {
-    //const members = this.afd.app.database().ref(`Interests/${itemKey}/members`)
-    //members.child(this.userID).set(true);
-    //this.afdOf.object("/Interests/" + itemKey + "/members/" + this.userID).set(true);
-
-    this.afdOf.collection("interest/" + itemKey + "/members").add(this.userID);
-    this.afdOf.collection("users/" + this.userID + "/members").add(itemKey);
+    this.afdOf.collection("interest").doc(itemKey).set({
+      members: [this.userID]
+    }, {
+      merge: true
+    });
   }
 
   removeInterest(itemKey) {
-    //const member = this.afd.app.database().ref(`Interests/${itemKey}/members/${this.userID}`)
-    //member.remove()
-    //this.afdOf.object("/Interests/" + itemKey + "/members/" + this.userID).remove();
-
-    this.afdOf.doc("interest/" + itemKey + "/members/" + this.userID).delete();
+    this.afdOf.collection("interest").doc(itemKey).set({
+      members: [this.userID]
+    }, {
+      merge: true
+    });
   }
 
   getInterestName(itemKey){
