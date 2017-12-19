@@ -3,9 +3,9 @@ import {
   IonicPage, NavController, LoadingController, Loading, AlertController, MenuController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FirebaseProvider } from '../../providers/firebase/firebase';
-import { LoginPage } from '../login/login';
 import { EmailValidator } from '../../validators/email';
 import { PasswordValidator } from '../../validators/password';
+import { LoginPage } from '../login/login'
 
 @IonicPage()
 @Component({

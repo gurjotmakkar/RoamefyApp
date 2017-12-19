@@ -1,8 +1,5 @@
 <ion-header>
   <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
     <ion-title>Create Event</ion-title>
   </ion-navbar>
 </ion-header>
@@ -163,13 +160,15 @@
   <ion-item>
     <ion-label>Categories</ion-label>
     <ion-select [(ngModel)]="categories" name="categories" required multiple="true" cancelText="Cancel" okText="Add">
-      <ion-option *ngFor="let item of interest" value={{item.$key}}>{{item.name}} </ion-option>
+      <ion-option *ngFor="let item of interest | async" value={{item.id}}>{{item.name}} </ion-option>
     </ion-select>
   </ion-item>
 
+  <!--
   <ion-item class="error-message" *ngIf="categories.errors && (categories.dirty || categories.touched)">
     <p [hidden]="!categories.errors.required">Phone number is required!</p>
   </ion-item>
+  -->
 
   <button ion-button black clear (click) = "addEvent(event, categories)" [disabled]="!addEventForm.form.valid">Create</button> 
   

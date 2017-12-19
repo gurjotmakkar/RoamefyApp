@@ -9,7 +9,6 @@ declare var $: any;
 @Component({
   selector: 'page-event-map',
   templateUrl: 'event-map.html',
-  providers:[HttpProvider]
 })
 
 export class EventMapPage {
@@ -18,12 +17,12 @@ export class EventMapPage {
   map: any;
 
   constructor(public navCtrl: NavController, private httpProvider:HttpProvider) {
-      //this.getdata();
+      this.getdata();
   }
 
   ionViewDidLoad(){
     this.displayGoogleMap();
-    //this.getMarkers();
+    this.getMarkers();
   }
 
   displayGoogleMap(){

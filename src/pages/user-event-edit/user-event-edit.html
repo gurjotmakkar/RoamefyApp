@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>{{event?.name}}</ion-title>
+    <ion-title>{{event.name}}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -72,7 +72,7 @@
   <ion-item>
     <ion-label>Categories</ion-label>
     <ion-select [(ngModel)]="categories" multiple="true" cancelText="Cancel" okText="Update">
-      <ion-option *ngFor="let item of interest" value={{item.$key}} [selected]="checkornot(item.$key)">{{item.name}}</ion-option>
+      <ion-option *ngFor="let item of interest | async" value={{item.id}} [selected]="checkornot(item.id)">{{item.name}}</ion-option>
     </ion-select>
   </ion-item>
   

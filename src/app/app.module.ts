@@ -15,19 +15,20 @@ import { InterestPage } from '../pages/interest/interest';
 import { LoginPage } from '../pages/login/login';
 import { SettingsPage } from '../pages/settings/settings';
 import { TimeDistancePage } from '../pages/time-distance/time-distance';
-import { UserEventAddPage } from '../pages/user-event-add/user-event-add';
-import { UserEventEditPage } from '../pages/user-event-edit/user-event-edit';
 import { UserProfilePage } from '../pages/user-profile/user-profile';
 import { UserCreatedEventPage } from '../pages/user-created-event/user-created-event';
+import { UserEventAddPage } from '../pages/user-event-add/user-event-add';
+import { UserEventEditPage } from '../pages/user-event-edit/user-event-edit'
 import { UserProfileEditPage } from '../pages/user-profile-edit/user-profile-edit';
 import { AutocompletePage } from '../pages/autocomplete/autocomplete';
 
+
 import { HttpClientModule } from '@angular/common/http';
 import { HttpProvider } from '../providers/http/http';
-import { FirebaseProvider } from './../providers/firebase/firebase';
-import { AngularFireModule } from 'angularfire2';
+import { AngularFireModule } from 'angularfire2/angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { FirebaseProvider } from './../providers/firebase/firebase';
 
 //Firebase database configuration data
 //DO NOT CHANGE ANYTHING
@@ -51,11 +52,11 @@ const firebaseConfig = {
     LoginPage,
     SettingsPage,
     TimeDistancePage,
-    UserEventEditPage,
     UserProfilePage,
     UserProfileEditPage,
     UserCreatedEventPage,
     UserEventAddPage,
+    UserEventEditPage,
     AutocompletePage
   ],
   imports: [
@@ -77,11 +78,11 @@ const firebaseConfig = {
     LoginPage,
     SettingsPage,
     TimeDistancePage,
-    UserEventEditPage,
     UserProfilePage,
     UserProfileEditPage,
     UserCreatedEventPage,
     UserEventAddPage,
+    UserEventEditPage,
     AutocompletePage
   ],
   providers: [

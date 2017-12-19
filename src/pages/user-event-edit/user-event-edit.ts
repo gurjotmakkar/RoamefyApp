@@ -1,40 +1,70 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, AlertController } from 'ionic-angular';
-import { UserEvent } from '../../models/events/userevent.model';
-import { FirebaseProvider } from '../../providers/firebase/firebase'
-import { Subscription } from 'rxjs/Subscription'
-import { UserCreatedEventPage } from '../user-created-event/user-created-event'
+import { IonicPage, NavController, NavParams, AlertController, ModalController } from 'ionic-angular';
 import { AngularFirestoreCollection, AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
+import { FirebaseProvider } from '../../providers/firebase/firebase';
+import { UserEvent } from '../../models/events/userevent.model';
 import { AutocompletePage } from '../autocomplete/autocomplete';
+import { UserCreatedEventPage } from '../user-created-event/user-created-event';
 
 interface Interest {
   name: string;
 }
 
-@IonicPage()
+//@IonicPage()
 @Component({
   selector: 'page-user-event-edit',
   templateUrl: 'user-event-edit.html',
 })
+
 export class UserEventEditPage {
+
   eventKey: string;
   interestCollection: AngularFirestoreCollection<Interest>;
   interest: any;
   eventDocument: AngularFirestoreDocument<UserEvent>;
-  event: any;
+  event: UserEvent = {
+    name: null,
+    description: null,
+    price: 0,
+    startDate: null,
+    startTime: null,
+    endDate: null,
+    endTime: null,
+    address: null, 
+    latitude: null,
+    longitude: null,
+    website: null,
+    phone: null,
+    host: null,
+    categories: []
+  };
   categories: any[] = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private firebase: FirebaseProvider,
-    public alertCtrl: AlertController, private modalCtrl: ModalController, private afs: AngularFirestore, private user: UserEvent) {
+    public alertCtrl: AlertController, private modalCtrl: ModalController, private afs: AngularFirestore) {
+
     this.eventKey = this.navParams.get('id');
     
-    this.eventDocument = this.afs.doc<UserEvent>('event/' + this.eventKey);
-    this.event = this.eventDocument.snapshotChanges().map(snap => {
-        let id = snap.payload.id;
-        let data = { id, ...snap.payload.data() };
-        return data;
-    });
+    this.eventDocument = this.afs.doc('event/' + this.eventKey);
+    this.eventDocument.snapshotChanges().map(snap => {
+        this.event.id = snap.payload.id;
 
+        let data = snap.payload.data();
+        this.event.address = data.address;
+        this.event.categories = data.categories;
+        this.event.description = data.description;
+        this.event.endDate = data.endDate;
+        this.event.endTime = data.endTime;
+        this.event.host = data.host;
+        this.event.latitude = data.latitude;
+        this.event.longitude = data.longitude;
+        this.event.name = data.name;
+        this.event.phone = data.phone;
+        this.event.price = data.price;
+        this.event.startDate = data.startDate;
+        this.event.startTime = data.startTime;
+        this.event.website = data.website;
+    });
 
     this.categories = this.event.categories;
 
@@ -48,6 +78,10 @@ export class UserEventEditPage {
         return data;
       });
     });
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad UserEventEditPage');
   }
 
   checkornot(interestKey){
@@ -77,7 +111,7 @@ export class UserEventEditPage {
     } else {
     event.categories = categories;
     this.firebase.updateEvent(this.eventKey, event);
-    this.navCtrl.setRoot(UserCreatedEventPage)
+    this.navCtrl.setRoot(UserCreatedEventPage);
     }
   }
 
@@ -92,14 +126,11 @@ export class UserEventEditPage {
   
   removeEvent(event: UserEvent) {
     this.firebase.removeEvent(this.eventKey);
-    this.navCtrl.setRoot(UserCreatedEventPage)
+    this.navCtrl.setRoot(UserCreatedEventPage);
   }
   
   cancel(){
-    this.navCtrl.setRoot(UserCreatedEventPage)
+    this.navCtrl.pop();
   }
-
-  ngOnDestroy(){
-}
 
 }

@@ -3,6 +3,7 @@ import { IonicPage, NavController, AlertController, MenuController } from 'ionic
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { EmailValidator } from '../../validators/email';
+import { LoginPage } from '../login/login'
 
 @IonicPage()
 @Component({
@@ -33,7 +34,7 @@ resetPassword(){
             text: "Ok",
             role: 'cancel',
             handler: () => {
-              this.nav.pop();
+              this.nav.setRoot(LoginPage);
             }
           }
         ]

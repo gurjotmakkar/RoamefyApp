@@ -5,7 +5,11 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { LoginPage } from '../login/login';
 import { EmailValidator } from '../../validators/email';
 import { UserProfilePage } from '../user-profile/user-profile'
+import { AngularFirestoreCollection, AngularFirestoreDocument, AngularFirestore } from 'angularfire2/firestore';
 
+interface User {
+  role: string;
+}
 
 @IonicPage()
 @Component({
@@ -19,7 +23,8 @@ export class UserProfileEditPage {
   userRole: string;
 
   constructor(public nav: NavController, public authData: FirebaseProvider, public formBuilder: FormBuilder, 
-    public loadingCtrl: LoadingController, public alertCtrl: AlertController, private firebase: FirebaseProvider) {
+    public loadingCtrl: LoadingController, public alertCtrl: AlertController, private firebase: FirebaseProvider,
+    private afs: AngularFirestore) {
     this.editForm = formBuilder.group({
       firstName: ['', Validators.compose([Validators.required])],
       lastName: ['', Validators.compose([Validators.required])],
@@ -30,13 +35,16 @@ export class UserProfileEditPage {
       phoneNumber: ['', Validators.compose([Validators.pattern("[0-9]{10}"), Validators.maxLength(10)])]
     });
 
-    this.firebase.checkUserRole().subscribe(a => {
+    var userID = this.firebase.getUserId();
+    this.afs.collection('users').doc<User>(userID).valueChanges()
+    .subscribe(a => {
       this.userRole = a.role;
-    });
+    })
+
   }
   
   cancel(){
-    this.nav.setRoot(UserProfilePage)
+    this.nav.setRoot(UserProfilePage);
   }
 
   isUserPro(){

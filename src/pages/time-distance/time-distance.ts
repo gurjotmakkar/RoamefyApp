@@ -5,14 +5,7 @@ import { TabsPage } from '../tabs/tabs'
 import { AngularFirestoreCollection, AngularFirestoreDocument, AngularFirestore } from 'angularfire2/firestore';
 
 interface User{
-  firstName: string;
-  lastName: string;
-  joinDate: Date;
   configured: boolean;
-  dateOfBirth?: Date;
-  address?: string;
-  driverLicenceNumber?: string;
-  phoneNumber?: number;
   distance: number;
   time: number;
 }
@@ -29,12 +22,13 @@ export class TimeDistancePage {
   userID: string;
   userDoc: AngularFirestoreDocument<User>;
   user: any;
-  config: false;
+  config: boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, 
     private firebase: FirebaseProvider, public alertCtrl: AlertController, private afs: AngularFirestore) {
-      
-    this.firebase.isUserConfigured().subscribe(a => {
+       
+    this.afs.collection('users').doc<User>(this.userID).valueChanges()
+    .subscribe(a => {
       this.config = a.configured;
     })
 
@@ -84,6 +78,9 @@ export class TimeDistancePage {
     }
   }
 
+  ionViewWillLeave(){
+      this.navCtrl.setRoot(TabsPage);
+  }
   
   ngOnDestroy() {
     this.userID = null;

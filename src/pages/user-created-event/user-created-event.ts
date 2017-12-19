@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
-import { UserEvent } from '../../models/event/userevent.model';
+import { UserEvent } from '../../models/events/userevent.model';
 import { FirebaseProvider } from '../../providers/firebase/firebase'
 import { UserEventAddPage } from '../user-event-add/user-event-add'
 import { UserEventEditPage } from '../user-event-edit/user-event-edit'
 import { AngularFirestoreDocument, AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
+import { TabsPage } from '../tabs/tabs';
 
 
 @IonicPage()
@@ -21,7 +22,7 @@ export class UserCreatedEventPage {
     private afs: AngularFirestore) {
     this.userID = this.firebase.getUserId();
 
-    this.eventCollection = this.afs.collection('events', ref => {
+    this.eventCollection = this.afs.collection("events", ref => {
       return ref.orderBy('name')
     });
 
@@ -57,6 +58,9 @@ export class UserCreatedEventPage {
     this.navCtrl.setRoot(UserEventEditPage, {id: key})
   }
 
+  ionViewWillLeave(){
+      this.navCtrl.setRoot(TabsPage);
+  }
   ngOnDestroy() {
   }
 

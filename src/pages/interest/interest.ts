@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { FirebaseProvider } from './../../providers/firebase/firebase';
 import { TimeDistancePage } from '../time-distance/time-distance';
-import { TabsPage } from '../tabs/tabs';
+import { TabsPage } from '../tabs/tabs'
 import { AngularFirestoreCollection, AngularFirestoreDocument, AngularFirestore } from 'angularfire2/firestore';
 
 interface Interest {
@@ -11,6 +11,10 @@ interface Interest {
 
 interface userInterest {
   name: string;
+}
+
+interface User {
+  configured: boolean;
 }
 
 @IonicPage()
@@ -27,7 +31,7 @@ export class InterestPage {
   userInterest: any;
   interestArr: string[] = [];
   userID: string;
-  config: false;
+  config: boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private firebase: FirebaseProvider,
       public alertCtrl: AlertController, private afs: AngularFirestore) {
@@ -35,7 +39,8 @@ export class InterestPage {
     
     this.userID = this.firebase.getUserId();
     
-    this.firebase.isUserConfigured().subscribe(a => {
+    this.afs.collection('users').doc<User>(this.userID).valueChanges()
+    .subscribe(a => {
       this.config = a.configured;
     })
 

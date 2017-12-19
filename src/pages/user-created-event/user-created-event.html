@@ -12,7 +12,7 @@
 </ion-header>
 
 <ion-content>
-    <ion-list *ngFor="let event of events">
+    <ion-list *ngFor="let event of events | async">
       <ion-card padding >
         <div class="card-title">{{event.name}}<ion-icon item-right ios="ios-cog" md="md-cog" (click)="editUserEventPage(event.id)"></ion-icon></div>
         <div class="card-subtitle">Description: {{event.description}}</div>

@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import { UserEvent } from "../../models/events/userevent.model";
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore } from 'angularfire2/firestore';
-import 'rxjs/add/operator/map';
 
 @Injectable()
 export class FirebaseProvider {
@@ -171,6 +169,7 @@ export class FirebaseProvider {
   }
 
   checkUserRole(){
+    console.log(this.userID);
     return this.afdOf.collection('users').doc(this.userID).valueChanges();
   }
 
@@ -184,7 +183,6 @@ export class FirebaseProvider {
 
   isUserConfigured(){
     return this.afdOf.collection('users').doc(this.userID).valueChanges();
-  
   }
 
   //-------------- interest ----------------
@@ -210,13 +208,6 @@ export class FirebaseProvider {
 
   getInterestName(itemKey){
     var interest;
-    /*
-    var db = this.afdOf.object("/Interests/" + itemKey).subscribe( x => {
-      interest = x.name;
-    });
-    db.unsubscribe();
-    */
-
     this.afdOf.doc("interest/" + itemKey).ref
     .get().then(doc => {
       if ( doc.exists)
@@ -230,9 +221,6 @@ export class FirebaseProvider {
 
   //-------------- distance and time ----------------
   updateDistance(value){
-    //const distance = this.afd.app.database().ref(`users/${this.userID}/distance/`);
-    //distance.set(value);
-    //this.afdOf.object("/users/" + this.userID + "/distance/").set(value);
     this.afdOf.doc("users/" + this.userID)
     .update({
       distance: value
@@ -240,9 +228,6 @@ export class FirebaseProvider {
   }
 
   updateTime(value){
-    //const time = this.afd.app.database().ref(`users/${this.userID}/time/`);
-    //time.set(value);    
-    //this.afdOf.object("/users/" + this.userID + "/time/").set(value);  
     this.afdOf.doc("users/" + this.userID)
     .update({
       time: value
@@ -258,11 +243,11 @@ export class FirebaseProvider {
     return this.afdOf.doc("events/" + eventID).snapshotChanges();
   }
 
-  addEvent(event: UserEvent) {
+  addEvent(event) {
     this.afdOf.collection("events").add(event)
   }
 
-  updateEvent(id, event: UserEvent) {
+  updateEvent(id, event) {
     this.afdOf.doc("events/" + id).update(event);
   }
 

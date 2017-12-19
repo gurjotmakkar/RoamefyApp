@@ -4,8 +4,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { EmailValidator } from '../../validators/email';
 import { PasswordValidator } from '../../validators/password';
-import { HomePage } from '../home/home';
 import { InterestPage } from '../interest/interest';
+import { TabsPage } from '../tabs/tabs';
+import { AngularFirestoreCollection, AngularFirestoreDocument, AngularFirestore } from 'angularfire2/firestore';
+
+interface User {
+  configured: boolean;
+}
 
 @IonicPage()
 @Component({
@@ -19,15 +24,12 @@ export class LoginPage {
 
   constructor(public navCtrl: NavController, public authData: FirebaseProvider,
     public formBuilder: FormBuilder, public alertCtrl: AlertController,
-    public loadingCtrl: LoadingController, private menu: MenuController) {
-      //this.menu.swipeEnable(false);
+    public loadingCtrl: LoadingController, private menu: MenuController,
+    private afs: AngularFirestore) {
       this.loginForm = formBuilder.group({
         email: ['', Validators.compose([Validators.required, EmailValidator.isValid])],
         password: ['', Validators.compose([Validators.required, PasswordValidator.isValid])]
       });
-
-      
-
   }
 
   loginUser(){
@@ -51,15 +53,20 @@ export class LoginPage {
             alert.present();
           });
         } else {
-          var configured = this.authData.isUserConfigured();
+          var userID = this.authData.getUserId();
+          var configured;
+          this.afs.collection('users').doc<User>(userID).valueChanges()
+          .subscribe(a => {
+            configured = a.configured;
+          })
             if(configured == false) {
               this.navCtrl.setRoot(InterestPage);
             }
             else{
-              this.navCtrl.setRoot(HomePage);
+              this.navCtrl.setRoot(TabsPage);
             }
 
-          this.navCtrl.setRoot(HomePage);
+          this.navCtrl.setRoot(TabsPage);
         }
       }, error => {
         this.loading.dismiss().then( () => {
@@ -84,15 +91,15 @@ export class LoginPage {
   }
 
   goToResetPassword(){
-    this.navCtrl.push('ResetPasswordPage');
+    this.navCtrl.setRoot('ResetPasswordPage');
   }
 
   createAccount(){
-    this.navCtrl.push('SignupPage');
+    this.navCtrl.setRoot('SignupPage');
   }
 
   createProAccount(){
-    this.navCtrl.push('SignupProPage');
+    this.navCtrl.setRoot('SignupProPage');
   }
 
 }
