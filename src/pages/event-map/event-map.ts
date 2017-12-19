@@ -43,9 +43,11 @@ export class EventMapPage {
   }
 
   addMarkersMap(markers){
+    console.log("adding markers");
+    console.log(markers)
+
     for(let marker of markers)
     {
-      console.log(marker);
       var loc = marker.calEvent.locations[0]['coords'];
       //let creates a variable declaration for each loop which is block level declaration. 
       let name  = marker.calEvent["eventName"];

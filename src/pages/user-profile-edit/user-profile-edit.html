@@ -37,7 +37,7 @@
 
         <ion-item *ngIf="isUserPro()">
           <ion-label stacked>Address</ion-label>
-          <ion-input formControlName="address" type="text" placeholder="Your address"
+          <ion-input (click)="showAddressModal()" formControlName="address" type="text" placeholder="Your address"
             [class.invalid]="!editForm.controls.address.valid && (editForm.controls.address.dirty || submitAttempt)"></ion-input>
         </ion-item>
         <ion-item class="error-message" *ngIf="!editForm.controls.address.valid  && (editForm.controls.address.dirty || submitAttempt) && isUserPro()">

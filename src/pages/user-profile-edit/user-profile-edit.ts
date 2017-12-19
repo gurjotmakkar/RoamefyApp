@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, LoadingController, Loading, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, LoadingController, Loading, AlertController, ModalController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { LoginPage } from '../login/login';
 import { EmailValidator } from '../../validators/email';
 import { UserProfilePage } from '../user-profile/user-profile'
 import { AngularFirestoreCollection, AngularFirestoreDocument, AngularFirestore } from 'angularfire2/firestore';
+import { AutocompletePage } from '../autocomplete/autocomplete';
 
 interface User {
   role: string;
@@ -21,10 +22,11 @@ export class UserProfileEditPage {
   public loading:Loading;
   public submitAttempt;
   userRole: string;
+  address: any;
 
   constructor(public nav: NavController, public authData: FirebaseProvider, public formBuilder: FormBuilder, 
     public loadingCtrl: LoadingController, public alertCtrl: AlertController, private firebase: FirebaseProvider,
-    private afs: AngularFirestore) {
+    private afs: AngularFirestore, private modalCtrl: ModalController) {
     this.editForm = formBuilder.group({
       firstName: ['', Validators.compose([Validators.required])],
       lastName: ['', Validators.compose([Validators.required])],
@@ -94,6 +96,15 @@ export class UserProfileEditPage {
       });
       this.loading.present();
     }
+    
+}
+showAddressModal (){
+  let modal = this.modalCtrl.create(AutocompletePage);
+  //let me = this;
+  modal.onDidDismiss(data => {
+    this.editForm.value.address = data;
+  });
+  modal.present();
 }
 
 }
