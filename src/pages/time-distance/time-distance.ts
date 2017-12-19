@@ -84,7 +84,6 @@ export class TimeDistancePage {
   
   ngOnDestroy() {
     this.userID = null;
-    //this.subscription.unsubscribe();
 }
 
 }

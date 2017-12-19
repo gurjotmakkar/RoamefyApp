@@ -3,7 +3,8 @@ import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-//import { FirebaseProvider } from '../providers/firebase/firebase';
+import { FirebaseProvider } from '../providers/firebase/firebase';
+import { HttpProvider } from '../providers/http/http'
 import { AngularFireAuth } from 'angularfire2/auth';
 
 import { TabsPage } from '../pages/tabs/tabs';
@@ -16,7 +17,7 @@ export class MyApp {
   rootPage:any;
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,
-    public afAuth: AngularFireAuth) {
+    public afAuth: AngularFireAuth, public afs: FirebaseProvider) {
 
       const authObserver = this.afAuth.authState.subscribe( user => {
         if (user) {
