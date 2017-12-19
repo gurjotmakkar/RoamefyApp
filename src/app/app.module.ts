@@ -89,7 +89,6 @@ const firebaseConfig = {
     StatusBar,
     SplashScreen,
     FirebaseProvider,
-    HttpClientModule,
     HttpProvider,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]

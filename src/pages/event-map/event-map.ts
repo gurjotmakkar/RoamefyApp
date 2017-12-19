@@ -1,6 +1,7 @@
 import { Component , ViewChild, ElementRef } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { HttpProvider } from '../../providers/http/http';
+import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/map';
 
 declare var google: any;
@@ -36,12 +37,15 @@ export class EventMapPage {
   }
 
   getMarkers(){
+    console.log("getting markers");
+    //console.log(this.httpProvider.getJsonData());
     this.addMarkersMap(this.httpProvider.getJsonData());
   }
 
   addMarkersMap(markers){
     for(let marker of markers)
     {
+      console.log(marker);
       var loc = marker.calEvent.locations[0]['coords'];
       //let creates a variable declaration for each loop which is block level declaration. 
       let name  = marker.calEvent["eventName"];

@@ -12,10 +12,6 @@ export class EventListPage {
   eventData: any;
 
   constructor(public navCtrl: NavController, private httpProvider:HttpProvider) {
-      this.getdata();
-  }
-
-  getdata(){
     this.eventData=JSON.parse(JSON.stringify(this.httpProvider.getJsonData()));
-  } 
+  }
 }
