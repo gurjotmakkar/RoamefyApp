@@ -12,7 +12,7 @@
       </ion-checkbox>
     </ion-item>
 </ion-list>
-  <button *ngIf="isConfigured()" ion-button block (click)="nextSetupPage()">
+  <button *ngIf="!isConfigured()" ion-button block (click)="nextSetupPage()">
       Next
   </button>
 </ion-content>

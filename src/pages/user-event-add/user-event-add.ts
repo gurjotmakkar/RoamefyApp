@@ -1,15 +1,21 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ModalController } from 'ionic-angular';
 import { UserEvent } from '../../models/events/userevent.model';
 import { FirebaseProvider } from '../../providers/firebase/firebase'
-import { Subscription } from 'rxjs/Subscription'
 import { UserCreatedEventPage } from '../user-created-event/user-created-event'
+import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
+import { AutocompletePage } from '../autocomplete/autocomplete';
 
 @IonicPage()
 @Component({
   selector: 'page-user-event-add',
   templateUrl: 'user-event-add.html',
 })
+
+interface Interest {
+  name: string;
+}
+
 export class UserEventAddPage {
   event: UserEvent = {
     name: null,
@@ -19,7 +25,7 @@ export class UserEventAddPage {
     startTime: null,
     endDate: null,
     endTime: null,
-    address: null, // change to Address object TODO: need to add a geocoder to get lat/lon AND auto-complete
+    address: null, 
     latitude: null,
     longitude: null,
     website: null,
@@ -28,17 +34,32 @@ export class UserEventAddPage {
     categories: []
   };
 
-interest: any[] = [];
-categories: any[] = [];
-subscription: Subscription;
-userID: string;
+  interestCollection: AngularFirestoreCollection<Interest>;
+  interest: any;
+  userID: string;
+  categories: any[] = [];
 
-constructor(public navCtrl: NavController, public navParams: NavParams, private firebase: FirebaseProvider) {
-  /*
-  this.subscription = this.firebase.getInterestList().subscribe(x => {
-    this.interest = x;
+constructor(public navCtrl: NavController, public navParams: NavParams, 
+  public alertCtrl: AlertController, private firebase: FirebaseProvider, 
+  private afs: AngularFirestore, private modalCtrl: ModalController) {
+  this.interestCollection = this.afs.collection<Interest>('interest', ref => {
+    return ref.orderBy('name')
   });
-  */
+  this.interest = this.interestCollection.snapshotChanges().map(actions => {
+    return actions.map(snap => {
+      let id = snap.payload.doc.id;
+      let data = { id, ...snap.payload.doc.data() };
+      return data;
+    });
+  });
+
+
+  this.interest.forEach(a => {
+    a.forEach(b => {
+      this.categories.push(b.name);
+    })
+  });
+
   this.userID = this.firebase.getUserId();
  }
 
@@ -47,10 +68,33 @@ ionViewDidLoad() {
 }
 
 addEvent(event: UserEvent, categories) {
-  event.categories = categories
-  event.host = this.userID;
-  this.firebase.addEvent(event);
-  this.navCtrl.setRoot(UserCreatedEventPage)
+  if(this.categories.length > 5){
+    //this.navCtrl.setRoot(AddEventPage);
+    let alert = this.alertCtrl.create({
+    message: "Sorry, you can't select more than 5 categories",
+    buttons: [
+      {
+        text: "Ok",
+        role: 'cancel'
+      }
+    ]
+    });
+    alert.present();
+  } else {
+    event.categories = categories;
+    event.host = this.userID;
+    this.firebase.addEvent(event);
+    this.navCtrl.setRoot(UserCreatedEventPage)
+  }
+}
+
+showAddressModal (){
+  let modal = this.modalCtrl.create(AutocompletePage);
+  //let me = this;
+  modal.onDidDismiss(data => {
+    this.event.address = data;
+  });
+  modal.present();
 }
 
 cancel(){

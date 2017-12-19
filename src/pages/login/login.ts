@@ -7,17 +7,11 @@ import { PasswordValidator } from '../../validators/password';
 import { HomePage } from '../home/home';
 import { InterestPage } from '../interest/interest';
 
-interface roles {
-  description: string;
-  members: string[];
-}
-
 @IonicPage()
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html'
 })
-
 export class LoginPage {
 
   public loginForm:FormGroup;

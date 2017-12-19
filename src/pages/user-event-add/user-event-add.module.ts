@@ -4,7 +4,7 @@ import { UserEventAddPage } from './user-event-add';
 
 @NgModule({
   declarations: [
-    UserEventAddPage,
+    UserEventAddPage
   ],
   imports: [
     IonicPageModule.forChild(UserEventAddPage),

@@ -10,15 +10,21 @@
   <link rel="icon" type="image/x-icon" href="assets/icon/favicon.ico">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#4e8ef7">
-
+  
   <!-- add to homescreen for ios -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-
-  <!-- google maps -->
-  <script src="http://maps.google.com/maps/api/js?key=AIzaSyDT-07Hd_edYvibBLl0m9NXjfxmDJvLlXg"></script>
-
-  <!-- cordova.js required for cordova apps (remove if not needed) -->
+  
+  <!--
+    <script src="http://maps.google.com/maps/api/js?key=AIzaSyBrqqpoBbtYrhjAnRogxfg8f3FWdydeF00"></script>
+  -->
+  
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrqqpoBbtYrhjAnRogxfg8f3FWdydeF00&libraries=places"></script>
+  
+  <!-- jquery for infoWindow -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+  
+  <!-- cordova.js required for cordova apps -->
   <script src="cordova.js"></script>
 
   <!-- un-comment this code to enable service worker

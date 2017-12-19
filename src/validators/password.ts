@@ -3,8 +3,8 @@ import { FormControl, AbstractControl } from '@angular/forms';
 export class PasswordValidator {
 
   static isValid(control: FormControl){
-    const re = /^([a-zA-Z0-9]{8,})$/.test(control.value);
-
+    const re = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/.test(control.value);
+   // ^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$
     if (re){
       return null;
     }

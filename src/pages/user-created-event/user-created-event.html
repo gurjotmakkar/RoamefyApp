@@ -11,13 +11,10 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-    <ion-list>
-      <ion-list-header>
-        Events
-      </ion-list-header>
-      <ion-card padding *ngFor="let event of userEvents">
-        <div class="card-title">{{event.name}}<ion-icon item-right ios="ios-cog" md="md-cog" (click)="editUserEventPage(event.$key)"></ion-icon></div>
+<ion-content>
+    <ion-list *ngFor="let event of events">
+      <ion-card padding >
+        <div class="card-title">{{event.name}}<ion-icon item-right ios="ios-cog" md="md-cog" (click)="editUserEventPage(event.id)"></ion-icon></div>
         <div class="card-subtitle">Description: {{event.description}}</div>
         <div class="card-subtitle">Price: ${{event.price}}</div>
         <div class="card-subtitle">Starts: {{event.startDate}} at {{event.startTime}} </div>

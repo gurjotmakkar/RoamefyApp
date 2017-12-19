@@ -20,6 +20,7 @@ import { UserEventEditPage } from '../pages/user-event-edit/user-event-edit';
 import { UserProfilePage } from '../pages/user-profile/user-profile';
 import { UserCreatedEventPage } from '../pages/user-created-event/user-created-event';
 import { UserProfileEditPage } from '../pages/user-profile-edit/user-profile-edit';
+import { AutocompletePage } from '../pages/autocomplete/autocomplete';
 
 import { HttpClientModule } from '@angular/common/http';
 import { HttpProvider } from '../providers/http/http';
@@ -27,8 +28,6 @@ import { FirebaseProvider } from './../providers/firebase/firebase';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
-//import { AngularFireDatabaseModule } from 'angularfire2/database';
-//import { AngularFireOfflineModule } from 'angularfire2-offline';
 
 //Firebase database configuration data
 //DO NOT CHANGE ANYTHING
@@ -52,20 +51,19 @@ const firebaseConfig = {
     LoginPage,
     SettingsPage,
     TimeDistancePage,
-    UserEventAddPage,
     UserEventEditPage,
     UserProfilePage,
     UserProfileEditPage,
-    UserCreatedEventPage
+    UserCreatedEventPage,
+    UserEventAddPage,
+    AutocompletePage
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(firebaseConfig),
-    //AngularFireDatabaseModule,
     AngularFireAuthModule,
     AngularFirestoreModule.enablePersistence(),
-    //AngularFireOfflineModule,
     HttpClientModule
   ],
   bootstrap: [IonicApp],
@@ -79,11 +77,12 @@ const firebaseConfig = {
     LoginPage,
     SettingsPage,
     TimeDistancePage,
-    UserEventAddPage,
     UserEventEditPage,
     UserProfilePage,
     UserProfileEditPage,
-    UserCreatedEventPage
+    UserCreatedEventPage,
+    UserEventAddPage,
+    AutocompletePage
   ],
   providers: [
     StatusBar,

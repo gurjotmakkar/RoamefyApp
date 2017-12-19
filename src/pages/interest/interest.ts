@@ -34,11 +34,15 @@ export class InterestPage {
     console.log("in constructor");
     
     this.userID = this.firebase.getUserId();
-    this.config = this.firebase.isUserConfigured();
+    
+    this.firebase.isUserConfigured().subscribe(a => {
+      this.config = a.configured;
+    })
 
     this.interestCollection = this.afs.collection<Interest>('interest', ref => {
       return ref.orderBy('name')
     });
+    
     this.interest = this.interestCollection.snapshotChanges().map(actions => {
       return actions.map(snap => {
         let id = snap.payload.doc.id;

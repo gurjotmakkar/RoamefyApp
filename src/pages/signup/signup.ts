@@ -21,10 +21,13 @@ export class SignupPage {
     public loadingCtrl: LoadingController, public alertCtrl: AlertController, public menu: MenuController) {
     this.menu.swipeEnable(false);
     this.signupForm = formBuilder.group({
-      firstName: ['', Validators.compose([Validators.required])],
-      lastName: ['', Validators.compose([Validators.required])],
+      firstName: ['', Validators.compose([Validators.required, Validators.minLength(2), 
+        Validators.maxLength(64), Validators.pattern("^[a-zA-z]+$")])],
+      lastName: ['', Validators.compose([Validators.required, Validators.minLength(2), 
+        Validators.maxLength(64), Validators.pattern("^[a-zA-z]+$")])],
       email: ['', Validators.compose([Validators.required, EmailValidator.isValid])],
-      password: ['', Validators.compose([Validators.required, PasswordValidator.isValid])]
+      password: ['', Validators.compose([Validators.required, Validators.maxLength(32), 
+        Validators.pattern("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$"), PasswordValidator.isValid])]
     });
   }
 

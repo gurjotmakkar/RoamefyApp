@@ -2,10 +2,7 @@ import { Injectable } from '@angular/core';
 import { UserEvent } from "../../models/events/userevent.model";
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore } from 'angularfire2/firestore';
-//import { AngularFireOfflineDatabase } from 'angularfire2-offline/database';
-//import { AngularFireDatabase } from 'angularfire2/database';
 import 'rxjs/add/operator/map';
-import { checkAndUpdateBinding } from '@angular/core/src/view/util';
 
 @Injectable()
 export class FirebaseProvider {
@@ -174,23 +171,7 @@ export class FirebaseProvider {
   }
 
   checkUserRole(){
-    var checker = false;
-    var role;
-    var docRef = this.afdOf.collection('users').doc(this.userID).ref;
-    docRef.get()
-    .then(doc => {
-      if (doc.exists) {
-        role = doc.data().role;
-      } else {
-        console.log('Document does not exists')
-      }
-    }).catch( err => {
-      console.log('Error in getting data: ' + err)
-    });
-    if(role == 'pro')
-      checker = true;
-    console.log(checker + "  " + role);
-    return checker;
+    return this.afdOf.collection('users').doc(this.userID).valueChanges();
   }
 
   configureUser(id){
@@ -202,19 +183,7 @@ export class FirebaseProvider {
   }
 
   isUserConfigured(){
-    var configured;
-    var docRef = this.afdOf.collection("users").doc(this.userID).ref;
-    docRef.get().then(doc => {
-      if (doc.exists) {
-        configured = doc.data().configured;
-      } else {
-        console.log('Document does not exists')
-      }
-    }).catch( err => {
-      console.log('Error in getting data: ' + err)
-    });
-
-    return configured;
+    return this.afdOf.collection('users').doc(this.userID).valueChanges();
   
   }
 
@@ -282,41 +251,22 @@ export class FirebaseProvider {
   
   //-------------- event ----------------
   getUserEvents() {
-    /*
-    return this.afdOf.list('/events/', {
-      query: {
-        orderByChild: 'host',
-        equalTo: this.userID 
-      }
-    });
-    */
     return this.afdOf.collection("events").snapshotChanges();
   }
 
   getSpecifiedEvent(eventID){
     return this.afdOf.doc("events/" + eventID).snapshotChanges();
-    //this.afdOf.object('/events/' + eventID);
   }
 
   addEvent(event: UserEvent) {
-    //var eventRef = this.afd.app.database().ref("Events");
-    //eventRef.push(event);
-    //this.afdOf.list("/events/").push(event);
     this.afdOf.collection("events").add(event)
   }
 
   updateEvent(id, event: UserEvent) {
-    //var eventRef = this.afd.app.database().ref(`Events/${id}`);
-    //console.log(id)
-    //eventRef.set(event);
-    //this.afdOf.object("/events/" + id).set(event)
     this.afdOf.doc("events/" + id).update(event);
   }
 
   removeEvent(id) {
-    //const eventRef = this.afd.app.database().ref(`Events/${id}`);
-    //eventRef.remove();
-    //this.afdOf.object("/events/" + id).remove();
     this.afdOf.doc("events/" + id).delete();
 }
 

@@ -1,6 +1,9 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Add Event</ion-title>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Create Event</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -8,10 +11,10 @@
 <ion-content padding>     
   <form #addEventForm="ngForm">
 
-    <ion-item class="form-group">
+    <ion-item>
       <ion-label floating>Event Name</ion-label>
-      <ion-input [(ngModel)]="event.name" type="text" name="name" required minlength="5"
-      maxlength="64" #name="ngModel" [class.invalid]="name.errors 
+      <ion-input [(ngModel)]="event.name" type="text" name="name" required minlength="2"
+      maxlength="64" pattern="[^0-9]*" #name="ngModel" [class.invalid]="name.errors 
       && (name.dirty || name.touched)"></ion-input>
     </ion-item>
     <ion-item class="error-message" *ngIf="name.errors && (name.dirty || name.touched)">
@@ -19,18 +22,20 @@
         Event name is required!
       </p>
       <p [hidden]="!name.errors.minlength">
-          Event name must be at least 5 characters long.
+          Event name must be at least 2 characters long.
       </p>
-      
       <p [hidden]="!name.errors.maxlength">
           Event name cannot be more than 64 characters long.
+      </p>
+      <p [hidden]="!name.errors.pattern">
+        Only letters are allowed.
       </p>
     </ion-item>
 
   <ion-item>
     <ion-label floating>Event Description</ion-label>
     <ion-input [(ngModel)]="event.description" type="text" name="description" required minlength="5" 
-    maxlength="5000" #description="ngModel" [class.invalid]="description.errors 
+    maxlength="5000" pattern="[^0-9]*" #description="ngModel" [class.invalid]="description.errors 
     && (description.dirty || description.touched)"></ion-input>
   </ion-item>
 
@@ -41,16 +46,18 @@
       <p [hidden]="!description.errors.minlength">
         Event description must be at least 5 characters long.
       </p>
-      
       <p [hidden]="!description.errors.maxlength">
         Event description cannot be more than 5000 characters long.
+      </p>
+      <p [hidden]="!description.errors.pattern">
+        Only letters are allowed.
       </p>
   </ion-item>
 
   <ion-item>
     <ion-label floating>Price</ion-label>
-    <ion-input [(ngModel)]="event.price" type="number" name="price" required pattern="[0-9]{1,}" 
-    min="0" #price="ngModel" [class.invalid]="price.errors 
+    <ion-input [(ngModel)]="event.price" type="number" name="price" required maxlength="5" pattern="[0-9]{1,}" 
+    #price="ngModel" [class.invalid]="price.errors 
     && (price.dirty || price.touched)"></ion-input>
   </ion-item>
 
@@ -61,12 +68,15 @@
       <p [hidden]="!price.errors.pattern">
           Price is not a valid price.
       </p>
+      <p [hidden]="!price.errors.maxlength">
+        Price is not a valid price.
+      </p>
   </ion-item>
 
   <ion-item>
     <ion-label floating>Start Date</ion-label>
     <ion-datetime [(ngModel)]="event.startDate" name="startDate" displayFormat="D MMMM YYYY" 
-    min="2017-11-29" max="2019-12-31" required #startDate="ngModel" [class.invalid]="startDate.errors 
+    min="2017-12-07" max="2019-12-31" required #startDate="ngModel" [class.invalid]="startDate.errors 
     && (startDate.dirty || startDate.touched)">
     </ion-datetime>
   </ion-item>
@@ -89,7 +99,7 @@
 
   <ion-item>
     <ion-label floating>End Date</ion-label>
-    <ion-datetime [(ngModel)]="event.endDate" name="endDate" displayFormat="D MMMM YYYY" min="2017-11-29" 
+    <ion-datetime [(ngModel)]="event.endDate" name="endDate" displayFormat="D MMMM YYYY" min="2017-12-07" 
     max="2019-12-31" required #endDate="ngModel" [class.invalid]="endDate.errors 
     && (endDate.dirty || endDate.touched)">
     </ion-datetime>
@@ -109,11 +119,18 @@
   <ion-item class="error-message" *ngIf="endTime.errors && (endTime.dirty || endTime.touched)">
     <p [hidden]="!endTime.errors.required">End time is required!</p>
   </ion-item>
-
+  <!--
   <ion-item>
     <ion-label floating>Event Address</ion-label>
     <ion-input [(ngModel)]="event.address" name="address" required #address="ngModel" [class.invalid]="address.errors 
     && (address.dirty || address.touched)"></ion-input>
+  </ion-item>
+-->
+
+  <ion-item>
+      <ion-label floating>Event Address</ion-label>
+      <ion-input (ionchange)="showAddressModal()" [(ngModel)]="event.address" name="address" type="search" required 
+      #address="ngModel" [class.invalid]="address.errors && (address.dirty || address.touched)"></ion-input>
   </ion-item>
 
   <ion-item class="error-message" *ngIf="address.errors && (address.dirty || address.touched)">
@@ -132,22 +149,29 @@
 
   <ion-item>
     <ion-label floating>Contact Phone</ion-label>
-    <ion-input [(ngModel)]="event.phone" name="phone" required #phone="ngModel" [class.invalid]="phone.errors 
+    <ion-input [(ngModel)]="event.phone" name="phone" required pattern="[^a-zA-Z!@#$%^\&*( )\t_-]*" minlength="10"
+      maxlength="10" #phone="ngModel" [class.invalid]="phone.errors 
     && (phone.dirty || phone.touched)"></ion-input>
   </ion-item>
 
   <ion-item class="error-message" *ngIf="phone.errors && (phone.dirty || phone.touched)">
     <p [hidden]="!phone.errors.required">Phone number is required!</p>
+    <p [hidden]="!phone.errors.pattern">Phone number is not valid</p>
+    <p [hidden]="!phone.errors.minlength">Phone number is too short</p>
   </ion-item>
 
   <ion-item>
     <ion-label>Categories</ion-label>
-    <ion-select [(ngModel)]="categories" name="categories" multiple="true" cancelText="Cancel" okText="Add">
+    <ion-select [(ngModel)]="categories" name="categories" required multiple="true" cancelText="Cancel" okText="Add">
       <ion-option *ngFor="let item of interest" value={{item.$key}}>{{item.name}} </ion-option>
     </ion-select>
   </ion-item>
 
-  <button ion-button black clear (click) = "addEvent(event, categories)" [disabled]="!addEventForm.form.valid">Add</button> 
+  <ion-item class="error-message" *ngIf="categories.errors && (categories.dirty || categories.touched)">
+    <p [hidden]="!categories.errors.required">Phone number is required!</p>
+  </ion-item>
+
+  <button ion-button black clear (click) = "addEvent(event, categories)" [disabled]="!addEventForm.form.valid">Create</button> 
   
   <button ion-button black clear color="danger" (click) = "cancel()">Cancel</button>      
 </form>

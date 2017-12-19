@@ -16,7 +16,7 @@ export class UserProfileEditPage {
   public editForm:FormGroup;
   public loading:Loading;
   public submitAttempt;
-  userRole: boolean;
+  userRole: string;
 
   constructor(public nav: NavController, public authData: FirebaseProvider, public formBuilder: FormBuilder, 
     public loadingCtrl: LoadingController, public alertCtrl: AlertController, private firebase: FirebaseProvider) {
@@ -30,7 +30,9 @@ export class UserProfileEditPage {
       phoneNumber: ['', Validators.compose([Validators.pattern("[0-9]{10}"), Validators.maxLength(10)])]
     });
 
-    this.userRole = this.firebase.checkUserRole();
+    this.firebase.checkUserRole().subscribe(a => {
+      this.userRole = a.role;
+    });
   }
   
   cancel(){
@@ -38,7 +40,9 @@ export class UserProfileEditPage {
   }
 
   isUserPro(){
-    return this.userRole;
+    if ( this.userRole == "pro")
+      return true;
+    return false;
   }
 
   editUserProfile(){

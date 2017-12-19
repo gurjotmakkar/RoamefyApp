@@ -15,15 +15,17 @@ import { LoginPage } from '../login/login'
 export class SettingsPage {
   pages: Array<{title: string, component: any}>;
   userEventPage: {title: string, component: any};
-  role: any;
+  role: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public firebase: FirebaseProvider) {
     this.pages = [
       { title: "Interests", component: InterestPage },
       { title: "Time and Distance", component: TimeDistancePage }
     ];
-    this.userEventPage = { title: "Add Event", component: UserCreatedEventPage };
-    this.role = this.firebase.checkUserRole();
+    this.userEventPage = { title: "Events by you", component: UserCreatedEventPage };
+    this.firebase.checkUserRole().subscribe(a => {
+      this.role = a.role;
+    })
   }
 
   openPage(page) {
@@ -31,7 +33,10 @@ export class SettingsPage {
   }
 
   checkUserRole(){
-    return this.role;
+    console.log(this.role);
+    if( this.role == "pro")
+      return true;
+    return false;
   }
 
   logout(){

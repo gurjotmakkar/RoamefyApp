@@ -34,7 +34,10 @@ export class TimeDistancePage {
   constructor(public navCtrl: NavController, public navParams: NavParams, 
     private firebase: FirebaseProvider, public alertCtrl: AlertController, private afs: AngularFirestore) {
       
-    this.config = this.firebase.isUserConfigured();
+    this.firebase.isUserConfigured().subscribe(a => {
+      this.config = a.configured;
+    })
+
     this.userID = this.firebase.getUserId();
 
     this.userDoc = this.afs.doc<User>('users/' + this.userID);

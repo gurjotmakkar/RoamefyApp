@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
+import { UserEvent } from '../../models/event/userevent.model';
 import { FirebaseProvider } from '../../providers/firebase/firebase'
-import { Subscription } from 'rxjs/Subscription'
 import { UserEventAddPage } from '../user-event-add/user-event-add'
 import { UserEventEditPage } from '../user-event-edit/user-event-edit'
+import { AngularFirestoreDocument, AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
 
 
 @IonicPage()
@@ -12,15 +13,24 @@ import { UserEventEditPage } from '../user-event-edit/user-event-edit'
   templateUrl: 'user-created-event.html',
 })
 export class UserCreatedEventPage {
-  userEvents: any[] = [];
-  subscription: Subscription;
+  eventCollection: AngularFirestoreCollection<UserEvent>;
+  events: any;
   userID: string;
   
-  constructor(public navCtrl: NavController, private firebase: FirebaseProvider) {
+  constructor(public navCtrl: NavController, private firebase: FirebaseProvider,
+    private afs: AngularFirestore) {
     this.userID = this.firebase.getUserId();
-    this.userEvents = [];
-    this.subscription = this.firebase.getUserEvents().subscribe(x => {
-      this.userEvents = x;
+
+    this.eventCollection = this.afs.collection('events', ref => {
+      return ref.orderBy('name')
+    });
+
+    this.events = this.eventCollection.snapshotChanges().map(actions => {
+      return actions.map(snap => {
+        let id = snap.payload.doc.id;
+        let data = { id, ...snap.payload.doc.data() };
+        return data;
+      });
     });
   }
 
@@ -48,8 +58,6 @@ export class UserCreatedEventPage {
   }
 
   ngOnDestroy() {
-    this.userEvents = [];
-    this.subscription.unsubscribe();
   }
 
 }

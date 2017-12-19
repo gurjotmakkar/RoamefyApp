@@ -16,16 +16,39 @@
           [class.invalid]="!signupForm.controls.firstName.valid && (signupForm.controls.firstName.dirty || submitAttempt)"></ion-input>
       </ion-item>
       <ion-item class="error-message" *ngIf="!signupForm.controls.firstName.valid  && (signupForm.controls.firstName.dirty || submitAttempt)">
-        <p>Please enter your first name.</p>
+      
+        <p *ngIf="signupForm.controls.firstName.errors.required">
+          Required
+        </p>
+        <p *ngIf="signupForm.controls.firstName.errors.minlength">
+          At least 2 characters long
+        </p>
+        <p *ngIf="signupForm.controls.firstName.errors.maxlength">
+          Too long
+        </p>
+        <p *ngIf="signupForm.controls.firstName.errors.pattern">
+          No numbers allowed
+        </p>  
       </ion-item>
-
+      
       <ion-item>
         <ion-label stacked>Last Name</ion-label>
         <ion-input formControlName="lastName" type="text" placeholder="Your last name"
           [class.invalid]="!signupForm.controls.lastName.valid && (signupForm.controls.lastName.dirty || submitAttempt)"></ion-input>
       </ion-item>
       <ion-item class="error-message" *ngIf="!signupForm.controls.lastName.valid  && (signupForm.controls.lastName.dirty || submitAttempt)">
-        <p>Please enter your last name.</p>
+        <p *ngIf="signupForm.controls.lastName.errors.required">
+          Required
+        </p>
+        <p *ngIf="signupForm.controls.lastName.errors.minlength">
+          At least 2 characters long
+        </p>
+        <p *ngIf="signupForm.controls.lastName.errors.maxlength">
+          Too long
+        </p>
+        <p *ngIf="signupForm.controls.lastName.errors.pattern">
+          No numbers allowed
+        </p>  
       </ion-item>
 
       <ion-item>
@@ -43,9 +66,16 @@
           [class.invalid]="!signupForm.controls.password.valid && (signupForm.controls.password.dirty || submitAttempt)"></ion-input>
       </ion-item>
       <ion-item class="error-message" *ngIf="!signupForm.controls.password.valid  && (signupForm.controls.password.dirty || submitAttempt)">
-        <p>Your password needs more than 8 characters</p>
-        <p>with atleast one lowercase, uppercase</p>
-        <p>and a number</p>
+        <p *ngIf="signupForm.controls.password.errors.required">
+          Required
+        </p>
+        <p *ngIf="signupForm.controls.password.errors.maxlength">
+          Too long
+        </p>
+        <p *ngIf="signupForm.controls.password.errors.pattern">
+          At least 8 characters with one lowercase, uppercase 
+          and a number
+        </p> 
       </ion-item>
 
     </ion-list>

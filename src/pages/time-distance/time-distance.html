@@ -22,7 +22,7 @@
         </ion-range>
       </ion-item>
   </ion-list>
-  <button *ngIf="isConfigured()" ion-button block (click)="finishSetup()">
+  <button *ngIf="!isConfigured()" ion-button block (click)="finishSetup()">
       Finish
   </button>
 </ion-content>
