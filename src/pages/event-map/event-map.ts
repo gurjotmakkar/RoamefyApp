@@ -21,10 +21,9 @@ export class EventMapPage {
   ionViewDidLoad(){
     this.http.get(this.api)
     .subscribe(data => {
-      //this.displayGoogleMap();
+      //this.displayGoogleMap(); // To get current user position
       this.setDefaultMap();
       this.addMarkersMap(data);
-      console.log(data)
     }, err => {
       console.log(err);
     });
@@ -74,7 +73,7 @@ export class EventMapPage {
       let img = "http://mnlct.org/wp-content/uploads/2014/10/toronto-skyline.jpg";
 
       if( marker.calEvent["image"] !== undefined)
-        img = marker.calEvent["image"]["url"];
+        img = "https://secure.toronto.ca" + marker.calEvent["image"]["url"];
 
       //variable to pass into setContent of infoWindow
       let contentString =              
@@ -83,7 +82,7 @@ export class EventMapPage {
                     '<div class="iw-title">' + name +'</div>' + 
                     '<div class="iw-content">' +
                     '<div class="iw-subTitle"> Description: </div>' +
-                    '<img src= "https://secure.toronto.ca' + img + '" height="115" width="93">' +
+                    '<img src= "' + img + '" height="115" width="93">' +
                     '<p>' + description + '</p>' +
 
                                    '<div class="iw-subTitle">Website: </div>' + '<a href="  '+ webSite +'     ">'  +  'link'     +       '</a>'    +              

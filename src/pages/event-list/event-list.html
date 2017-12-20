@@ -1,14 +1,20 @@
 <ion-content>
-  {{eventData | json}}
-  <ion-list>
-    <!--
-    <ion-item padding *ngFor="let event of eventData">
-      <div class="card-title">{{event.calEvent.eventName}}</div>
-      <div class="card-subtitle">Website: {{event.calEvent.eventWebsite}}</div>
-      <div class="card-subtitle"><ion-icon name="information-circle"></ion-icon>for more info: {{event.calEvent.eventWebsite}}</div>
-      <div class="card-subtitle"><ion-icon name="call"></ion-icon>{{event.calEvent.orgPhone}}</div>
-      <div>Categories: {{event.calEvent.categoryString}}</div>
-    </ion-item>   
-  -->
-  </ion-list>
+    <ion-list *ngFor="let event of eventData">
+      <ion-card >
+        <img src= "http://mnlct.org/wp-content/uploads/2014/10/toronto-skyline.jpg" />
+        <ion-card-content>
+        <ion-card-title>
+        {{event.calEvent.eventName}}
+        </ion-card-title>
+        <div class="card-subtitle">Description: {{event.calEvent.description}}</div>
+        <div class="card-subtitle">Website: {{event.calEvent.eventWebsite}}</div>
+        <div class="card-subtitle">
+          <ion-icon name="information-circle"></ion-icon>
+          for more info <a href src="event.calEvent.eventWebsite">click here</a>
+        </div>
+        <div class="card-subtitle"><ion-icon name="call"></ion-icon> {{event.calEvent.orgPhone}}</div>
+        <div>Categories: {{event.calEvent.categoryString}}</div>
+      </ion-card-content>
+      </ion-card>   
+    </ion-list>
 </ion-content>

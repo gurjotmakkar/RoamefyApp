@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { HttpProvider} from '../../providers/http/http'; //importing provider 
+import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/map';
 
 @Component({
@@ -9,9 +9,18 @@ import 'rxjs/add/operator/map';
 })
 
 export class EventListPage {
+  api: string = 'http://app.toronto.ca/cc_sr_v1_app/data/edc_eventcal_APR?limit=500';
   eventData: any;
 
-  constructor(public navCtrl: NavController, private httpProvider:HttpProvider) {
-    this.eventData=JSON.parse(JSON.stringify(this.httpProvider.getJsonData()));
+  constructor(public navCtrl: NavController, private http: HttpClient) {}
+
+  ionViewDidLoad(){
+    this.http.get(this.api)
+    .subscribe(data => {
+      this.eventData = data;
+    }, err => {
+      console.log(err);
+    });
   }
+
 }
