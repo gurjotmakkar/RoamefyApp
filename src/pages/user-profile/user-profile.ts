@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { FirebaseProvider } from './../../providers/firebase/firebase';
 import { UserProfileEditPage } from '../user-profile-edit/user-profile-edit';
-import { LoginPage } from '../login/login'
+import { LoginPage } from '../login/login';
+import { TabsPage } from '../tabs/tabs';
 
 @IonicPage()
 @Component({

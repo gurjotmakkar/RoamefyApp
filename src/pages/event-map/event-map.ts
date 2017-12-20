@@ -1,7 +1,6 @@
 import { Component , ViewChild, ElementRef } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { HttpProvider } from '../../providers/http/http';
-import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/map';
 
 declare var google: any;
@@ -13,13 +12,10 @@ declare var $: any;
 })
 
 export class EventMapPage {
-  eventData: any;
   @ViewChild('map') mapElement: ElementRef;
   map: any;
 
-  constructor(public navCtrl: NavController, private httpProvider:HttpProvider) {
-      this.getdata();
-  }
+  constructor(public navCtrl: NavController, private httpProvider:HttpProvider) {}
 
   ionViewDidLoad(){
     this.displayGoogleMap();
@@ -44,7 +40,11 @@ export class EventMapPage {
 
   addMarkersMap(markers){
     console.log("adding markers");
-    console.log(markers)
+    console.log(markers);
+    
+    for(var i of markers)
+      console.log(markers);
+
 
     for(let marker of markers)
     {
@@ -140,8 +140,4 @@ export class EventMapPage {
             //google.maps.event.addDomListener(window, 'load', initialize);
        
   }
- 
-  getdata(){
-    this.eventData=JSON.parse(JSON.stringify(this.httpProvider.getJsonData()));
-  } 
 }

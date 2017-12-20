@@ -29,6 +29,7 @@ import { AngularFireModule } from 'angularfire2/angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { FirebaseProvider } from './../providers/firebase/firebase';
+import { ResetPasswordPage } from '../pages/reset-password/reset-password';
 
 //Firebase database configuration data
 //DO NOT CHANGE ANYTHING
@@ -57,7 +58,8 @@ const firebaseConfig = {
     UserCreatedEventPage,
     UserEventAddPage,
     UserEventEditPage,
-    AutocompletePage
+    AutocompletePage,
+    ResetPasswordPage
   ],
   imports: [
     BrowserModule,
@@ -83,7 +85,8 @@ const firebaseConfig = {
     UserCreatedEventPage,
     UserEventAddPage,
     UserEventEditPage,
-    AutocompletePage
+    AutocompletePage,
+    ResetPasswordPage
   ],
   providers: [
     StatusBar,

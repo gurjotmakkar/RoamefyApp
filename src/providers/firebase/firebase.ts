@@ -30,7 +30,6 @@ export class FirebaseProvider {
    }
 
    logoutUser() {
-    //this.afdOf.reset();
     return this.afAuth.auth.signOut()
     .then(() => console.log("user logged out"))
     .catch(e => console.log("exception: " + e));

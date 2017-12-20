@@ -4,7 +4,6 @@
   </ion-navbar>
 </ion-header>
 
-
 <ion-content padding>     
   <form #addEventForm="ngForm">
 
@@ -170,8 +169,8 @@
   </ion-item>
   -->
 
-  <button ion-button black clear (click) = "addEvent(event, categories)" [disabled]="!addEventForm.form.valid">Create</button> 
+  <button ion-button black clear (click)="addEvent(event, categories)" [disabled]="!addEventForm.form.valid">Create</button> 
   
-  <button ion-button black clear color="danger" (click) = "cancel()">Cancel</button>      
+  <button ion-button black clear color="danger" (click)="cancel()" [disabled]="addEventForm.form.valid">Cancel</button>      
 </form>
 </ion-content>

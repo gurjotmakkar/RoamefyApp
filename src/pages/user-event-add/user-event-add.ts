@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, ModalController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, ModalController } from 'ionic-angular';
 import { UserEvent } from '../../models/events/userevent.model';
 import { FirebaseProvider } from '../../providers/firebase/firebase'
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
@@ -97,5 +97,6 @@ cancel(){
 }
 
 ngOnDestroy() {
+  console.log("exiting AddEventPage")
 }
 }

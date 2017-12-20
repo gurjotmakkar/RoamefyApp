@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, LoadingController, Loading, AlertController, MenuController } from 'ionic-angular';
+import { IonicPage, NavController, LoadingController, Loading, AlertController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { EmailValidator } from '../../validators/email';
 import { PasswordValidator } from '../../validators/password';
 import { InterestPage } from '../interest/interest';
+import { AngularFirestore } from 'angularfire2/firestore';
 import { TabsPage } from '../tabs/tabs';
-import { AngularFirestoreCollection, AngularFirestoreDocument, AngularFirestore } from 'angularfire2/firestore';
 
 interface User {
   configured: boolean;
@@ -24,8 +24,7 @@ export class LoginPage {
 
   constructor(public navCtrl: NavController, public authData: FirebaseProvider,
     public formBuilder: FormBuilder, public alertCtrl: AlertController,
-    public loadingCtrl: LoadingController, private menu: MenuController,
-    private afs: AngularFirestore) {
+    public loadingCtrl: LoadingController, private afs: AngularFirestore) {
       this.loginForm = formBuilder.group({
         email: ['', Validators.compose([Validators.required, EmailValidator.isValid])],
         password: ['', Validators.compose([Validators.required, PasswordValidator.isValid])]

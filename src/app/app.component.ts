@@ -1,5 +1,5 @@
-import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { Component } from '@angular/core';
+import { Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -17,7 +17,7 @@ export class MyApp {
   rootPage:any;
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,
-    public afAuth: AngularFireAuth, public afs: FirebaseProvider) {
+    public afAuth: AngularFireAuth, public afs: FirebaseProvider, public http: HttpProvider) {
 
       const authObserver = this.afAuth.authState.subscribe( user => {
         if (user) {

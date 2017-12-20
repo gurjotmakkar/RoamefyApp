@@ -5,7 +5,7 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { LoginPage } from '../login/login';
 import { EmailValidator } from '../../validators/email';
 import { UserProfilePage } from '../user-profile/user-profile'
-import { AngularFirestoreCollection, AngularFirestoreDocument, AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestore } from 'angularfire2/firestore';
 import { AutocompletePage } from '../autocomplete/autocomplete';
 
 interface User {

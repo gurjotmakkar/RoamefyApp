@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { FirebaseProvider } from './../../providers/firebase/firebase';
 import { TimeDistancePage } from '../time-distance/time-distance';
-import { TabsPage } from '../tabs/tabs'
-import { AngularFirestoreCollection, AngularFirestoreDocument, AngularFirestore } from 'angularfire2/firestore';
+import { SettingsPage } from '../settings/settings'
+import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
 
 interface Interest {
   name: string;
@@ -132,7 +132,7 @@ export class InterestPage {
       alert.present();
     } else {
       console.log("leaving page")
-      this.navCtrl.setRoot(TabsPage);
+      this.navCtrl.setRoot(SettingsPage);
     }
   }
     

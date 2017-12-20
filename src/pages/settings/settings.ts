@@ -4,8 +4,7 @@ import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { InterestPage } from '../interest/interest';
 import { TimeDistancePage } from '../time-distance/time-distance';
 import { UserCreatedEventPage } from '../user-created-event/user-created-event'
-import { LoginPage } from '../login/login'
-import { AngularFirestoreCollection, AngularFirestoreDocument, AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestore } from 'angularfire2/firestore';
 
 interface User {
   role: string;
@@ -47,10 +46,4 @@ export class SettingsPage {
       return true;
     return false;
   }
-
-  logout(){
-    this.firebase.logoutUser();
-    this.navCtrl.setRoot(LoginPage);
-  }
-
 }
