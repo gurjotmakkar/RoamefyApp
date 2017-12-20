@@ -1,6 +1,6 @@
 import { Component , ViewChild, ElementRef } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { HttpProvider } from '../../providers/http/http';
+import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/map';
 
 declare var google: any;
@@ -14,47 +14,67 @@ declare var $: any;
 export class EventMapPage {
   @ViewChild('map') mapElement: ElementRef;
   map: any;
+  api: string = 'http://app.toronto.ca/cc_sr_v1_app/data/edc_eventcal_APR?limit=500';
 
-  constructor(public navCtrl: NavController, private httpProvider:HttpProvider) {}
+  constructor(public navCtrl: NavController, public http: HttpClient) {}
 
   ionViewDidLoad(){
-    this.displayGoogleMap();
-    this.getMarkers();
+    this.http.get(this.api)
+    .subscribe(data => {
+      //this.displayGoogleMap();
+      this.setDefaultMap();
+      this.addMarkersMap(data);
+      console.log(data)
+    }, err => {
+      console.log(err);
+    });
+    
   }
 
   displayGoogleMap(){
-    let latLng = new google.maps.LatLng(43.653908,-79.384293); //TODO: change it to current location
-    let mapOptions = {
+    let locationOptions = {timeout: 20000, enableHighAccuracy: true};
+ 
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+            let options = {
+              center: new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
+              zoom: 16,
+              mapTypeId: google.maps.MapTypeId.ROADMAP
+            }
+            this.map = new google.maps.Map(this.mapElement.nativeElement, options);
+        },
+        (error) => {
+            console.log(error);
+        }, locationOptions
+    ); 
+  }
+
+  setDefaultMap(){
+    let latLng = new google.maps.LatLng(43.653908,-79.384293);
+    let options = {
       center:latLng,
       zoom:12,
       mapTypeId : google.maps.MapTypeId.ROADMAP
     }
-    this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
-  }
-
-  getMarkers(){
-    console.log("getting markers");
-    //console.log(this.httpProvider.getJsonData());
-    this.addMarkersMap(this.httpProvider.getJsonData());
+    this.map = new google.maps.Map(this.mapElement.nativeElement, options);
   }
 
   addMarkersMap(markers){
     console.log("adding markers");
-    console.log(markers);
+    console.log(markers.length);
     
-    for(var i of markers)
-      console.log(markers);
-
-
     for(let marker of markers)
-    {
-      var loc = marker.calEvent.locations[0]['coords'];
-      //let creates a variable declaration for each loop which is block level declaration. 
+    { 
+      var loc = marker.calEvent.locations[0]["coords"];
       let name  = marker.calEvent["eventName"];
       let webSite = marker.calEvent["eventWebsite"];
       let description = marker.calEvent["description"];
       let orgPhone  = marker.calEvent["orgPhone"];
       let categories = marker.calEvent["categoryString"];
+      let img = "http://mnlct.org/wp-content/uploads/2014/10/toronto-skyline.jpg";
+
+      if( marker.calEvent["image"] !== undefined)
+        img = marker.calEvent["image"]["url"];
 
       //variable to pass into setContent of infoWindow
       let contentString =              
@@ -63,7 +83,7 @@ export class EventMapPage {
                     '<div class="iw-title">' + name +'</div>' + 
                     '<div class="iw-content">' +
                     '<div class="iw-subTitle"> Description: </div>' +
-                    '<img src="http://mnlct.org/wp-content/uploads/2014/10/toronto-skyline.jpg"  height="115" width="93">' +
+                    '<img src= "https://secure.toronto.ca' + img + '" height="115" width="93">' +
                     '<p>' + description + '</p>' +
 
                                    '<div class="iw-subTitle">Website: </div>' + '<a href="  '+ webSite +'     ">'  +  'link'     +       '</a>'    +              
@@ -100,6 +120,8 @@ export class EventMapPage {
                  * We use jQuery and create a iwBackground variable,
                  * and took advantage of the existing reference .gm-style-iw for the previous div with .prev().
                 */
+
+                
                 var iwBackground = iwOuter.prev();
             
                 // Removes background shadow DIV
@@ -109,7 +131,7 @@ export class EventMapPage {
                 iwBackground.children(':nth-child(4)').css({'display' : 'none'});
             
                 // Moves the infowindow 115px to the right.
-                iwOuter.parent().parent().css({left: '115px'});
+                iwOuter.parent().parent().css({left: '20px'});
             
                 // Moves the shadow of the arrow 76px to the left margin.
                 iwBackground.children(':nth-child(1)').attr('style', function(i,s){ return s + 'left: 76px !important;'});
@@ -137,6 +159,7 @@ export class EventMapPage {
                 });
               });
             }
+            
             //google.maps.event.addDomListener(window, 'load', initialize);
        
   }
