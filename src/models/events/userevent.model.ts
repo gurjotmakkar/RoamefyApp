@@ -7,7 +7,8 @@ export interface UserEvent {
     startTime: Date;
     endDate: Date;
     endTime: Date;
-    address?: string; // change to Address object
+    address?: string;
+    addressID: string;
     latitude?: number;
     longitude?: number;
     website?: string;

@@ -5,7 +5,6 @@ import { FirebaseProvider } from '../../providers/firebase/firebase'
 import { UserEventAddPage } from '../user-event-add/user-event-add'
 import { UserEventEditPage } from '../user-event-edit/user-event-edit'
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
-import { HomePage } from '../home/home';
 
 
 @IonicPage()
@@ -25,7 +24,7 @@ export class UserCreatedEventPage {
     this.userID = this.firebase.getUserId();
 
     this.eventCollection = this.afs.collection("events", ref => {
-      return ref.orderBy('name')
+      return ref.where('host', '==', this.userID).orderBy('name')
     });
 
     this.events = this.eventCollection.snapshotChanges().map(actions => {
@@ -38,7 +37,9 @@ export class UserCreatedEventPage {
   }
 
   getCategories(events){
-    var categories: string;
+    return null;
+    /*
+    var categories: any;
     if(events){
       events.forEach( x => {
         if(categories)
@@ -50,6 +51,7 @@ export class UserCreatedEventPage {
     } else {
       return null;
     }
+    */
   }  
 
   addEventPage(){
@@ -58,10 +60,6 @@ export class UserCreatedEventPage {
 
   editUserEventPage(key){
     this.navCtrl.setRoot(UserEventEditPage, {id: key})
-  }
-
-  ionViewWillLeave(){
-      this.navCtrl.setRoot(HomePage);
   }
 
   ngOnDestroy() {

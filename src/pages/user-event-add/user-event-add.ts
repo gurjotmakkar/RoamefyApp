@@ -26,6 +26,7 @@ export class UserEventAddPage {
     endDate: null,
     endTime: null,
     address: null, 
+    addressID: null,
     latitude: null,
     longitude: null,
     website: null,
@@ -85,9 +86,9 @@ addEvent(event, categories) {
 
 showAddressModal (){
   let modal = this.modalCtrl.create(AutocompletePage);
-  //let me = this;
   modal.onDidDismiss(data => {
-    this.event.address = data;
+    this.event.address = data.description? data.description : "";
+    this.event.addressID = data.place_id? data.place_id : "";
   });
   modal.present();
 }

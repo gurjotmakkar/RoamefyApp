@@ -1,0 +1,19 @@
+<ion-header>
+    <ion-navbar>
+      <ion-title>Bookmarked Events</ion-title>
+    </ion-navbar>
+  </ion-header>
+  <ion-content> 
+    
+    <ion-list *ngFor="let event of events | async">
+      <ion-card>
+        <ion-card-content>
+        <ion-card-title>
+        <ion-icon class="bookmark" name="star" (click)="removeEvent(event.id)"></ion-icon>
+        {{event.name}}
+        </ion-card-title>
+      </ion-card-content>
+      </ion-card>   
+    </ion-list>
+  
+</ion-content>

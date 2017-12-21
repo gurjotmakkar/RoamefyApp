@@ -74,7 +74,6 @@ export class InterestPage {
   }
 
   toggleCheck(id){
-    console.log(id)
     if(this.isChecked(id)){
       console.log("uncheck")
       this.afs.collection("interest").doc(id).collection('members').doc(this.userID).delete();
@@ -91,7 +90,6 @@ export class InterestPage {
   }
 
   isConfigured(){
-    console.log(this.config);
     return this.config;
   }
 
@@ -100,10 +98,10 @@ export class InterestPage {
   }
 
   nextSetupPage(){
-    if(this.interestCount() == 0){
+    if(this.interestCount() == 0 && this.interestCount() > 5){
       this.navCtrl.setRoot(InterestPage);
       let alert = this.alertCtrl.create({
-      message: "Please select at least 1 interests",
+      message: "Please select at least 1 interests and not more than 5",
       buttons: [
         {
           text: "Ok",
@@ -118,10 +116,10 @@ export class InterestPage {
   }
 
   ionViewWillLeave(){
-    if(this.interestCount() == 0){
+    if(this.interestCount() == 0 && this.interestCount() > 5){
       this.navCtrl.setRoot(InterestPage);
       let alert = this.alertCtrl.create({
-        message: "Please select at least 1 interests",
+        message: "Please select at least 1 interests and not more than 5",
         buttons: [
           {
             text: "Ok",
@@ -132,7 +130,10 @@ export class InterestPage {
       alert.present();
     } else {
       console.log("leaving page")
-      this.navCtrl.setRoot(SettingsPage);
+      if( this.config )
+        this.navCtrl.setRoot(SettingsPage);
+      else
+        this.navCtrl.setRoot(TimeDistancePage);
     }
   }
     

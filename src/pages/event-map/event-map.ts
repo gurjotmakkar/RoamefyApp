@@ -19,10 +19,10 @@ export class EventMapPage {
   constructor(public navCtrl: NavController, public http: HttpClient) {}
 
   ionViewDidLoad(){
+    this.setDefaultMap();
     this.http.get(this.api)
     .subscribe(data => {
       //this.displayGoogleMap(); // To get current user position
-      this.setDefaultMap();
       this.addMarkersMap(data);
     }, err => {
       console.log(err);

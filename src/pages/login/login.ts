@@ -57,15 +57,13 @@ export class LoginPage {
           this.afs.collection('users').doc<User>(userID).valueChanges()
           .subscribe(a => {
             configured = a.configured;
-          })
             if(configured == false) {
               this.navCtrl.setRoot(InterestPage);
             }
             else{
               this.navCtrl.setRoot(TabsPage);
             }
-
-          this.navCtrl.setRoot(TabsPage);
+          })
         }
       }, error => {
         this.loading.dismiss().then( () => {

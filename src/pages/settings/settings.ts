@@ -5,6 +5,8 @@ import { InterestPage } from '../interest/interest';
 import { TimeDistancePage } from '../time-distance/time-distance';
 import { UserCreatedEventPage } from '../user-created-event/user-created-event'
 import { AngularFirestore } from 'angularfire2/firestore';
+import { EventChatsPage } from '../event-chats/event-chats';
+import { UserBookmarkedEventsPage } from '../user-bookmarked-events/user-bookmarked-events';
 
 interface User {
   role: string;
@@ -25,7 +27,9 @@ export class SettingsPage {
     public firebase: FirebaseProvider, private afs: AngularFirestore) {
     this.pages = [
       { title: "Interests", component: InterestPage },
-      { title: "Time and Distance", component: TimeDistancePage }
+      { title: "Time and Distance", component: TimeDistancePage },
+      { title: "Bookmarked Events", component: UserBookmarkedEventsPage },
+      { title: "Chatrooms", component: EventChatsPage }
     ];
     this.userEventPage = { title: "Events by you", component: UserCreatedEventPage };
     
@@ -41,7 +45,6 @@ export class SettingsPage {
   }
 
   checkUserRole(){
-    console.log(this.role);
     if( this.role == "pro")
       return true;
     return false;

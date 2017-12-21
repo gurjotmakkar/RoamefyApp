@@ -21,7 +21,9 @@ import { UserEventAddPage } from '../pages/user-event-add/user-event-add';
 import { UserEventEditPage } from '../pages/user-event-edit/user-event-edit'
 import { UserProfileEditPage } from '../pages/user-profile-edit/user-profile-edit';
 import { AutocompletePage } from '../pages/autocomplete/autocomplete';
-
+import { ResetPasswordPage } from '../pages/reset-password/reset-password';
+import { EventChatsPage } from '../pages/event-chats/event-chats';
+import { EvenUserChatsPage } from '../pages/even-user-chats/even-user-chats';
 
 import { HttpClientModule } from '@angular/common/http';
 import { HttpProvider } from '../providers/http/http';
@@ -29,7 +31,7 @@ import { AngularFireModule } from 'angularfire2/angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { FirebaseProvider } from './../providers/firebase/firebase';
-import { ResetPasswordPage } from '../pages/reset-password/reset-password';
+import { UserBookmarkedEventsPage } from '../pages/user-bookmarked-events/user-bookmarked-events';
 
 //Firebase database configuration data
 //DO NOT CHANGE ANYTHING
@@ -59,7 +61,10 @@ const firebaseConfig = {
     UserEventAddPage,
     UserEventEditPage,
     AutocompletePage,
-    ResetPasswordPage
+    ResetPasswordPage,
+    EventChatsPage,
+    EvenUserChatsPage,
+    UserBookmarkedEventsPage
   ],
   imports: [
     BrowserModule,
@@ -86,7 +91,10 @@ const firebaseConfig = {
     UserEventAddPage,
     UserEventEditPage,
     AutocompletePage,
-    ResetPasswordPage
+    ResetPasswordPage,
+    EventChatsPage,
+    EvenUserChatsPage,
+    UserBookmarkedEventsPage
   ],
   providers: [
     StatusBar,

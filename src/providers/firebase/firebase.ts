@@ -2,9 +2,27 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore } from 'angularfire2/firestore';
 
+interface Interest{
+  name: string;
+}
+
+interface Chat{
+  message: string;
+  time: string;
+  userID: string;
+  userName: string;
+}
+
 @Injectable()
+
 export class FirebaseProvider {
   userID: string;
+  chat: Chat = {
+    message: '',
+    time: '',
+    userID: '',
+    userName: ''
+  };
 
   constructor(public afAuth: AngularFireAuth, 
     public afdOf: AngularFirestore) {
@@ -51,9 +69,9 @@ export class FirebaseProvider {
   
    addNewUserProfile(newId, newFirstName, newLastName) {
     var user = this.afAuth.auth.currentUser;
-    var date = new Date().getDate();
-    var month = new Date().getMonth();
-    var year = new Date().getFullYear();
+    var date = new Date().getUTCDate();
+    var month = new Date().getUTCMonth();
+    var year = new Date().getUTCFullYear();
     var joinDate = date + "/" + month + "/" + year;
     this.afdOf.collection("users").doc(user.uid)
     .set(
@@ -89,18 +107,18 @@ export class FirebaseProvider {
   
    addProUserProfile(newId, newFirstName, newLastName, newAddress, newDOB, newDLN, newPhoneNumber) {
     var user = this.afAuth.auth.currentUser;
-    var date = new Date().getDate();
-    var month = new Date().getMonth();
-    var year = new Date().getFullYear();
+    var date = new Date().getUTCDate();
+    var month = new Date().getUTCMonth();
+    var year = new Date().getUTCFullYear();
     var joinDate = date + "/" + month + "/" + year;
     this.afdOf.collection("users").doc(user.uid)
     .set(
       { 
         firstName: newFirstName,
         lastName: newLastName,
-        joinDate: new Date(joinDate),
+        joinDate: joinDate,
         configured: false,
-        dateOfBirth: new Date(newDOB),
+        dateOfBirth: newDOB,
         address: newAddress,
         driverLicenceNumber: newDLN,
         phoneNumber: newPhoneNumber,
@@ -206,15 +224,11 @@ export class FirebaseProvider {
   }
 
   getInterestName(itemKey){
-    var interest;
-    this.afdOf.doc("interest/" + itemKey).ref
-    .get().then(doc => {
-      if ( doc.exists)
-        interest = doc.data().name;
-      else
-        console.log('interest does not exist to get name');
-    })
-
+    var interest = "";
+    this.afdOf.collection('interest').doc<Interest>(itemKey).valueChanges()
+    .subscribe(a => {
+      interest = a.name;
+    });
     return interest;
   }
 
@@ -252,6 +266,58 @@ export class FirebaseProvider {
 
   removeEvent(id) {
     this.afdOf.doc("events/" + id).delete();
+}
+  
+//-------------- bookmark event ----------------
+
+bookmarkEvent(event, id) {
+  this.afdOf.collection("bookmarkedEvents").doc(event.recId).set({
+    name: event.eventName,
+    lat: event.locations[0].coords.lat,
+    lng: event.locations[0].coords.lng
+  }).then(a => {
+    this.afdOf.collection("bookmarkedEvents").doc(event.recId).collection("members").doc(this.userID).set({
+      name: this.userID
+    });
+    this.afdOf.collection("users").doc(this.userID).collection("bookmarkedEvents").doc(event.recId).set({
+      name: event.eventName
+    });
+  });
+
+  this.afdOf.collection("chatrooms").doc(event.recId).set({
+    name: event.eventName
+  }).then(  a => {
+    this.afdOf.collection("chatrooms").doc(event.recId).collection("members").doc(this.userID).set({
+      name: this.userID
+    });
+    this.afdOf.collection("users").doc(this.userID).collection("chatrooms").doc(event.recId).set({
+      name: event.eventName
+    });
+  });
+}
+
+unbookmarkEvent(id) {
+  this.afdOf.collection("bookmarkedEvents").doc(id).collection("members").doc(this.userID).delete();
+  this.afdOf.collection("users").doc(this.userID).collection("bookmarkedEvents").doc(id).delete();
+  this.afdOf.collection("chatrooms").doc(id).collection("members").doc(this.userID).delete();
+  this.afdOf.collection("users").doc(this.userID).collection("chatrooms").doc(id).delete();
+}
+
+//-------------- chats ----------------
+
+pushMessage(chatKey, message){
+  var date = new Date().getUTCDate();
+  var month = new Date().getUTCMonth();
+  var year = new Date().getUTCFullYear();
+  var joinDate = date + "/" + month + "/" + year;
+
+  this.chat.message = message;
+  this.chat.userID = this.userID;
+  this.chat.time = joinDate;
+  this.chat.userName = this.getUserEmail().split('@')[0];
+
+  this.afdOf.collection("chatrooms").doc(chatKey).collection("chats").add(this.chat);
+
 }
 
 }

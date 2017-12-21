@@ -96,15 +96,16 @@ export class UserProfileEditPage {
       });
       this.loading.present();
     }
-    
-}
-showAddressModal (){
-  let modal = this.modalCtrl.create(AutocompletePage);
-  //let me = this;
-  modal.onDidDismiss(data => {
-    this.editForm.value.address = data;
-  });
-  modal.present();
-}
+  }
+
+  showAddressModal(){
+    let modal = this.modalCtrl.create(AutocompletePage);
+    modal.onDidDismiss(data => {
+      this.editForm.setValue({
+        address: data.description
+      });
+    });
+    modal.present();
+  }
 
 }

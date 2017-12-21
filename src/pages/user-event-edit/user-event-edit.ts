@@ -10,6 +10,10 @@ interface Interest {
   name: string;
 }
 
+interface userInterest {
+  name: string;
+}
+
 //@IonicPage()
 @Component({
   selector: 'page-user-event-edit',
@@ -17,11 +21,15 @@ interface Interest {
 })
 
 export class UserEventEditPage {
-
+  userID: string;
+  userInterestCollection: AngularFirestoreCollection<userInterest>;
+  userInterest: any;
+  interestArr: string[] = [];
   eventKey: string;
   interestCollection: AngularFirestoreCollection<Interest>;
   interest: any;
   eventDocument: AngularFirestoreDocument<UserEvent>;
+  eventDoc: any;
   event: UserEvent = {
     name: null,
     description: null,
@@ -31,6 +39,7 @@ export class UserEventEditPage {
     endDate: null,
     endTime: null,
     address: null, 
+    addressID: null,
     latitude: null,
     longitude: null,
     website: null,
@@ -43,30 +52,36 @@ export class UserEventEditPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, private firebase: FirebaseProvider,
     public alertCtrl: AlertController, private modalCtrl: ModalController, private afs: AngularFirestore) {
 
-    this.eventKey = this.navParams.get('id');
-    
-    this.eventDocument = this.afs.doc('event/' + this.eventKey);
-    this.eventDocument.snapshotChanges().map(snap => {
-        this.event.id = snap.payload.id;
+    this.userID = this.firebase.getUserId();
 
-        let data = snap.payload.data();
-        this.event.address = data.address;
-        this.event.categories = data.categories;
-        this.event.description = data.description;
-        this.event.endDate = data.endDate;
-        this.event.endTime = data.endTime;
-        this.event.host = data.host;
-        this.event.latitude = data.latitude;
-        this.event.longitude = data.longitude;
-        this.event.name = data.name;
-        this.event.phone = data.phone;
-        this.event.price = data.price;
-        this.event.startDate = data.startDate;
-        this.event.startTime = data.startTime;
-        this.event.website = data.website;
+    this.eventKey = this.navParams.get('id');
+
+    this.eventDocument = this.afs.collection("events").doc<UserEvent>(this.eventKey);
+    this.eventDoc = this.eventDocument.snapshotChanges().map(snap => {
+        let id = snap.payload.id;
+        let data = { id, ...snap.payload.data() };
+        return data;
     });
 
-    this.categories = this.event.categories;
+    this.eventDoc.forEach( e => {
+        this.event.id = e.id;
+        this.event.address = e.address;
+        this.event.addressID = e.addressID;
+        this.event.categories = e.categories;
+        this.event.description = e.description;
+        this.event.endDate = e.endDate;
+        this.event.endTime = e.endTime;
+        this.event.host = e.host;
+        this.event.latitude = e.latitude;
+        this.event.longitude = e.longitude;
+        this.event.name = e.name;
+        this.event.phone = e.phone;
+        this.event.price = e.price;
+        this.event.startDate = e.startDate;
+        this.event.startTime = e.startTime;
+        this.event.website = e.website;
+        this.categories = e.categories;
+    })
 
     this.interestCollection = this.afs.collection<Interest>('interest', ref => {
       return ref.orderBy('name')
@@ -78,6 +93,13 @@ export class UserEventEditPage {
         return data;
       });
     });
+
+    this.userInterestCollection = this.afs.collection('users').doc(this.userID).collection<userInterest>('userInterest');
+    this.userInterest = this.userInterestCollection.valueChanges().forEach(a => {
+      this.interestArr = [];
+      for ( var i in a )
+        this.interestArr.push(a[i].name);
+    });
   }
 
   ionViewDidLoad() {
@@ -85,14 +107,12 @@ export class UserEventEditPage {
   }
 
   checkornot(interestKey){
-    if(this.categories != null){
-      this.categories.forEach( x => {
-        if (x == interestKey){
-          return true;
-        }
-      })
-    }
-    return false;
+    var checker = false;
+    this.interestArr.forEach(i => {
+      if ( i == interestKey )
+        checker = true;
+    })
+    return checker;
   }
 
   updateEvent(event: UserEvent, categories) {
@@ -117,9 +137,9 @@ export class UserEventEditPage {
 
   showAddressModal (){
     let modal = this.modalCtrl.create(AutocompletePage);
-    //let me = this;
     modal.onDidDismiss(data => {
-      this.event.address = data;
+      this.event.address = data.description? data.description : "";
+      this.event.addressID = data.place_id? data.place_id : "";
     });
     modal.present();
   }
@@ -130,7 +150,7 @@ export class UserEventEditPage {
   }
   
   cancel(){
-    this.navCtrl.pop();
+    this.navCtrl.setRoot(UserCreatedEventPage);
   }
 
 }

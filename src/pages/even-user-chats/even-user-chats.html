@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>chatName</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <ion-list *ngFor="let chat of chats | async">
+        <ion-card>
+         {{chat.userName}}
+          <ion-card-title>
+              {{chat.message}}
+          </ion-card-title>
+        </ion-card>   
+      </ion-list>
+</ion-content>
+<ion-footer no-border>
+    <ion-grid class="input-wrap">
+        <ion-row>
+            <ion-col col-8>
+                <ion-textarea placeholder="Type your message here" [(ngModel)]="message" (keyup.enter)="pushChat()">
+                </ion-textarea>
+            </ion-col>
+            <ion-col col-2>
+                <button ion-button clear icon-only item-right (click)="pushChat()">
+                    <ion-icon name="send"></ion-icon>
+                </button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-footer>

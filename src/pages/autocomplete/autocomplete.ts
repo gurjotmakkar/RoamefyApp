@@ -9,14 +9,16 @@ declare var google: any;
   templateUrl: 'autocomplete.html',
 })
 export class AutocompletePage {
-  
+
   autocompleteItems: any;
   autocomplete: any;
   service: any;
   placesService: any;
+  //geocoder: any;
 
   constructor(public viewCtrl: ViewController) {
     this.service = new google.maps.places.AutocompleteService();
+    //this.geocoder = new google.maps.Geocoder;
     this.autocompleteItems = [];
     this.autocomplete = {
       query: ''
@@ -28,7 +30,17 @@ export class AutocompletePage {
   }
  
   chooseItem(item: any) {
-    this.viewCtrl.dismiss(item.description);
+    /*
+    this.geocoder.geocode({'placeId': item.place_id}, function(results, status) {
+      if (status !== 'OK') {
+        window.alert('Geocoder failed due to: ' + status);
+        return;
+      }
+      this.viewCtrl.dismiss(results);
+    });
+    */
+
+    this.viewCtrl.dismiss(item);
   }
   
   updateSearch() {

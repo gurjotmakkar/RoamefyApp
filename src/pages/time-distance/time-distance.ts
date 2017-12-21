@@ -26,7 +26,7 @@ export class TimeDistancePage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, 
     private firebase: FirebaseProvider, public alertCtrl: AlertController, private afs: AngularFirestore) {
-      
+    console.log("in time and distance constructor");
     this.userID = this.firebase.getUserId();
 
     this.afs.collection('users').doc<User>(this.userID).valueChanges()
@@ -57,7 +57,6 @@ export class TimeDistancePage {
 
   isConfigured(){
     return this.config;
-    
   }
 
   finishSetup(){
@@ -76,10 +75,6 @@ export class TimeDistancePage {
       this.firebase.configureUser(this.userID);
       this.navCtrl.setRoot(HomePage);
     }
-  }
-
-  ionViewWillLeave(){
-      this.navCtrl.setRoot(HomePage);
   }
   
   ngOnDestroy() {

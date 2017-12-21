@@ -1,10 +1,11 @@
 <ion-content>
     <ion-list *ngFor="let event of eventData">
-      <ion-card >
-        <img src= "http://mnlct.org/wp-content/uploads/2014/10/toronto-skyline.jpg" />
+      <ion-card>
+        <img [src]= imgLink+event.calEvent.image?.url/>
         <ion-card-content>
         <ion-card-title>
-        {{event.calEvent.eventName}}
+        {{event.calEvent.eventName}} 
+        <ion-icon class="bookmark" [name]="icon(event.calEvent.recId)" (click)="addEvent(event.calEvent)"></ion-icon>
         </ion-card-title>
         <div class="card-subtitle">Description: {{event.calEvent.description}}</div>
         <div class="card-subtitle">Website: {{event.calEvent.eventWebsite}}</div>
