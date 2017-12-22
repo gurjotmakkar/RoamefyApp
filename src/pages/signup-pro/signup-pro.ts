@@ -85,4 +85,8 @@ export class SignupProPage {
     });
     modal.present();
   }
+
+  goHome(){
+    this.nav.setRoot(LoginPage);
+  }
 }

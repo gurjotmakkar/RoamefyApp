@@ -6,6 +6,7 @@ import { EmailValidator } from '../../validators/email';
 import { UserProfilePage } from '../user-profile/user-profile'
 import { AngularFirestore } from 'angularfire2/firestore';
 import { AutocompletePage } from '../autocomplete/autocomplete';
+import { LoginPage } from '../login/login';
 
 interface User {
   role: string;
@@ -27,7 +28,6 @@ export class UserProfileEditPage {
   public loading:Loading;
   public submitAttempt;
   userRole: string;
-  address: any;
 
   constructor(public nav: NavController, public authData: FirebaseProvider, public formBuilder: FormBuilder, 
     public loadingCtrl: LoadingController, public alertCtrl: AlertController, private firebase: FirebaseProvider,

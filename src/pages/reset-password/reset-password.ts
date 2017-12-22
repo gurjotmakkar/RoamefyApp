@@ -56,4 +56,8 @@ resetPassword(){
   }
 }
 
+goHome(){
+  this.nav.setRoot(LoginPage);
+}
+
 }

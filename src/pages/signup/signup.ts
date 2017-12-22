@@ -71,4 +71,8 @@ export class SignupPage {
       this.loading.present();
     }
   }
+
+  goHome(){
+    this.nav.setRoot(LoginPage);
+  }
 }

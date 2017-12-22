@@ -7,6 +7,9 @@ import { PasswordValidator } from '../../validators/password';
 import { InterestPage } from '../interest/interest';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { HomePage } from '../home/home';
+import { ResetPasswordPage } from '../reset-password/reset-password';
+import { SignupPage } from '../signup/signup';
+import { SignupProPage } from '../signup-pro/signup-pro';
 
 interface User {
   configured: boolean;
@@ -88,15 +91,15 @@ export class LoginPage {
   }
 
   goToResetPassword(){
-    this.navCtrl.setRoot('ResetPasswordPage');
+    this.navCtrl.setRoot(ResetPasswordPage);
   }
 
   createAccount(){
-    this.navCtrl.setRoot('SignupPage');
+    this.navCtrl.setRoot(SignupPage);
   }
 
   createProAccount(){
-    this.navCtrl.setRoot('SignupProPage');
+    this.navCtrl.setRoot(SignupProPage);
   }
 
 }
