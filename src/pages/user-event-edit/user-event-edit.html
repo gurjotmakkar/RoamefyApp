@@ -61,12 +61,12 @@
 
   <ion-item>
     <ion-label>Categories</ion-label>
-    <ion-select [(ngModel)]="categories" multiple="true" cancelText="Cancel" okText="Update">
-      <ion-option *ngFor="let item of interest | async" value={{item.id}} [selected]="checkornot(item.id)">{{item.name}}</ion-option>
+    <ion-select [(ngModel)]="event.categories" multiple="true" cancelText="Cancel" okText="Update">
+      <ion-option *ngFor="let item of interest | async" value={{item.id}} [selected]="checkornot(item.id, event.categories)">{{item.name}}</ion-option>
     </ion-select>
   </ion-item>
   
-  <button ion-button black clear (click) = "updateEvent(event, categories)">Update</button>       
+  <button ion-button black clear (click) = "updateEvent(categories)">Update</button>       
   
   <button ion-button black clear color="danger" (click) = "removeEvent()">Remove</button>
   

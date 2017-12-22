@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore } from 'angularfire2/firestore';
+import { UserEvent } from '../../models/events/userevent.model';
 
 interface Interest{
   name: string;
@@ -250,11 +251,12 @@ export class FirebaseProvider {
     return this.afdOf.doc("events/" + eventID).snapshotChanges();
   }
 
-  addEvent(event) {
+  addEvent(event: UserEvent) {
     this.afdOf.collection("events").add(event)
   }
 
-  updateEvent(id, event) {
+  updateEvent(id, event: UserEvent) {
+    console.log(event);
     this.afdOf.doc("events/" + id).update(event);
   }
 

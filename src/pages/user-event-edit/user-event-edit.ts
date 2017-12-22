@@ -10,10 +10,6 @@ interface Interest {
   name: string;
 }
 
-interface userInterest {
-  name: string;
-}
-
 //@IonicPage()
 @Component({
   selector: 'page-user-event-edit',
@@ -22,8 +18,7 @@ interface userInterest {
 
 export class UserEventEditPage {
   userID: string;
-  userInterestCollection: AngularFirestoreCollection<userInterest>;
-  userInterest: any;
+  eventInterest: any;
   interestArr: string[] = [];
   eventKey: string;
   interestCollection: AngularFirestoreCollection<Interest>;
@@ -45,9 +40,8 @@ export class UserEventEditPage {
     website: null,
     phone: null,
     host: null,
-    categories: []
+    categories: null
   };
-  categories: any[] = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private firebase: FirebaseProvider,
     public alertCtrl: AlertController, private modalCtrl: ModalController, private afs: AngularFirestore) {
@@ -57,13 +51,7 @@ export class UserEventEditPage {
     this.eventKey = this.navParams.get('id');
 
     this.eventDocument = this.afs.collection("events").doc<UserEvent>(this.eventKey);
-    this.eventDoc = this.eventDocument.snapshotChanges().map(snap => {
-        let id = snap.payload.id;
-        let data = { id, ...snap.payload.data() };
-        return data;
-    });
-
-    this.eventDoc.forEach( e => {
+    this.eventDoc = this.eventDocument.valueChanges().forEach( e => {
         this.event.id = e.id;
         this.event.address = e.address;
         this.event.addressID = e.addressID;
@@ -80,7 +68,6 @@ export class UserEventEditPage {
         this.event.startDate = e.startDate;
         this.event.startTime = e.startTime;
         this.event.website = e.website;
-        this.categories = e.categories;
     })
 
     this.interestCollection = this.afs.collection<Interest>('interest', ref => {
@@ -94,12 +81,6 @@ export class UserEventEditPage {
       });
     });
 
-    this.userInterestCollection = this.afs.collection('users').doc(this.userID).collection<userInterest>('userInterest');
-    this.userInterest = this.userInterestCollection.valueChanges().forEach(a => {
-      this.interestArr = [];
-      for ( var i in a )
-        this.interestArr.push(a[i].name);
-    });
   }
 
   ionViewDidLoad() {
@@ -108,18 +89,19 @@ export class UserEventEditPage {
 
   checkornot(interestKey){
     var checker = false;
-    this.interestArr.forEach(i => {
-      if ( i == interestKey )
-        checker = true;
-    })
+    if(this.event.categories != null)
+      this.event.categories.forEach(i => {
+        if ( i == interestKey )
+          checker = true;
+      })
     return checker;
   }
 
-  updateEvent(event: UserEvent, categories) {
-    if(this.categories.length > 5){
+  updateEvent() {
+    if(this.event.categories.length > 5 || this.event.categories.length == 0){
       //this.navCtrl.setRoot(EditUserEventPage);
       let alert = this.alertCtrl.create({
-      message: "Sorry, you can't select more than 5 categories",
+      message: "Please select atleas 1 but not more than 5 events",
       buttons: [
         {
           text: "Ok",
@@ -129,8 +111,7 @@ export class UserEventEditPage {
     });
     alert.present();
     } else {
-    event.categories = categories;
-    this.firebase.updateEvent(this.eventKey, event);
+    this.firebase.updateEvent(this.eventKey, this.event);
     this.navCtrl.setRoot(UserCreatedEventPage);
     }
   }
