@@ -1,5 +1,10 @@
 <ion-header>
   <ion-navbar>
+    <ion-buttons left>
+      <button ion-button icon-only (click)="goHome()">
+          <ion-icon name="arrow-back"></ion-icon>
+      </button>
+  </ion-buttons>
     <ion-title>User Profile</ion-title>
   </ion-navbar>
 </ion-header>
@@ -14,8 +19,5 @@
       </button> 
       <button ion-button block clear (click)="goToResetPassword()">
         Update Password
-      </button>
-      <button ion-button block (click)="logout()">
-        Logout
       </button>
 </ion-content>

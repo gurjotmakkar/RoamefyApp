@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { EvenUserChatsPage } from '../even-user-chats/even-user-chats';
+import { SettingsPage } from '../settings/settings';
 
 interface Chat{
   id: string;
@@ -42,6 +43,10 @@ export class EventChatsPage {
 
   openChat(key, name){
     this.navCtrl.setRoot(EvenUserChatsPage, {id: key, name: name})
+  }
+
+  goHome(){
+    this.navCtrl.setRoot(SettingsPage);
   }
 
 }

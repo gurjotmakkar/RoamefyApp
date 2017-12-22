@@ -7,6 +7,8 @@ import { UserCreatedEventPage } from '../user-created-event/user-created-event'
 import { AngularFirestore } from 'angularfire2/firestore';
 import { EventChatsPage } from '../event-chats/event-chats';
 import { UserBookmarkedEventsPage } from '../user-bookmarked-events/user-bookmarked-events';
+import { UserProfilePage } from '../user-profile/user-profile';
+import { HomePage } from '../home/home';
 
 interface User {
   role: string;
@@ -29,7 +31,8 @@ export class SettingsPage {
       { title: "Interests", component: InterestPage },
       { title: "Time and Distance", component: TimeDistancePage },
       { title: "Bookmarked Events", component: UserBookmarkedEventsPage },
-      { title: "Chatrooms", component: EventChatsPage }
+      { title: "Chatrooms", component: EventChatsPage },
+      { title: "User Profile", component: UserProfilePage}
     ];
     this.userEventPage = { title: "Events by you", component: UserCreatedEventPage };
     
@@ -48,5 +51,9 @@ export class SettingsPage {
     if( this.role == "pro")
       return true;
     return false;
+  }
+
+  goHome(){
+    this.navCtrl.setRoot(HomePage);
   }
 }

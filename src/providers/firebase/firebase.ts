@@ -69,10 +69,7 @@ export class FirebaseProvider {
   
    addNewUserProfile(newId, newFirstName, newLastName) {
     var user = this.afAuth.auth.currentUser;
-    var date = new Date().getUTCDate();
-    var month = new Date().getUTCMonth();
-    var year = new Date().getUTCFullYear();
-    var joinDate = date + "/" + month + "/" + year;
+    var joinDate = new Date().toISOString();
     this.afdOf.collection("users").doc(user.uid)
     .set(
       { 
@@ -107,10 +104,7 @@ export class FirebaseProvider {
   
    addProUserProfile(newId, newFirstName, newLastName, newAddress, newDOB, newDLN, newPhoneNumber) {
     var user = this.afAuth.auth.currentUser;
-    var date = new Date().getUTCDate();
-    var month = new Date().getUTCMonth();
-    var year = new Date().getUTCFullYear();
-    var joinDate = date + "/" + month + "/" + year;
+    var joinDate = new Date().toISOString();
     this.afdOf.collection("users").doc(user.uid)
     .set(
       { 
@@ -306,14 +300,9 @@ unbookmarkEvent(id) {
 //-------------- chats ----------------
 
 pushMessage(chatKey, message){
-  var date = new Date().getUTCDate();
-  var month = new Date().getUTCMonth();
-  var year = new Date().getUTCFullYear();
-  var joinDate = date + "/" + month + "/" + year;
-
   this.chat.message = message;
   this.chat.userID = this.userID;
-  this.chat.time = joinDate;
+  this.chat.time = new Date().toISOString();
   this.chat.userName = this.getUserEmail().split('@')[0];
 
   this.afdOf.collection("chatrooms").doc(chatKey).collection("chats").add(this.chat);

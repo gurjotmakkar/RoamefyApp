@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angu
 import { FirebaseProvider } from './../../providers/firebase/firebase';
 import { UserProfileEditPage } from '../user-profile-edit/user-profile-edit';
 import { LoginPage } from '../login/login';
+import { SettingsPage } from '../settings/settings';
 
 @IonicPage()
 @Component({
@@ -49,9 +50,8 @@ export class UserProfilePage {
     });
   }
 
-  logout() {
-    this.navCtrl.setRoot(LoginPage);
-    this.firebase.logoutUser();
+goHome(){
+  this.navCtrl.setRoot(SettingsPage);
 }
 
   ngOnDestroy() {

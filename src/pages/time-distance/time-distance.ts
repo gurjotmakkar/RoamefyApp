@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angu
 import { FirebaseProvider } from './../../providers/firebase/firebase';
 import { AngularFirestoreDocument, AngularFirestore } from 'angularfire2/firestore';
 import { HomePage } from '../home/home';
+import { SettingsPage } from '../settings/settings';
 
 interface User{
   configured: boolean;
@@ -75,6 +76,10 @@ export class TimeDistancePage {
       this.firebase.configureUser(this.userID);
       this.navCtrl.setRoot(HomePage);
     }
+  }
+
+  goHome(){
+    this.navCtrl.setRoot(SettingsPage);
   }
   
   ngOnDestroy() {

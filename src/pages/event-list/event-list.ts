@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/map';
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
 import { FirebaseProvider } from '../../providers/firebase/firebase';
+import { LoadingController } from 'ionic-angular/components/loading/loading-controller';
 
 interface Event{
   id: string;
@@ -11,6 +12,7 @@ interface Event{
 }
 
 interface Member{
+  id: string;
   name: string;
 }
 
@@ -31,7 +33,8 @@ export class EventListPage {
   eventArr: string[] = [];
 
   constructor(public navCtrl: NavController, private http: HttpClient, 
-    private firebase: FirebaseProvider, private afs: AngularFirestore) {
+    private firebase: FirebaseProvider, private afs: AngularFirestore,
+    public loading: LoadingController) {
     this.userID = this.firebase.getUserId();
 
     this.eventCollection = this.afs.collection<Event>('bookmarkedEvents', ref => {
@@ -47,19 +50,27 @@ export class EventListPage {
     });
     
     this.userEventCollection = this.afs.collection('users').doc(this.userID).collection<Member>('bookmarkedEvents');
-    this.userEvents = this.userEventCollection.valueChanges().forEach(a => {
+    this.userEvents = this.userEventCollection.snapshotChanges().forEach(a => {
       this.eventArr = [];
       for ( var i in a )
-        this.eventArr.push(a[i].name);
+        this.eventArr.push(a[i].payload.doc.id);
     });
   }
 
   ionViewDidLoad(){
+
+    let loader = this.loading.create({
+      content: "loading...."
+    });  
+    loader.present();
+
     this.http.get(this.api)
     .subscribe(data => {
       this.eventData = data;
     }, err => {
       console.log(err);
+    }, () => {
+      loader.dismiss();
     });
   }
 
@@ -69,7 +80,7 @@ export class EventListPage {
       if ( i == id )
         checker = true;
     })
-    if ( checker )
+    if (checker)
       return 'star';
     return 'bookmark';
   }

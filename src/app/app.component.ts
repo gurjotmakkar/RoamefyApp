@@ -7,8 +7,8 @@ import { FirebaseProvider } from '../providers/firebase/firebase';
 import { HttpProvider } from '../providers/http/http'
 import { AngularFireAuth } from 'angularfire2/auth';
 
-import { TabsPage } from '../pages/tabs/tabs';
 import { LoginPage } from '../pages/login/login';
+import { HomePage } from '../pages/home/home';
 
 @Component({
   templateUrl: 'app.html'
@@ -21,7 +21,7 @@ export class MyApp {
 
       const authObserver = this.afAuth.authState.subscribe( user => {
         if (user) {
-          this.rootPage = TabsPage;
+          this.rootPage = HomePage;
           authObserver.unsubscribe();
         } else {
           this.rootPage = LoginPage;

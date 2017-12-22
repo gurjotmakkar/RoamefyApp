@@ -3,6 +3,9 @@ import { NavController, IonicPage } from 'ionic-angular';
 import { EventMapPage } from '../event-map/event-map'
 import { EventListPage } from '../event-list/event-list'
 import 'rxjs/add/operator/map';
+import { SettingsPage } from '../settings/settings';
+import { FirebaseProvider } from '../../providers/firebase/firebase';
+import { LoginPage } from '../login/login';
 
 @IonicPage()
 @Component({
@@ -15,5 +18,14 @@ export class HomePage {
   mapView = EventMapPage;
   listView = EventListPage;
 
-  constructor(public navCtrl: NavController) {}
+  constructor(public navCtrl: NavController, private firebase: FirebaseProvider) {}
+
+  goToMore(){
+    this.navCtrl.setRoot(SettingsPage);
+  }
+
+  logout(){
+    this.navCtrl.setRoot(LoginPage);
+    this.firebase.logoutUser();
+  }
 }

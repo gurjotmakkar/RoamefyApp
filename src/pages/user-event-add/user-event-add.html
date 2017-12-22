@@ -123,9 +123,9 @@
   </ion-item>
 -->
 
-  <ion-item>
+  <ion-item (click)="showAddressModal()">
       <ion-label floating>Event Address</ion-label>
-      <ion-input (click)="showAddressModal()" [(ngModel)]="event.address" name="address" type="search" required 
+      <ion-input [(ngModel)]="event.address" name="address" type="search" required 
       #address="ngModel" [class.invalid]="address.errors && (address.dirty || address.touched)"></ion-input>
   </ion-item>
 

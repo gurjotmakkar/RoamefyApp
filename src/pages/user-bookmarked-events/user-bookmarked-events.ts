@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
 import { FirebaseProvider } from '../../providers/firebase/firebase';
+import { SettingsPage } from '../settings/settings';
 
 interface Event{
   id: string;
@@ -40,6 +41,10 @@ export class UserBookmarkedEventsPage {
 
   removeEvent(id){
     this.firebase.unbookmarkEvent(id);
+  }
+
+  goHome(){
+    this.navCtrl.setRoot(SettingsPage)
   }
 
 }

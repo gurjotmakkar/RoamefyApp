@@ -8,7 +8,6 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 // page reference
 import { HomePage } from '../pages/home/home';
-import { TabsPage } from '../pages/tabs/tabs';
 import { EventListPage } from '../pages/event-list/event-list';
 import { EventMapPage } from '../pages/event-map/event-map';
 import { InterestPage } from '../pages/interest/interest';
@@ -48,7 +47,6 @@ const firebaseConfig = {
   declarations: [
     MyApp,
     HomePage,
-    TabsPage,
     EventListPage,
     EventMapPage,
     InterestPage,
@@ -78,7 +76,6 @@ const firebaseConfig = {
   entryComponents: [
     MyApp,
     HomePage,
-    TabsPage,
     EventListPage,
     EventMapPage,
     InterestPage,

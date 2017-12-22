@@ -1,12 +1,11 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>editUserProfile</ion-title>
+    <ion-title>Edit Profile</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
     <form [formGroup]="editForm" (submit)="editUserProfile()" novalidate>
-        <ion-list>
           <ion-item>
             <ion-label stacked>First Name</ion-label>
             <ion-input formControlName="firstName" type="text" placeholder="Your first name"
@@ -32,12 +31,11 @@
           </ion-item>
           <ion-item class="error-message" *ngIf="!editForm.controls.email.valid  && (editForm.controls.email.dirty || submitAttempt)">
             <p>Please enter a valid email.</p>
-          </ion-item>    
-        </ion-list>
+          </ion-item> 
 
-        <ion-item *ngIf="isUserPro()">
+        <ion-item *ngIf="isUserPro()" (click)="showAddressModal()">
           <ion-label stacked>Address</ion-label>
-          <ion-input (click)="showAddressModal()" formControlName="address" type="text" placeholder="Your address"
+          <ion-input formControlName="address" type="text" placeholder="Your address"
             [class.invalid]="!editForm.controls.address.valid && (editForm.controls.address.dirty || submitAttempt)"></ion-input>
         </ion-item>
         <ion-item class="error-message" *ngIf="!editForm.controls.address.valid  && (editForm.controls.address.dirty || submitAttempt) && isUserPro()">

@@ -6,7 +6,7 @@ import { EmailValidator } from '../../validators/email';
 import { PasswordValidator } from '../../validators/password';
 import { InterestPage } from '../interest/interest';
 import { AngularFirestore } from 'angularfire2/firestore';
-import { TabsPage } from '../tabs/tabs';
+import { HomePage } from '../home/home';
 
 interface User {
   configured: boolean;
@@ -61,7 +61,7 @@ export class LoginPage {
               this.navCtrl.setRoot(InterestPage);
             }
             else{
-              this.navCtrl.setRoot(TabsPage);
+              this.navCtrl.setRoot(HomePage);
             }
           })
         }

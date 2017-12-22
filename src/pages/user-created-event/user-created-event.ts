@@ -5,6 +5,7 @@ import { FirebaseProvider } from '../../providers/firebase/firebase'
 import { UserEventAddPage } from '../user-event-add/user-event-add'
 import { UserEventEditPage } from '../user-event-edit/user-event-edit'
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
+import { SettingsPage } from '../settings/settings';
 
 
 @IonicPage()
@@ -60,6 +61,10 @@ export class UserCreatedEventPage {
 
   editUserEventPage(key){
     this.navCtrl.setRoot(UserEventEditPage, {id: key})
+  }
+
+  goHome(){
+    this.navCtrl.setRoot(SettingsPage);
   }
 
   ngOnDestroy() {

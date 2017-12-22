@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, LoadingController, Loading, AlertController, MenuController } from 'ionic-angular';
+import { IonicPage, NavController, LoadingController, Loading, AlertController, MenuController, ModalController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { EmailValidator } from '../../validators/email';
 import { PasswordValidator } from '../../validators/password';
 import { LoginPage } from '../login/login'
+import { AutocompletePage } from '../autocomplete/autocomplete';
 
 @IonicPage()
 @Component({
@@ -17,7 +18,8 @@ export class SignupProPage {
   public submitAttempt;
 
   constructor(public nav: NavController, public authData: FirebaseProvider, public formBuilder: FormBuilder, 
-    public loadingCtrl: LoadingController, public alertCtrl: AlertController, public menu: MenuController) {
+    public loadingCtrl: LoadingController, public alertCtrl: AlertController, public menu: MenuController, 
+    public modalCtrl: ModalController) {
     this.menu.swipeEnable(false);
     this.signupForm = formBuilder.group({
       firstName: ['', Validators.compose([Validators.required])],
@@ -72,5 +74,15 @@ export class SignupProPage {
       });
       this.loading.present();
     }
+  }
+
+  showAddressModal(){
+    let modal = this.modalCtrl.create(AutocompletePage);
+    modal.onDidDismiss(data => {
+      this.signupForm.setValue({
+        address: data.description
+      });
+    });
+    modal.present();
   }
 }

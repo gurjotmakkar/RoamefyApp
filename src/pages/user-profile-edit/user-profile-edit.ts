@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, LoadingController, Loading, AlertController, ModalController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FirebaseProvider } from '../../providers/firebase/firebase';
-import { LoginPage } from '../login/login';
 import { EmailValidator } from '../../validators/email';
 import { UserProfilePage } from '../user-profile/user-profile'
 import { AngularFirestore } from 'angularfire2/firestore';
@@ -10,6 +9,12 @@ import { AutocompletePage } from '../autocomplete/autocomplete';
 
 interface User {
   role: string;
+  firstName: string;
+  lastName: string;
+  address: string;
+  dateOfBirth: string;
+  driverLicenceNumber: string;
+  phoneNumber: string;
 }
 
 @IonicPage()
@@ -41,6 +46,15 @@ export class UserProfileEditPage {
     this.afs.collection('users').doc<User>(userID).valueChanges()
     .subscribe(a => {
       this.userRole = a.role;
+      this.editForm.setValue({
+        firstName: a.firstName,
+        lastName: a.lastName,
+        email: this.firebase.getUserEmail(),
+        address: a.address,
+        dateOfBirth: a.dateOfBirth,
+        driverLicenceNumber: a.driverLicenceNumber,
+        phoneNumber: a.phoneNumber
+      });
     })
 
   }

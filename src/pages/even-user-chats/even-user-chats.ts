@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
 import { FirebaseProvider } from '../../providers/firebase/firebase';
+import { EventChatsPage } from '../event-chats/event-chats';
 
 interface Chat{
   id: string;
@@ -20,7 +21,7 @@ interface User{
 @IonicPage()
 @Component({
   selector: 'page-even-user-chats',
-  templateUrl: 'even-user-chats.html',
+  templateUrl: 'even-user-chats.html'
 })
 
 export class EvenUserChatsPage {
@@ -70,5 +71,9 @@ export class EvenUserChatsPage {
     this.firebase.pushMessage(this.chatKey, this.message);
 
     this.message = '';
+  }
+
+  goHome(){
+    this.navCtrl.setRoot(EventChatsPage);
   }
 }

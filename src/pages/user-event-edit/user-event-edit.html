@@ -44,9 +44,9 @@
     </ion-datetime>
   </ion-item>
 
-  <ion-item>
+  <ion-item (click)="showAddressModal()" >
     <ion-label floating>Event Address</ion-label>
-    <ion-input (click)="showAddressModal()" [(ngModel)]="event.address"></ion-input>
+    <ion-input [(ngModel)]="event.address"></ion-input>
   </ion-item>
 
   <ion-item>

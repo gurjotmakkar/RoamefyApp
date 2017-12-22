@@ -1,5 +1,5 @@
 import { Component , ViewChild, ElementRef } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, LoadingController } from 'ionic-angular';
 import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/map';
 
@@ -16,16 +16,24 @@ export class EventMapPage {
   map: any;
   api: string = 'http://app.toronto.ca/cc_sr_v1_app/data/edc_eventcal_APR?limit=500';
 
-  constructor(public navCtrl: NavController, public http: HttpClient) {}
+  constructor(public navCtrl: NavController, public http: HttpClient, public loading: LoadingController) {}
 
   ionViewDidLoad(){
     this.setDefaultMap();
+    
+    let loader = this.loading.create({
+      content: "loading...."
+    });  
+    loader.present();
+
     this.http.get(this.api)
     .subscribe(data => {
       //this.displayGoogleMap(); // To get current user position
       this.addMarkersMap(data);
     }, err => {
       console.log(err);
+    }, () => {
+      loader.dismiss();
     });
     
   }

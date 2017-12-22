@@ -136,6 +136,10 @@ export class InterestPage {
         this.navCtrl.setRoot(TimeDistancePage);
     }
   }
+
+  goHome(){
+    this.navCtrl.setRoot(SettingsPage);
+  }
     
   ngOnDestroy() {
 

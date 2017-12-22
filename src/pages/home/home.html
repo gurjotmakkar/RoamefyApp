@@ -6,7 +6,19 @@
 
 <ion-content>
   <ion-tabs>
-    <ion-tab [root]="mapView" tabIcon="ios-locate">Map</ion-tab>
-    <ion-tab [root]="listView" tabIcon="ios-list">List</ion-tab>
+    <ion-tab [root]="mapView" tabIcon="locate">Map</ion-tab>
+    <ion-tab [root]="listView" tabIcon="list">List</ion-tab>
   </ion-tabs>
 </ion-content>
+
+<ion-footer align="center">
+  <button ion-button icon-start (click)="goToMore()" class="footLeft">
+      <ion-icon name="logo-buffer"></ion-icon>
+      More
+    </button>
+    
+    <button ion-button icon-end (click)="logout()" class="footRight">
+      Logout
+      <ion-icon name="close-circle"></ion-icon>
+    </button>
+</ion-footer>

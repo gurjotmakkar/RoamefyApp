@@ -1,6 +1,11 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>chatName</ion-title>
+        <ion-buttons left>
+          <button ion-button icon-only (click)="goHome()">
+              <ion-icon name="arrow-back"></ion-icon>
+          </button>
+      </ion-buttons>
+    <ion-title>{{chatName}}</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content padding>

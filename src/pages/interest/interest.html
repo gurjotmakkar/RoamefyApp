@@ -1,9 +1,13 @@
 <ion-header>
   <ion-navbar>
+      <ion-buttons left>
+        <button ion-button icon-only (click)="goHome()">
+            <ion-icon name="arrow-back"></ion-icon>
+        </button>
+    </ion-buttons>
     <ion-title>Interests</ion-title>
   </ion-navbar>
 </ion-header>
-
 <ion-content padding>
   <ion-list *ngFor="let item of interest | async">
     <ion-item>
