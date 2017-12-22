@@ -20,13 +20,12 @@ export class SignupProPage {
   constructor(public nav: NavController, public authData: FirebaseProvider, public formBuilder: FormBuilder, 
     public loadingCtrl: LoadingController, public alertCtrl: AlertController, public menu: MenuController, 
     public modalCtrl: ModalController) {
-    this.menu.swipeEnable(false);
     this.signupForm = formBuilder.group({
       firstName: ['', Validators.compose([Validators.required])],
       lastName: ['', Validators.compose([Validators.required])],
       email: ['', Validators.compose([Validators.required, EmailValidator.isValid])],
       password: ['', Validators.compose([Validators.required, PasswordValidator.isValid])],
-      address: ['', Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(40)])],
+      address: ['', Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(200)])],
       dateOfBirth: ['', Validators.compose([Validators.required, Validators.pattern("[0-9]{2}/[0-9]{2}/[1-2][0-9]{3}")])],
       driverLicenceNumber: ['', Validators.compose([Validators.required, Validators.pattern("[0-9a-zA-Z]{15}")])],
       phoneNumber: ['', Validators.compose([Validators.required, Validators.pattern("[0-9]{10}"), Validators.maxLength(10)])]
@@ -79,9 +78,7 @@ export class SignupProPage {
   showAddressModal(){
     let modal = this.modalCtrl.create(AutocompletePage);
     modal.onDidDismiss(data => {
-      this.signupForm.setValue({
-        address: data.description
-      });
+      this.signupForm.controls['address'].setValue(data === undefined ? null : data.description);
     });
     modal.present();
   }

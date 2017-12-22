@@ -184,7 +184,7 @@ export class FirebaseProvider {
     return this.afdOf.collection('users').doc(this.userID).valueChanges();
   }
 
-  configureUser(id){
+  configureUser(){
     this.afdOf.collection("users").doc(this.userID)
     .update(
       { 

@@ -138,8 +138,8 @@ export class UserEventEditPage {
   showAddressModal (){
     let modal = this.modalCtrl.create(AutocompletePage);
     modal.onDidDismiss(data => {
-      this.event.address = data.description? data.description : "";
-      this.event.addressID = data.place_id? data.place_id : "";
+      this.event.address = data === undefined ? null : data.description;
+      this.event.addressID = data === undefined ? null : data.place_id;
     });
     modal.present();
   }

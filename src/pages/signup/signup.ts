@@ -18,7 +18,6 @@ export class SignupPage {
 
   constructor(public nav: NavController, public authData: FirebaseProvider, public formBuilder: FormBuilder, 
     public loadingCtrl: LoadingController, public alertCtrl: AlertController, public menu: MenuController) {
-    this.menu.swipeEnable(false);
     this.signupForm = formBuilder.group({
       firstName: ['', Validators.compose([Validators.required, Validators.minLength(2), 
         Validators.maxLength(64), Validators.pattern("^[a-zA-z]+$")])],

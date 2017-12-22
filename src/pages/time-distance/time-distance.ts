@@ -61,21 +61,8 @@ export class TimeDistancePage {
   }
 
   finishSetup(){
-    if(this.distance === 0 || this.time === 0){
-        let alert = this.alertCtrl.create({
-          message: "Please configure to proceed",
-          buttons: [
-            {
-              text: "Ok",
-              role: 'cancel'
-            }
-          ]
-        });
-        alert.present();
-    } else {
-      this.firebase.configureUser(this.userID);
+      this.firebase.configureUser();
       this.navCtrl.setRoot(HomePage);
-    }
   }
 
   goHome(){

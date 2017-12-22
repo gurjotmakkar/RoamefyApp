@@ -32,7 +32,7 @@ export class EventMapPage {
       this.addMarkersMap(data);
     }, err => {
       console.log(err);
-    }, () => {
+    }, () => { 
       loader.dismiss();
     });
     
@@ -67,7 +67,6 @@ export class EventMapPage {
   }
 
   addMarkersMap(markers){
-    console.log("adding markers");
     console.log(markers.length);
     
     for(let marker of markers)

@@ -115,9 +115,7 @@ export class UserProfileEditPage {
   showAddressModal(){
     let modal = this.modalCtrl.create(AutocompletePage);
     modal.onDidDismiss(data => {
-      this.editForm.setValue({
-        address: data.description
-      });
+      this.editForm.controls['address'].setValue(data === undefined ? null : data.description)
     });
     modal.present();
   }

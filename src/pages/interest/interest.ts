@@ -98,25 +98,11 @@ export class InterestPage {
   }
 
   nextSetupPage(){
-    if(this.interestCount() == 0 && this.interestCount() > 5){
-      this.navCtrl.setRoot(InterestPage);
-      let alert = this.alertCtrl.create({
-      message: "Please select at least 1 interests and not more than 5",
-      buttons: [
-        {
-          text: "Ok",
-          role: 'cancel'
-          }
-        ]
-      });
-      alert.present();
-    } else {
-      this.navCtrl.setRoot(TimeDistancePage);
-    }
+    this.navCtrl.setRoot(TimeDistancePage);
   }
 
   ionViewWillLeave(){
-    if(this.interestCount() == 0 && this.interestCount() > 5){
+    if(this.interestCount() == 0 || this.interestCount() > 5){
       this.navCtrl.setRoot(InterestPage);
       let alert = this.alertCtrl.create({
         message: "Please select at least 1 interests and not more than 5",

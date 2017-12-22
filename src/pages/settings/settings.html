@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar color="primary">
+  <ion-navbar color="dark">
       <ion-buttons left>
         <button ion-button icon-only (click)="goHome()">
             <ion-icon name="arrow-back"></ion-icon>
@@ -10,9 +10,9 @@
 </ion-header>
 <ion-content padding>
     <ion-list>
-        <button ion-item *ngFor="let p of pages" (click)="openPage(p)">
+        <button ion-button block color="secondary" *ngFor="let p of pages" (click)="openPage(p)" padding="10px">
           {{p.title}}
         </button>
-        <button ion-item *ngIf="checkUserRole()" (click)="openPage(userEventPage)">Events by you</button>
+        <button ion-button block color="secondary" *ngIf="checkUserRole()" (click)="openPage(userEventPage)" padding="10px">Events by you</button>
   </ion-list>
 </ion-content>
