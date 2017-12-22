@@ -5,7 +5,7 @@
         <ion-card-content>
         <ion-card-title>
         {{event.calEvent.eventName}} 
-        <ion-icon class="bookmark" [name]="icon(event.calEvent.recId)" (click)="addEvent(event.calEvent)"></ion-icon>
+        <ion-icon icon-end class="bookmark" [name]="icon(event.calEvent.recId)" (click)="addEvent(event.calEvent)"></ion-icon>
         </ion-card-title>
         <div class="card-subtitle">Description: {{event.calEvent.description}}</div>
         <div class="card-subtitle">Website: {{event.calEvent.eventWebsite}}</div>
