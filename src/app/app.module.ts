@@ -31,6 +31,8 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { FirebaseProvider } from './../providers/firebase/firebase';
 import { UserBookmarkedEventsPage } from '../pages/user-bookmarked-events/user-bookmarked-events';
+import { SignupPage } from '../pages/signup/signup';
+import { SignupProPage } from '../pages/signup-pro/signup-pro';
 
 //Firebase database configuration data
 //DO NOT CHANGE ANYTHING
@@ -62,7 +64,9 @@ const firebaseConfig = {
     ResetPasswordPage,
     EventChatsPage,
     EvenUserChatsPage,
-    UserBookmarkedEventsPage
+    UserBookmarkedEventsPage,
+    SignupPage,
+    SignupProPage
   ],
   imports: [
     BrowserModule,
@@ -91,7 +95,9 @@ const firebaseConfig = {
     ResetPasswordPage,
     EventChatsPage,
     EvenUserChatsPage,
-    UserBookmarkedEventsPage
+    UserBookmarkedEventsPage,
+    SignupPage,
+    SignupProPage
   ],
   providers: [
     StatusBar,
