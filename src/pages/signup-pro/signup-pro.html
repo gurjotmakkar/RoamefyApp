@@ -21,7 +21,18 @@
           [class.invalid]="!signupForm.controls.firstName.valid && (signupForm.controls.firstName.dirty || submitAttempt)"></ion-input>
       </ion-item>
       <ion-item class="error-message" *ngIf="!signupForm.controls.firstName.valid  && (signupForm.controls.firstName.dirty || submitAttempt)">
-        <p>Please enter your first name.</p>
+        <p *ngIf="signupForm.controls.firstName.errors.required">
+          Please enter your name.
+        </p>
+        <p *ngIf="signupForm.controls.firstName.errors.minlength">
+          Name is too short.
+        </p>
+        <p *ngIf="signupForm.controls.firstName.errors.maxlength">
+          Name is too long.
+        </p>
+        <p *ngIf="signupForm.controls.firstName.errors.pattern">
+          Numbers are not allowed.
+        </p>  
       </ion-item>
 
       <ion-item>
@@ -30,7 +41,18 @@
           [class.invalid]="!signupForm.controls.lastName.valid && (signupForm.controls.lastName.dirty || submitAttempt)"></ion-input>
       </ion-item>
       <ion-item class="error-message" *ngIf="!signupForm.controls.lastName.valid  && (signupForm.controls.lastName.dirty || submitAttempt)">
-        <p>Please enter your last name.</p>
+        <p *ngIf="signupForm.controls.lastName.errors.required">
+          Please enter your last name.
+        </p>
+        <p *ngIf="signupForm.controls.lastName.errors.minlength">
+          Last name is too short.
+        </p>
+        <p *ngIf="signupForm.controls.lastName.errors.maxlength">
+          last name is too long.
+        </p>
+        <p *ngIf="signupForm.controls.lastName.errors.pattern">
+          Numbers are not allowed.
+        </p>  
       </ion-item>
 
       <ion-item>
@@ -48,14 +70,14 @@
           [class.invalid]="!signupForm.controls.password.valid && (signupForm.controls.password.dirty || submitAttempt)"></ion-input>
       </ion-item>
       <ion-item class="error-message" *ngIf="!signupForm.controls.password.valid  && (signupForm.controls.password.dirty || submitAttempt)">
-        <p>Your password needs more than 8 characters</p>
-        <p>with atleast one lowercase, uppercase</p>
-        <p>and a number</p>
+        <p>Your password needs more than 8 </p>
+        <p>characters with atleast one </p>
+        <p>lowercase, uppercase and a number.</p>
       </ion-item>
 
       <ion-item (click)="showAddressModal()">
         <ion-label stacked>Address</ion-label>
-        <ion-input formControlName="address" type="text" placeholder="Your address"
+        <ion-input formControlName="address" type="search" placeholder="Your address"
           [class.invalid]="!signupForm.controls.address.valid && (signupForm.controls.address.dirty || submitAttempt)"></ion-input>
       </ion-item>
       <ion-item class="error-message" *ngIf="!signupForm.controls.address.valid  && (signupForm.controls.address.dirty || submitAttempt)">
@@ -68,7 +90,12 @@
           [class.invalid]="!signupForm.controls.dateOfBirth.valid && (signupForm.controls.dateOfBirth.dirty || submitAttempt)"></ion-input>
       </ion-item>
       <ion-item class="error-message" *ngIf="!signupForm.controls.dateOfBirth.valid  && (signupForm.controls.dateOfBirth.dirty || submitAttempt)">
-        <p>Please enter your date of birth.</p>
+        <p *ngIf="signupForm.controls.dateOfBirth.errors.required">
+          Please enter your date of birth.
+        </p>
+        <p *ngIf="signupForm.controls.dateOfBirth.errors.pattern">
+          Please enter a valid date.
+        </p>
       </ion-item>
 
       <ion-item>

@@ -21,8 +21,10 @@ export class SignupProPage {
     public loadingCtrl: LoadingController, public alertCtrl: AlertController, public menu: MenuController, 
     public modalCtrl: ModalController) {
     this.signupForm = formBuilder.group({
-      firstName: ['', Validators.compose([Validators.required])],
-      lastName: ['', Validators.compose([Validators.required])],
+      firstName: ['', Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(64),
+        Validators.pattern("^[a-zA-z]+$")])],
+      lastName: ['', Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(64),
+        Validators.pattern("^[a-zA-z]+$")])],
       email: ['', Validators.compose([Validators.required, EmailValidator.isValid])],
       password: ['', Validators.compose([Validators.required, PasswordValidator.isValid])],
       address: ['', Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(200)])],
