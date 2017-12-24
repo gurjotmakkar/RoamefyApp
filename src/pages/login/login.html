@@ -6,7 +6,8 @@
   </ion-navbar>
 </ion-header>
   <ion-content padding>
-  <form [formGroup]="loginForm" (submit)="loginUser()" novalidate>
+  
+  <form color="secondary" [formGroup]="loginForm" (submit)="loginUser()" novalidate>
 
     <ion-item>
       <ion-label stacked>Email</ion-label>
@@ -31,7 +32,7 @@
     </ion-item>
     <p></p>
     <p></p>
-    <button ion-button block type="submit">
+    <button ion-button block color="danger" type="submit">
       Login
     </button>
 
@@ -39,19 +40,19 @@
   <p></p>
   <p></p>
 
-  <button ion-button block clear (click)="goToResetPassword()">
+  <button ion-button block clear color="danger" (click)="goToResetPassword()">
     I forgot my password
   </button>
   <p></p>
   <p></p>
 
-  <button ion-button block clear (click)="createAccount()">
+  <button ion-button block clear color="danger" (click)="createAccount()">
     Create a new account
   </button>
   <p></p>
   <p></p>
 
-  <button ion-button block clear (click)="createProAccount()">
+  <button ion-button block clear color="danger" (click)="createProAccount()">
     Create a pro account
   </button>
 

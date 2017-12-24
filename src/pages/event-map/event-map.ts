@@ -17,15 +17,15 @@ export class EventMapPage {
   api: string = 'http://app.toronto.ca/cc_sr_v1_app/data/edc_eventcal_APR?limit=500';
 
   constructor(public navCtrl: NavController, public http: HttpClient, public loading: LoadingController) {}
-
+/*
   ionViewDidLoad(){
     this.setDefaultMap();
     
     let loader = this.loading.create({
-      content: "loading...."
+    //  content: "loading...."
     });  
     loader.present();
-
+    
     this.http.get(this.api)
     .subscribe(data => {
       //this.displayGoogleMap(); // To get current user position
@@ -37,7 +37,7 @@ export class EventMapPage {
     });
     
   }
-
+*/
   displayGoogleMap(){
     let locationOptions = {timeout: 20000, enableHighAccuracy: true};
  
