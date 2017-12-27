@@ -23,7 +23,7 @@ export class UserBookmarkedEventsPage {
     private firebase: FirebaseProvider, private afs: AngularFirestore) {
     this.userID = this.firebase.getUserId();
 
-    this.eventCollection = this.afs.collection('users').doc(this.userID).collection<Event>('chatrooms', ref => {
+    this.eventCollection = this.afs.collection('users').doc(this.userID).collection<Event>('bookmarkedEvents', ref => {
       return ref.orderBy('name')
     });
     this.events = this.eventCollection.snapshotChanges().map(actions => {

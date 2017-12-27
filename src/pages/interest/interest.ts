@@ -4,6 +4,7 @@ import { FirebaseProvider } from './../../providers/firebase/firebase';
 import { TimeDistancePage } from '../time-distance/time-distance';
 import { SettingsPage } from '../settings/settings'
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
+import { ViewController } from 'ionic-angular/navigation/view-controller';
 
 interface Interest {
   name: string;
@@ -31,17 +32,17 @@ export class InterestPage {
   userInterest: any;
   interestArr: string[] = [];
   userID: string;
-  config: boolean;
+  config: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private firebase: FirebaseProvider,
-      public alertCtrl: AlertController, private afs: AngularFirestore) {
+      public alertCtrl: AlertController, private afs: AngularFirestore, public viewCtrl: ViewController) {
     console.log("in constructor");
     
     this.userID = this.firebase.getUserId();
     
     this.afs.collection('users').doc<User>(this.userID).valueChanges()
     .subscribe(a => {
-      this.config = a.configured;
+      this.config = a.configured == null ? false : a.configured;
     })
 
     this.interestCollection = this.afs.collection<Interest>('interest', ref => {
@@ -115,7 +116,7 @@ export class InterestPage {
       });
       alert.present();
     } else {
-      console.log("leaving page")
+      console.log("leaving interest page")
       if( this.config )
         this.navCtrl.setRoot(SettingsPage);
       else
@@ -126,9 +127,9 @@ export class InterestPage {
   goHome(){
     this.navCtrl.setRoot(SettingsPage);
   }
-    
-  ngOnDestroy() {
 
+  ngOnDestroy() {
+    this.viewCtrl.dismiss();
   }
 
 

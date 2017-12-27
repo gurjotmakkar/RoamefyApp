@@ -4,6 +4,7 @@ import { FirebaseProvider } from './../../providers/firebase/firebase';
 import { AngularFirestoreDocument, AngularFirestore } from 'angularfire2/firestore';
 import { HomePage } from '../home/home';
 import { SettingsPage } from '../settings/settings';
+import { ViewController } from 'ionic-angular/navigation/view-controller';
 
 interface User{
   configured: boolean;
@@ -23,22 +24,22 @@ export class TimeDistancePage {
   userID: string;
   userDoc: AngularFirestoreDocument<User>;
   user: any;
-  config: boolean;
+  config: boolean = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, 
+  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController,
     private firebase: FirebaseProvider, public alertCtrl: AlertController, private afs: AngularFirestore) {
     console.log("in time and distance constructor");
     this.userID = this.firebase.getUserId();
 
     this.afs.collection('users').doc<User>(this.userID).valueChanges()
     .subscribe(a => {
-      this.config = a.configured;
+      this.config = a.configured == null ? false : a.configured;
     })
 
     this.userDoc = this.afs.doc<User>('users/' + this.userID);
     this.user = this.userDoc.valueChanges().forEach(a => {
-      this.distance = a.distance;
-      this.time = a.time;
+      this.distance = a.distance == null ? 0 : a.distance;
+      this.time = a.time == null ? 0 : a.time;
     });
   }
 
@@ -61,16 +62,16 @@ export class TimeDistancePage {
   }
 
   finishSetup(){
-      this.firebase.configureUser();
-      this.navCtrl.setRoot(HomePage);
+    this.firebase.configureUser();
+    this.navCtrl.setRoot(HomePage);
   }
 
   goHome(){
     this.navCtrl.setRoot(SettingsPage);
   }
-  
+
   ngOnDestroy() {
-    this.userID = null;
-}
+    this.viewCtrl.dismiss();
+  }
 
 }

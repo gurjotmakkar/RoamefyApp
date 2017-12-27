@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { UserEvent } from '../../models/events/userevent.model';
 
 interface Interest{
@@ -14,6 +14,15 @@ interface Chat{
   userName: string;
 }
 
+interface Event{
+  name: string;
+  host: string;
+}
+
+interface Collection{
+  name: string;
+}
+
 @Injectable()
 
 export class FirebaseProvider {
@@ -24,6 +33,19 @@ export class FirebaseProvider {
     userID: '',
     userName: ''
   };
+
+  eventCollection: AngularFirestoreCollection<Event>; // host
+  events: any;
+  bookmarkEventCollection: AngularFirestoreCollection<Collection>; // member
+  bookmarkEvents: any;
+  chatCollection: AngularFirestoreCollection<Collection>; // member
+  chats: any;
+  interestCollection: AngularFirestoreCollection<Collection>; // member
+  interests: any;
+  roleCollection: AngularFirestoreCollection<Collection>; // normal and pro member
+  rolses: any;
+  userCollection: AngularFirestoreCollection<Collection>; // sub collections
+  users: any;
 
   constructor(public afAuth: AngularFireAuth, 
     public afdOf: AngularFirestore) {
@@ -39,6 +61,143 @@ export class FirebaseProvider {
   }
   
   //-------------- user login ----------------
+
+  deleteAccount(){
+    // ---------- events by user ---------------
+    this.eventCollection = this.afdOf.collection<Event>('events', ref => {
+      return ref.where('host', '==', this.userID);
+    });
+    this.events = this.eventCollection.snapshotChanges().map(actions => {
+      return actions.map(snap => {
+        let id = snap.payload.doc.id;
+        let data = { id, ...snap.payload.doc.data()};
+        return data;
+      });
+    });
+    this.events.forEach(e => {
+      e.forEach(a => {
+        this.afdOf.collection('events').doc(a.id).delete();
+      })
+    });
+
+    // ---------- bokmarked ---------------
+    this.bookmarkEventCollection = this.afdOf.collection<Collection>('bookmarkedEvents');
+    this.bookmarkEvents = this.bookmarkEventCollection.snapshotChanges().map(actions => {
+      return actions.map(snap => {
+        let id = snap.payload.doc.id;
+        let data = { id, ...snap.payload.doc.data()};
+        return data;
+      });
+    });
+    this.bookmarkEvents.forEach(e => {
+      e.forEach(a => {
+        this.afdOf.collection('bookmarkedEvents').doc(a.id).collection('members').doc(this.userID).delete();
+      })
+    });
+
+    // ---------- chats ---------------
+    this.chatCollection = this.afdOf.collection<Collection>('chatrooms');
+    this.chats = this.chatCollection.snapshotChanges().map(actions => {
+      return actions.map(snap => {
+        let id = snap.payload.doc.id;
+        let data = { id, ...snap.payload.doc.data()};
+        return data;
+      });
+    });
+    this.chats.forEach(e => {
+      e.forEach(a => {
+        this.afdOf.collection('chatrooms').doc(a.id).collection('members').doc(this.userID).delete();
+      })
+    });
+
+    // ---------- interests ---------------
+    this.interestCollection = this.afdOf.collection<Collection>('interest');
+    this.interests = this.interestCollection.snapshotChanges().map(actions => {
+      return actions.map(snap => {
+        let id = snap.payload.doc.id;
+        let data = { id, ...snap.payload.doc.data()};
+        return data;
+      });
+    });
+    this.interests.forEach(e => {
+      e.forEach(a => {
+        this.afdOf.collection('interest').doc(a.id).collection('members').doc(this.userID).delete();
+      })
+    });
+
+    // ---------- users bookmarks ---------------
+    this.userCollection = this.afdOf.collection('users').doc(this.userID).collection<Collection>('bookmarkedEvents');
+    this.users = this.userCollection.snapshotChanges().map(actions => {
+      return actions.map(snap => {
+        let id = snap.payload.doc.id;
+        let data = { id, ...snap.payload.doc.data()};
+        return data;
+      });
+    });
+    this.users.forEach(e => {
+      e.forEach(a => {
+        this.afdOf.collection('users').doc(this.userID).collection('bookmarkedEvents').doc(a.id).delete();
+      })
+    });
+
+    // ---------- users chats ---------------
+    this.userCollection = this.afdOf.collection('users').doc(this.userID).collection<Collection>('chatrooms');
+    this.users = this.userCollection.snapshotChanges().map(actions => {
+      return actions.map(snap => {
+        let id = snap.payload.doc.id;
+        let data = { id, ...snap.payload.doc.data()};
+        return data;
+      });
+    });
+    this.users.forEach(e => {
+      e.forEach(a => {
+        this.afdOf.collection('users').doc(this.userID).collection('chatrooms').doc(a.id).delete();
+      })
+    });
+
+    // ---------- users interests ---------------
+    this.userCollection = this.afdOf.collection('users').doc(this.userID).collection<Collection>('userInterest');
+    this.users = this.userCollection.snapshotChanges().map(actions => {
+      return actions.map(snap => {
+        let id = snap.payload.doc.id;
+        let data = { id, ...snap.payload.doc.data()};
+        return data;
+      });
+    });
+    this.users.forEach(e => {
+      e.forEach(a => {
+        this.afdOf.collection('users').doc(this.userID).collection('userInterest').doc(a.id).delete();
+      })
+    });
+
+    // ---------- roles ---------------
+    this.interestCollection = this.afdOf.collection<Collection>('roles');
+    this.interests = this.interestCollection.snapshotChanges().map(actions => {
+      return actions.map(snap => {
+        let id = snap.payload.doc.id;
+        let data = { id, ...snap.payload.doc.data()};
+        return data;
+      });
+    });
+    this.interests.forEach(e => {
+      e.forEach(a => {
+        this.afdOf.collection('roles').doc(a.id).collection('members').doc(this.userID).delete();
+      })
+    });
+
+    // ---------- user ---------------
+    this.afdOf.collection('users').doc(this.userID).delete();
+
+    // ---------- user account ---------------
+    this.afAuth.auth.currentUser.delete()
+    .then(() => {
+      console.log('Account deleted');
+    }).catch(err => {
+      console.log('Account deletion error: ' + err);
+    });
+
+  }
+
   loginUser(newEmail: string, newPassword: string): Promise<any> {
     return this.afAuth.auth.signInWithEmailAndPassword(newEmail, newPassword)
       .then(() => this.userID = this.afAuth.auth.currentUser.uid);

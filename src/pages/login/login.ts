@@ -10,6 +10,7 @@ import { HomePage } from '../home/home';
 import { ResetPasswordPage } from '../reset-password/reset-password';
 import { SignupPage } from '../signup/signup';
 import { SignupProPage } from '../signup-pro/signup-pro';
+import { ViewController } from 'ionic-angular/navigation/view-controller';
 
 interface User {
   configured: boolean;
@@ -27,7 +28,8 @@ export class LoginPage {
 
   constructor(public navCtrl: NavController, public authData: FirebaseProvider,
     public formBuilder: FormBuilder, public alertCtrl: AlertController,
-    public loadingCtrl: LoadingController, private afs: AngularFirestore) {
+    public loadingCtrl: LoadingController, private afs: AngularFirestore, 
+    public viewCtrl: ViewController) {
       this.loginForm = formBuilder.group({
         email: ['', Validators.compose([Validators.required, EmailValidator.isValid])],
         password: ['', Validators.compose([Validators.required, PasswordValidator.isValid])]
@@ -56,10 +58,10 @@ export class LoginPage {
           });
         } else {
           var userID = this.authData.getUserId();
-          var configured;
+          var configured = false;
           this.afs.collection('users').doc<User>(userID).valueChanges()
           .subscribe(a => {
-            configured = a.configured;
+            configured = a.configured == null ? false : a.configured;
             if(configured == false) {
               this.navCtrl.setRoot(InterestPage);
             }
@@ -100,6 +102,10 @@ export class LoginPage {
 
   createProAccount(){
     this.navCtrl.setRoot(SignupProPage);
+  }
+
+  ngOnDestroy() {
+    this.viewCtrl.dismiss();
   }
 
 }
