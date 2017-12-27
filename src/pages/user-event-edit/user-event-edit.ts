@@ -121,6 +121,8 @@ export class UserEventEditPage {
     modal.onDidDismiss(data => {
       this.event.address = data === undefined ? null : data.description;
       this.event.addressID = data === undefined ? null : data.place_id;
+      this.event.latitude = data === undefined ? null : data.lat;
+      this.event.longitude = data === undefined ? null : data.lng;
     });
     modal.present();
   }
