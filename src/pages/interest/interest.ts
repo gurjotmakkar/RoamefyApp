@@ -129,7 +129,7 @@ export class InterestPage {
   }
 
   ngOnDestroy() {
-    this.viewCtrl.dismiss();
+    //this.viewCtrl.dismiss();
   }
 
 

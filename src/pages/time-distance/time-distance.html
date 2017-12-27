@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar color="primary">
-      <ion-buttons *ngIf="!isConfigured()" left>
+      <ion-buttons *ngIf="isConfigured()" left>
         <button ion-button icon-only (click)="goHome()">
             <ion-icon name="arrow-back"></ion-icon>
         </button>

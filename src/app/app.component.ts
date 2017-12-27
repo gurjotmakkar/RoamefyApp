@@ -12,7 +12,6 @@ import { HomePage } from '../pages/home/home';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { InterestPage } from '../pages/interest/interest';
 import { TimeDistancePage } from '../pages/time-distance/time-distance';
-import { UserProfilePage } from '../pages/user-profile/user-profile';
 
 interface User{
   configured: boolean;

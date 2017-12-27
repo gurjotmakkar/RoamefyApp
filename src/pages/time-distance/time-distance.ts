@@ -71,7 +71,7 @@ export class TimeDistancePage {
   }
 
   ngOnDestroy() {
-    this.viewCtrl.dismiss();
+    //this.viewCtrl.dismiss();
   }
 
 }

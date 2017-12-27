@@ -105,7 +105,7 @@ export class LoginPage {
   }
 
   ngOnDestroy() {
-    this.viewCtrl.dismiss();
+    //this.viewCtrl.dismiss();
   }
 
 }

@@ -34,6 +34,7 @@ import { FirebaseProvider } from './../providers/firebase/firebase';
 import { UserBookmarkedEventsPage } from '../pages/user-bookmarked-events/user-bookmarked-events';
 import { SignupPage } from '../pages/signup/signup';
 import { SignupProPage } from '../pages/signup-pro/signup-pro';
+import { UserProfileEditProPage } from '../pages/user-profile-edit-pro/user-profile-edit-pro';
 
 //Firebase database configuration data
 //DO NOT CHANGE ANYTHING
@@ -68,7 +69,8 @@ const firebaseConfig = {
     UserBookmarkedEventsPage,
     SignupPage,
     SignupProPage,
-    PlacesViewPage
+    PlacesViewPage,
+    UserProfileEditProPage
   ],
   imports: [
     BrowserModule,
@@ -100,7 +102,8 @@ const firebaseConfig = {
     UserBookmarkedEventsPage,
     SignupPage,
     SignupProPage,
-    PlacesViewPage
+    PlacesViewPage,
+    UserProfileEditProPage
   ],
   providers: [
     StatusBar,

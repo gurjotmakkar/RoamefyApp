@@ -14,11 +14,11 @@ export class AutocompletePage {
   autocomplete: any;
   service: any;
   placesService: any;
-  //geocoder: any;
+  geocoder: any;
 
   constructor(public viewCtrl: ViewController) {
     this.service = new google.maps.places.AutocompleteService();
-    //this.geocoder = new google.maps.Geocoder;
+    this.geocoder = new google.maps.Geocoder;
     this.autocompleteItems = [];
     this.autocomplete = {
       query: ''
@@ -30,15 +30,13 @@ export class AutocompletePage {
   }
  
   chooseItem(item: any) {
-    /*
     this.geocoder.geocode({'placeId': item.place_id}, function(results, status) {
       if (status !== 'OK') {
         window.alert('Geocoder failed due to: ' + status);
         return;
       }
-      this.viewCtrl.dismiss(results);
+      //this.viewCtrl.dismiss(results);
     });
-    */
 
     this.viewCtrl.dismiss(item);
   }

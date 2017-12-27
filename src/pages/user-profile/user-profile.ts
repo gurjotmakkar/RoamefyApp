@@ -5,6 +5,12 @@ import { UserProfileEditPage } from '../user-profile-edit/user-profile-edit';
 import { LoginPage } from '../login/login';
 import { SettingsPage } from '../settings/settings';
 import { ViewController } from 'ionic-angular/navigation/view-controller';
+import { AngularFirestore } from 'angularfire2/firestore';
+import { UserProfileEditProPage } from '../user-profile-edit-pro/user-profile-edit-pro';
+
+interface User{
+  role: string;
+}
 
 @IonicPage()
 @Component({
@@ -13,14 +19,32 @@ import { ViewController } from 'ionic-angular/navigation/view-controller';
 })
 export class UserProfilePage {
   userEmail: string;
+  userID: string;
+  role: string = 'normal';
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private firebase: FirebaseProvider, 
-    public alertCtrl: AlertController, public viewCtrl: ViewController) {
+    public alertCtrl: AlertController, public viewCtrl: ViewController, private afs: AngularFirestore) {
       this.userEmail = this.firebase.getUserEmail();
+      this.userID = this.firebase.getUserId();
+
+      this.afs.collection('users').doc<User>(this.userID).valueChanges()
+      .subscribe(a => {
+        this.role = a.role == null ? 'normal' : a.role;
+      })
   }
 
   edit(){
-    this.navCtrl.setRoot(UserProfileEditPage);
+    if (this.role == 'pro' ) {
+      this.navCtrl.setRoot(UserProfileEditProPage);
+    } else {
+      this.navCtrl.setRoot(UserProfileEditPage);
+    }
+  }
+
+  isUserPro(){
+    if (this.role == "pro")
+      return true;
+    return false;
   }
 
   goToResetPassword(){
@@ -82,8 +106,12 @@ deleteAccount(){
   alert.present();
 }
 
+switchToPro(){
+  this.navCtrl.setRoot(UserProfileEditProPage, {switch: true});
+}
+
   ngOnDestroy() {
-    this.viewCtrl.dismiss();
+    //this.viewCtrl.dismiss();
   }
 
 }

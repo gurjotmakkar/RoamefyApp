@@ -171,19 +171,9 @@ export class FirebaseProvider {
     });
 
     // ---------- roles ---------------
-    this.interestCollection = this.afdOf.collection<Collection>('roles');
-    this.interests = this.interestCollection.snapshotChanges().map(actions => {
-      return actions.map(snap => {
-        let id = snap.payload.doc.id;
-        let data = { id, ...snap.payload.doc.data()};
-        return data;
-      });
-    });
-    this.interests.forEach(e => {
-      e.forEach(a => {
-        this.afdOf.collection('roles').doc(a.id).collection('members').doc(this.userID).delete();
-      })
-    });
+    this.afdOf.collection('roles').doc('normal').collection('members').doc(this.userID).delete();
+    this.afdOf.collection('roles').doc('pro').collection('members').doc(this.userID).delete();
+
 
     // ---------- user ---------------
     this.afdOf.collection('users').doc(this.userID).delete();
@@ -287,7 +277,27 @@ export class FirebaseProvider {
       })
   }
 
-  editUserProfile(newEmail: string, newFirstName: string, newLastName: string, 
+  editUserProfile(newEmail: string, newFirstName: string, newLastName: string): Promise<any> {
+    return this.afAuth.auth.currentUser.updateEmail(newEmail)
+    .then(() => {
+        this.afAuth.auth.currentUser.sendEmailVerification()
+        .then(() => {
+          console.log('verification email sent');
+        });
+        this.updateUser(this.afAuth.auth.currentUser.uid, newFirstName, newLastName);
+        //this.logoutUser();
+    });
+  }
+
+  updateUser(Id, FirstName, LastName) {
+    this.afdOf.collection("users").doc(Id)
+    .update({ 
+        firstName: FirstName,
+        lastName: LastName
+      });
+  }
+
+  editUserProfilePro(newEmail: string, newFirstName: string, newLastName: string, 
     address:string, dob: string, driverLicense: string, phone: number): Promise<any> {
     return this.afAuth.auth.currentUser.updateEmail(newEmail)
     .then(() => {
@@ -295,20 +305,43 @@ export class FirebaseProvider {
         .then(() => {
           console.log('verification email sent');
         });
-        this.updateUser(this.afAuth.auth.currentUser.uid, newFirstName, newLastName, address, dob, driverLicense, phone);
+        this.updateUserPro(this.afAuth.auth.currentUser.uid, newFirstName, newLastName, address, dob, driverLicense, phone);
         //this.logoutUser();
     });
   }
 
-  updateUser(Id, FirstName, LastName, address = null, dob = null, driverLicense = null, phone = null) {
+  updateUserPro(Id, FirstName, LastName, address, dob, driverLicense, phone) {
     this.afdOf.collection("users").doc(Id)
     .update({ 
         firstName: FirstName,
         lastName: LastName,
-        address: addEventListener,
-        dateOfBirth: dob == null ? dob : new Date(dob),
+        address: address,
+        dateOfBirth: dob,
         driverLicenceNumber: driverLicense,
         phoneNumber: phone 
+      });
+  }
+
+  switchToPro(address, dob, driverLicense, phone) {
+    this.afdOf.collection("users").doc(this.userID)
+    .set({ 
+        address: address,
+        dateOfBirth: dob,
+        driverLicenceNumber: driverLicense,
+        phoneNumber: phone,
+      },{
+        merge: true
+      })
+      .then(() => {
+        this.afdOf.collection("users").doc(this.userID)
+        .update({ 
+          role: 'pro'
+        });
+        this.afdOf.collection('roles').doc('normal').collection('members').doc(this.userID).delete();
+        this.afdOf.collection('roles').doc('pro').collection('members').doc(this.userID)
+        .set({
+          name: this.userID
+        });
       });
   }
 
@@ -357,6 +390,7 @@ export class FirebaseProvider {
   }
 
   //-------------- interest ----------------
+  /*
   getInterestList() {
     return "interest";
   }
@@ -376,6 +410,7 @@ export class FirebaseProvider {
       merge: true
     });
   }
+*/
 
   getInterestName(itemKey){
     var interest = "";

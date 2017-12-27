@@ -9,7 +9,6 @@ import { EventChatsPage } from '../event-chats/event-chats';
 import { UserBookmarkedEventsPage } from '../user-bookmarked-events/user-bookmarked-events';
 import { UserProfilePage } from '../user-profile/user-profile';
 import { HomePage } from '../home/home';
-import { ViewController } from 'ionic-angular/navigation/view-controller';
 
 interface User {
   role: string;
@@ -27,8 +26,7 @@ export class SettingsPage {
   role: string = 'normal';
 
   constructor(public navCtrl: NavController, public navParams: NavParams, 
-    public firebase: FirebaseProvider, private afs: AngularFirestore, 
-    public viewCtrl: ViewController) {
+    public firebase: FirebaseProvider, private afs: AngularFirestore) {
     this.pages = [
       { title: "Interests", component: InterestPage },
       { title: "Time and Distance", component: TimeDistancePage },
@@ -60,6 +58,5 @@ export class SettingsPage {
   }
 
   ngOnDestroy() {
-    this.viewCtrl.dismiss();
   }
 }

@@ -1,0 +1,82 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>Profile</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <form [formGroup]="editForm" (submit)="editUserProfile()" novalidate>
+        <ion-item>
+            <ion-label stacked>First Name</ion-label>
+            <ion-input [disabled]="isItSwitch()" formControlName="firstName" type="text" placeholder="Your first name"
+              [class.invalid]="!editForm.controls.firstName.valid && (editForm.controls.firstName.dirty || submitAttempt)"></ion-input>
+          </ion-item>
+          <ion-item class="error-message" *ngIf="!editForm.controls.firstName.valid  && (editForm.controls.firstName.dirty || submitAttempt)">
+            <p>Please enter your first name.</p>
+          </ion-item>
+    
+          <ion-item>
+            <ion-label stacked>Last Name</ion-label>
+            <ion-input [disabled]="isItSwitch()" formControlName="lastName" type="text" placeholder="Your last name"
+              [class.invalid]="!editForm.controls.lastName.valid && (editForm.controls.lastName.dirty || submitAttempt)"></ion-input>
+          </ion-item>
+          <ion-item class="error-message" *ngIf="!editForm.controls.lastName.valid  && (editForm.controls.lastName.dirty || submitAttempt)">
+            <p>Please enter your last name.</p>
+          </ion-item>
+    
+          <ion-item>
+            <ion-label stacked>Email</ion-label>
+            <ion-input [disabled]="isItSwitch()" formControlName="email" type="email" placeholder="Your email address"
+              [class.invalid]="!editForm.controls.email.valid && (editForm.controls.email.dirty || submitAttempt)"></ion-input>
+          </ion-item>
+          <ion-item class="error-message" *ngIf="!editForm.controls.email.valid  && (editForm.controls.email.dirty || submitAttempt)">
+            <p>Please enter a valid email.</p>
+          </ion-item> 
+
+        <ion-item (click)="showAddressModal()">
+          <ion-label stacked>Address</ion-label>
+          <ion-input formControlName="address" type="text" placeholder="Your address"
+            [class.invalid]="!editForm.controls.address.valid && (editForm.controls.address.dirty || submitAttempt)"></ion-input>
+        </ion-item>
+        <ion-item class="error-message" *ngIf="!editForm.controls.address.valid  && (editForm.controls.address.dirty || submitAttempt)">
+          <p>Please enter your address.</p>
+        </ion-item>
+  
+        <ion-item>
+          <ion-label stacked>Date of Birth</ion-label>
+          <ion-input formControlName="dateOfBirth" type="text" placeholder="Your date of birth"
+            [class.invalid]="!editForm.controls.dateOfBirth.valid && (editForm.controls.dateOfBirth.dirty || submitAttempt)"></ion-input>
+        </ion-item>
+        <ion-item class="error-message" *ngIf="!editForm.controls.dateOfBirth.valid  && (editForm.controls.dateOfBirth.dirty || submitAttempt)">
+          <p>Please enter your date of birth.</p>
+        </ion-item>
+  
+        <ion-item>
+          <ion-label stacked>Driver Licence Number</ion-label>
+          <ion-input formControlName="driverLicenceNumber" type="text" placeholder="Your driver's licence number"
+            [class.invalid]="!editForm.controls.driverLicenceNumber.valid && (editForm.controls.driverLicenceNumber.dirty || submitAttempt)"></ion-input>
+        </ion-item>
+        <ion-item class="error-message" *ngIf="!editForm.controls.driverLicenceNumber.valid  && (editForm.controls.driverLicenceNumber.dirty || submitAttempt)">
+          <p>Please enter your driver's licence number.</p>
+        </ion-item>
+  
+        <ion-item>
+          <ion-label stacked>Phone Number</ion-label>
+          <ion-input formControlName="phoneNumber" type="text" placeholder="Your phone number"
+            [class.invalid]="!editForm.controls.phoneNumber.valid && (editForm.controls.phoneNumber.dirty || submitAttempt)"></ion-input>
+        </ion-item>
+        <ion-item class="error-message" *ngIf="!editForm.controls.phoneNumber.valid  && (editForm.controls.phoneNumber.dirty || submitAttempt)">
+          <p>Please enter your phone number.</p>
+        </ion-item>
+    
+        <button *ngIf="!isItSwitch()" ion-button block color="danger" type="submit">
+          Verify Change
+        </button>
+    
+        <button *ngIf="isItSwitch()" ion-button block color="danger" type="submit">
+          Switch to pro
+        </button>
+      </form>
+        
+      <button ion-button block clear color="danger" (click) = "cancel()">Cancel</button>  
+</ion-content>
