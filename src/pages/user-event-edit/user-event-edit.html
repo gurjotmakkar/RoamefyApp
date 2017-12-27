@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar color="event">
+  <ion-navbar color="primary">
     <ion-title>{{event.name}}</ion-title>
   </ion-navbar>
 </ion-header>
@@ -66,7 +66,7 @@
     </ion-select>
   </ion-item>
   
-  <button ion-button black clear (click) = "updateEvent(categories)">Update</button>       
+  <button ion-button black clear color="primary" (click) = "updateEvent(categories)">Update</button>       
   
   <button ion-button black clear color="danger" (click) = "removeEvent()">Remove</button>
   

@@ -23,6 +23,7 @@ import { AutocompletePage } from '../pages/autocomplete/autocomplete';
 import { ResetPasswordPage } from '../pages/reset-password/reset-password';
 import { EventChatsPage } from '../pages/event-chats/event-chats';
 import { EvenUserChatsPage } from '../pages/even-user-chats/even-user-chats';
+import { PlacesViewPage } from '../pages/places-view/places-view';
 
 import { HttpClientModule } from '@angular/common/http';
 import { HttpProvider } from '../providers/http/http';
@@ -66,7 +67,8 @@ const firebaseConfig = {
     EvenUserChatsPage,
     UserBookmarkedEventsPage,
     SignupPage,
-    SignupProPage
+    SignupProPage,
+    PlacesViewPage
   ],
   imports: [
     BrowserModule,
@@ -97,7 +99,8 @@ const firebaseConfig = {
     EvenUserChatsPage,
     UserBookmarkedEventsPage,
     SignupPage,
-    SignupProPage
+    SignupProPage,
+    PlacesViewPage
   ],
   providers: [
     StatusBar,

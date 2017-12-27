@@ -6,6 +6,7 @@ import 'rxjs/add/operator/map';
 import { SettingsPage } from '../settings/settings';
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { LoginPage } from '../login/login';
+import { PlacesViewPage } from '../places-view/places-view';
 
 @IonicPage()
 @Component({
@@ -17,7 +18,7 @@ export class HomePage {
 
   mapView = EventMapPage;
   listView = EventListPage;
-
+  placesView = PlacesViewPage;
   constructor(public navCtrl: NavController, private firebase: FirebaseProvider) {}
 
   goToMore(){

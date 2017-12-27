@@ -1,6 +1,6 @@
 <ion-header>
-  <ion-navbar color="setup">
-      <ion-buttons *ngIf="!isConfigured()" left>
+  <ion-navbar color="primary">
+      <ion-buttons left *ngIf="!isConfigured()">
         <button ion-button icon-only (click)="goHome()">
             <ion-icon name="arrow-back"></ion-icon>
         </button>
@@ -16,7 +16,7 @@
       </ion-checkbox>
     </ion-item>
 </ion-list>
-  <button *ngIf="!isConfigured()" ion-button block (click)="nextSetupPage()">
+  <button *ngIf="!isConfigured()" ion-button block color="danger" (click)="nextSetupPage()">
       Next
   </button>
 </ion-content>
