@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar color="darkSecondary">
+  <ion-navbar color="primary">
     <ion-buttons left>
       <button ion-button icon-only (click)="goHome()">
           <ion-icon name="arrow-back"></ion-icon>
@@ -14,10 +14,10 @@
         <img src="assets/imgs/logo.png"/>
         <div class="card-title">{{userEmail}}</div>
       </ion-card>    
-      <button ion-button block (click)="edit()"> 
+      <button ion-button block color="danger" (click)="edit()"> 
         Update User Info
       </button> 
-      <button ion-button block clear (click)="goToResetPassword()">
+      <button ion-button block clear color="danger" (click)="goToResetPassword()">
         Update Password
       </button>
 </ion-content>

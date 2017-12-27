@@ -22,10 +22,10 @@ export class EventMapPage {
     this.setDefaultMap();
     
     let loader = this.loading.create({
-      content: "loading...."
+    //  content: "loading...."
     });  
     loader.present();
-
+    
     this.http.get(this.api)
     .subscribe(data => {
       //this.displayGoogleMap(); // To get current user position
