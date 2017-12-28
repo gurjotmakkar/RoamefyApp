@@ -26,7 +26,6 @@ import { EvenUserChatsPage } from '../pages/even-user-chats/even-user-chats';
 import { PlacesViewPage } from '../pages/places-view/places-view';
 
 import { HttpClientModule } from '@angular/common/http';
-import { HttpProvider } from '../providers/http/http';
 import { AngularFireModule } from 'angularfire2/angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
@@ -109,7 +108,6 @@ const firebaseConfig = {
     StatusBar,
     SplashScreen,
     FirebaseProvider,
-    HttpProvider,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

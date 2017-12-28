@@ -4,7 +4,6 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { FirebaseProvider } from '../providers/firebase/firebase';
-import { HttpProvider } from '../providers/http/http'
 import { AngularFireAuth } from 'angularfire2/auth';
 
 import { LoginPage } from '../pages/login/login';
@@ -28,7 +27,7 @@ export class MyApp {
   exitApp: boolean = false;
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,
-    public afAuth: AngularFireAuth, public firebase: FirebaseProvider, public http: HttpProvider, 
+    public afAuth: AngularFireAuth, public firebase: FirebaseProvider, 
     private afs: AngularFirestore, public alertCtrl: AlertController) {
       const authObserver = this.afAuth.authState.subscribe( user => {
         if (user) {
