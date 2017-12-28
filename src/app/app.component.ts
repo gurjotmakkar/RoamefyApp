@@ -12,6 +12,7 @@ import { HomePage } from '../pages/home/home';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { InterestPage } from '../pages/interest/interest';
 import { TimeDistancePage } from '../pages/time-distance/time-distance';
+import { AlertController } from 'ionic-angular/components/alert/alert-controller';
 
 interface User{
   configured: boolean;
@@ -24,10 +25,11 @@ export class MyApp {
   rootPage:any;
   config: boolean = false;
   counter: number = 0;
+  exitApp: boolean = false;
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,
     public afAuth: AngularFireAuth, public firebase: FirebaseProvider, public http: HttpProvider, 
-    private afs: AngularFirestore) {
+    private afs: AngularFirestore, public alertCtrl: AlertController) {
       const authObserver = this.afAuth.authState.subscribe( user => {
         if (user) {
           this.afs.collection('users').doc<User>(user.uid).valueChanges()
@@ -65,7 +67,26 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       this.statusBar.styleLightContent();
       this.splashScreen.hide();
-    });
-}
-  
+
+      this.platform.registerBackButtonAction(() => {  
+                const alert = this.alertCtrl.create({
+                    title: 'Exi app?',
+                    message: 'Do you want to close the app?',
+                    buttons: [{
+                        text: 'Cancel',
+                        role: 'cancel',
+                        handler: () => {
+                            console.log('Application exit prevented!');
+                        }
+                    },{
+                        text: 'Close App',
+                        handler: () => {
+                            this.platform.exitApp(); // Close this application
+                        }
+                    }]
+                });
+                alert.present();
+            });
+        });
+      }
 }
