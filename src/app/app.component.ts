@@ -12,7 +12,6 @@ import { HomePage } from '../pages/home/home';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { InterestPage } from '../pages/interest/interest';
 import { TimeDistancePage } from '../pages/time-distance/time-distance';
-import { UserEventAddPage } from '../pages/user-event-add/user-event-add';
 
 interface User{
   configured: boolean;
@@ -39,7 +38,7 @@ export class MyApp {
               a.forEach(() => { this.counter++ });
             if (this.config) {
               console.log('set home')
-              this.rootPage = UserEventAddPage; //HomePage;
+              this.rootPage = HomePage;
             } else if (this.counter == 0) {
               console.log('set interest')
               this.rootPage = InterestPage;

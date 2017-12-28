@@ -57,8 +57,8 @@ export class AutocompletePage {
   
     ob.subscribe(o => {
       this.lat.push(o);
-      this.obj.lat = this.lat[0];
-      this.obj.lng = this.lat[1];
+      this.obj.lng = this.lat[0];
+      this.obj.lat = this.lat[1];
       this.obj.placeID = item.place_id;
       this.obj.description = item.description;
     },

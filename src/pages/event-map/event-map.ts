@@ -2,6 +2,8 @@ import { Component , ViewChild, ElementRef } from '@angular/core';
 import { NavController, LoadingController } from 'ionic-angular';
 import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/map';
+import { AngularFirestore } from 'angularfire2/firestore';
+import { UserEvent } from '../../models/events/userevent.model';
 
 declare var google: any;
 declare var $: any;
@@ -16,25 +18,33 @@ export class EventMapPage {
   map: any;
   api: string = 'http://app.toronto.ca/cc_sr_v1_app/data/edc_eventcal_APR?limit=500';
 
-  constructor(public navCtrl: NavController, public http: HttpClient, public loading: LoadingController) {}
+  constructor(public navCtrl: NavController, public http: HttpClient, 
+    public loading: LoadingController, private afs: AngularFirestore) {}
 
   ionViewDidLoad(){
     this.setDefaultMap();
+    //this.displayGoogleMap(); // To get current user position
     
     let loader = this.loading.create({
-    //  content: "loading...."
+      content: "loading...."
     });  
     loader.present();
     
     this.http.get(this.api)
     .subscribe(data => {
-      //this.displayGoogleMap(); // To get current user position
       this.addMarkersMap(data);
     }, err => {
       console.log(err);
     }, () => { 
       loader.dismiss();
     });
+
+    this.afs.collection<UserEvent>("events").valueChanges()
+    .forEach(event => {
+      event.forEach(e => {
+        this.addUserEventMarkersMap(e);
+      })
+    })
     
   }
 
@@ -45,7 +55,7 @@ export class EventMapPage {
         (position) => {
             let options = {
               center: new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
-              zoom: 16,
+              zoom: 12,
               mapTypeId: google.maps.MapTypeId.ROADMAP
             }
             this.map = new google.maps.Map(this.mapElement.nativeElement, options);
@@ -69,8 +79,7 @@ export class EventMapPage {
   addMarkersMap(markers){
     console.log(markers.length);
     
-    for(let marker of markers)
-    { 
+    for(let marker of markers) { 
       var loc = marker.calEvent.locations[0]["coords"];
       let name  = marker.calEvent["eventName"];
       let webSite = marker.calEvent["eventWebsite"];
@@ -103,7 +112,7 @@ export class EventMapPage {
                                    '<div class="iw-bottom-gradient"></div>' +
                                    '</div>' //end container
       //console.log(name); //displays name of each event within this object
-   
+ 
       marker = new google.maps.Marker({
         position: loc,
         map: this.map,   
@@ -164,9 +173,81 @@ export class EventMapPage {
                   $(this).css({opacity: '1'});
                 });
               });
-            }
-            
-            //google.maps.event.addDomListener(window, 'load', initialize);
-       
-  }
+            } 
+            //google.maps.event.addDomListener(window, 'load', initialize)
+    }
+
+    addUserEventMarkersMap(e){
+        let img = "http://mnlct.org/wp-content/uploads/2014/10/toronto-skyline.jpg";
+        let contentString =              
+                      '<div id="iw-container">' +
+
+                      '<div class="iw-title">' + e.name +'</div>' + 
+                      '<div class="iw-content">' +
+                      '<div class="iw-subTitle"> Description: </div>' +
+                      '<img src= "' + img + '" height="115" width="93">' +
+                      '<p>' + e.description + '</p>' +
+
+                                    '<div class="iw-subTitle">Website: </div>' + '<a href="  '+ e.website +'     ">'  +  'link'     +       '</a>'    +              
+                                    '<div class="iw-subTitle">Phone: </div> '   +
+                                    '<p>'    + e.phone    + '</p>'   +
+                                    '<div class="iw-bottom-gradient"></div>' +
+                                    '</div>' //end container
+        //console.log(name); //displays name of each event within this object
+        let loc = {lng: e.longitude, lat: e.latitude};
+        var marker = new google.maps.Marker({
+          position: loc,
+          map: this.map,   
+        });
+
+        var infoWindow = new google.maps.InfoWindow({
+          maxWidth: 350
+        }); 
+
+        google.maps.event.addListener(marker, 'click', function() {
+          infoWindow.open(this.map, marker);
+          infoWindow.setContent(contentString);   
+        });
+
+        google.maps.event.addListener(infoWindow, 'domready', function() {        
+                  // Reference to the DIV that wraps the bottom of infowindow
+                  var iwOuter = $('.gm-style-iw');
+                  
+                  var iwBackground = iwOuter.prev();
+              
+                  // Removes background shadow DIV
+                  iwBackground.children(':nth-child(2)').css({'display' : 'none'});
+              
+                  // Removes white background DIV
+                  iwBackground.children(':nth-child(4)').css({'display' : 'none'});
+              
+                  // Moves the infowindow 115px to the right.
+                  iwOuter.parent().parent().css({left: '20px'});
+              
+                  // Moves the shadow of the arrow 76px to the left margin.
+                  iwBackground.children(':nth-child(1)').attr('style', function(i,s){ return s + 'left: 76px !important;'});
+              
+                  // Moves the arrow 76px to the left margin.
+                  iwBackground.children(':nth-child(3)').attr('style', function(i,s){ return s + 'left: 76px !important;'});
+              
+                  // Changes the desired tail shadow color.
+                  iwBackground.children(':nth-child(3)').find('div').children().css({'box-shadow': 'rgba(72, 181, 233, 0.6) 0px 1px 6px', 'z-index' : '1'});
+              
+                  // Reference to the div that groups the close button elements.
+                  var iwCloseBtn = iwOuter.next();
+              
+                  // Apply the desired effect to the close button
+                  iwCloseBtn.css({opacity: '1', right: '38px', top: '3px', border: '7px solid #48b5e9', 'border-radius': '13px', 'box-shadow': '0 0 5px #3990B9'});
+              
+                  // If the content of infowindow not exceed the set maximum height, then the gradient is removed.
+                  if($('.iw-content').height() < 140){
+                    $('.iw-bottom-gradient').css({display: 'none'});
+                  }
+              
+                  // The API automatically applies 0.7 opacity to the button after the mouseout event. This function reverses this event to the desired value.
+                  iwCloseBtn.mouseout(function(){
+                    $(this).css({opacity: '1'});
+                  });
+                });
+          }
 }

@@ -32,13 +32,13 @@ export class UserEventAddPage {
     website: null,
     phone: null,
     host: null,
-    categories: []
+    categories: null
   };
-
   interestCollection: AngularFirestoreCollection<Interest>;
   interest: any;
   userID: string;
   categories: any[];
+  catString: string = null;;
 
 constructor(public navCtrl: NavController, public navParams: NavParams, 
   public alertCtrl: AlertController, private firebase: FirebaseProvider, 
@@ -79,8 +79,24 @@ addEvent(event, categories) {
   } else {
     event.categories = categories;
     event.host = this.userID;
+    //this.createString(categories);
+    //console.log(this.catString);
+    //event.categoryString = this.catString;
     this.firebase.addEvent(event);
     this.navCtrl.setRoot(UserCreatedEventPage);
+  }
+}
+
+createString(categories){
+  this.catString = null;
+  for(var i in categories){
+    this.afs.collection('interest').doc<Interest>(categories[i]).valueChanges()
+    .forEach(i => {
+      if(this.catString == null )
+        this.catString = i.name;
+      else
+        this.catString += ', ' + i.name;
+    })
   }
 }
 

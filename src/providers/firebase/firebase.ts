@@ -225,7 +225,7 @@ export class FirebaseProvider {
       { 
         firstName: newFirstName,
         lastName: newLastName,
-        joinDate: new Date(joinDate),
+        joinDate: joinDate,
         configured: false,
         distance: 50,
         time: 10,
@@ -460,28 +460,28 @@ export class FirebaseProvider {
   
 //-------------- bookmark event ----------------
 
-bookmarkEvent(event, id) {
-  this.afdOf.collection("bookmarkedEvents").doc(event.recId).set({
-    name: event.eventName,
-    lat: event.locations[0].coords.lat,
-    lng: event.locations[0].coords.lng
+bookmarkEvent(name, lat, lng, id) {
+  this.afdOf.collection("bookmarkedEvents").doc(id).set({
+    name: name,
+    lat: lat,
+    lng: lng
   }).then(a => {
-    this.afdOf.collection("bookmarkedEvents").doc(event.recId).collection("members").doc(this.userID).set({
+    this.afdOf.collection("bookmarkedEvents").doc(id).collection("members").doc(this.userID).set({
       name: this.userID
     });
-    this.afdOf.collection("users").doc(this.userID).collection("bookmarkedEvents").doc(event.recId).set({
-      name: event.eventName
+    this.afdOf.collection("users").doc(this.userID).collection("bookmarkedEvents").doc(id).set({
+      name: name
     });
   });
 
-  this.afdOf.collection("chatrooms").doc(event.recId).set({
-    name: event.eventName
+  this.afdOf.collection("chatrooms").doc(id).set({
+    name: name
   }).then(  a => {
-    this.afdOf.collection("chatrooms").doc(event.recId).collection("members").doc(this.userID).set({
+    this.afdOf.collection("chatrooms").doc(id).collection("members").doc(this.userID).set({
       name: this.userID
     });
-    this.afdOf.collection("users").doc(this.userID).collection("chatrooms").doc(event.recId).set({
-      name: event.eventName
+    this.afdOf.collection("users").doc(this.userID).collection("chatrooms").doc(id).set({
+      name: name
     });
   });
 }

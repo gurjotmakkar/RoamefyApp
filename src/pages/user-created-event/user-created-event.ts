@@ -24,7 +24,7 @@ export class UserCreatedEventPage {
 
     this.userID = this.firebase.getUserId();
 
-    this.eventCollection = this.afs.collection("events", ref => {
+    this.eventCollection = this.afs.collection<UserEvent>("events", ref => {
       return ref.where('host', '==', this.userID).orderBy('name')
     });
 
@@ -36,24 +36,6 @@ export class UserCreatedEventPage {
       });
     });
   }
-
-  getCategories(events){
-    return null;
-    /*
-    var categories: any;
-    if(events){
-      events.forEach( x => {
-        if(categories)
-          categories += ", " + this.firebase.getInterestName(x);
-        else
-          categories = this.firebase.getInterestName(x);
-      });
-      return categories;
-    } else {
-      return null;
-    }
-    */
-  }  
 
   addEventPage(){
     this.navCtrl.setRoot(UserEventAddPage)
