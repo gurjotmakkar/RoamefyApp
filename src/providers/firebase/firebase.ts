@@ -456,6 +456,10 @@ export class FirebaseProvider {
 
   removeEvent(id) {
     this.afdOf.doc("events/" + id).delete();
+    this.afdOf.collection("bookmarkedEvents").doc(id).delete();
+    this.afdOf.collection("users").doc(this.userID).collection("bookmarkedEvents").doc(id).delete();
+    this.afdOf.collection("chatrooms").doc(id).delete();
+    this.afdOf.collection("users").doc(this.userID).collection("chatrooms").doc(id).delete();
 }
   
 //-------------- bookmark event ----------------
