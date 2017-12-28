@@ -1,5 +1,9 @@
 page-login {
 
+  .background{
+    background: #6dd6e7;
+  }
+
     form {  
       margin-bottom: 32px;
       button {
@@ -9,7 +13,6 @@ page-login {
   
     p {
       font-size: 0.8em;
-      color: #d2d2d2;
     }
   
     ion-label {
@@ -27,5 +30,4 @@ page-login {
     .error-message .item-inner {
       border-bottom: 0 !important;
     }
-  
   }
