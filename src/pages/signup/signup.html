@@ -1,21 +1,6 @@
-<ion-header>
-  <ion-navbar color="primary">
-    <ion-buttons left>
-      <button ion-button icon-only (click)="goHome()">
-          <ion-icon name="arrow-back"></ion-icon>
-      </button>
-  </ion-buttons>
-    <ion-title>
-      Create an Account
-    </ion-title>
-  </ion-navbar>
-</ion-header>
-
-
-<ion-content padding>
+<ion-content padding class="background">
   <form [formGroup]="signupForm" (submit)="signupUser()" novalidate>
-    <ion-list>
-      <ion-item>
+      <ion-item class="background">
         <ion-label stacked>First Name</ion-label>
         <ion-input formControlName="firstName" type="text" placeholder="Your first name"
           [class.invalid]="!signupForm.controls.firstName.valid && (signupForm.controls.firstName.dirty || submitAttempt)"></ion-input>
@@ -36,7 +21,7 @@
         </p>  
       </ion-item>
       
-      <ion-item>
+      <ion-item class="background">
         <ion-label stacked>Last Name</ion-label>
         <ion-input formControlName="lastName" type="text" placeholder="Your last name"
           [class.invalid]="!signupForm.controls.lastName.valid && (signupForm.controls.lastName.dirty || submitAttempt)"></ion-input>
@@ -56,7 +41,7 @@
         </p>  
       </ion-item>
 
-      <ion-item>
+      <ion-item class="background">
         <ion-label stacked>Email</ion-label>
         <ion-input formControlName="email" type="email" placeholder="Your email address"
           [class.invalid]="!signupForm.controls.email.valid && (signupForm.controls.email.dirty || submitAttempt)"></ion-input>
@@ -65,7 +50,7 @@
         <p>Please enter a valid email.</p>
       </ion-item>
 
-      <ion-item>
+      <ion-item class="background">
         <ion-label stacked>Password</ion-label>
         <ion-input formControlName="password" type="password"  placeholder="Your password"
           [class.invalid]="!signupForm.controls.password.valid && (signupForm.controls.password.dirty || submitAttempt)"></ion-input>
@@ -84,13 +69,14 @@
           lowercase, uppercase and a number.
         </p> 
       </ion-item>
-
-    </ion-list>
-
     <button ion-button block color="danger" type="submit">
-      Verify Email
+      Sign me up please
     </button>
 
   </form>
+
+  <button ion-button block outline color="primary" (click)="goHome()">
+    Nah! I will login instead!
+  </button>
 
 </ion-content>

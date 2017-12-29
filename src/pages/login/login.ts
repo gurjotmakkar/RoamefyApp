@@ -25,6 +25,7 @@ export class LoginPage {
 
   public loginForm:FormGroup;
   public loading:Loading;
+  public submitAttempt;
 
   constructor(public navCtrl: NavController, public authData: FirebaseProvider,
     public formBuilder: FormBuilder, public alertCtrl: AlertController,
@@ -37,6 +38,7 @@ export class LoginPage {
   }
 
   loginUser(){
+    this.submitAttempt = true;
     if (!this.loginForm.valid){
       console.log(this.loginForm.value);
     } else {

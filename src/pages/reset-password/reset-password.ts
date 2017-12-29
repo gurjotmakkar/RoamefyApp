@@ -12,6 +12,7 @@ import { LoginPage } from '../login/login'
 })
 export class ResetPasswordPage {
   public resetPasswordForm:FormGroup;
+  public submitAttempt;
 
   constructor(public authData: FirebaseProvider, public formBuilder: FormBuilder,
   public nav: NavController, public alertCtrl: AlertController, public menu: MenuController) {
@@ -22,6 +23,7 @@ export class ResetPasswordPage {
 }
 
 resetPassword(){
+  this.submitAttempt = true;
   if (!this.resetPasswordForm.valid){
     console.log(this.resetPasswordForm.value);
   } else {

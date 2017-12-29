@@ -1,33 +1,40 @@
 page-login {
 
   .background{
-    background: #6dd6e7;
+    background: color($colors, light, base);
   }
 
-    form {  
-      margin-bottom: 32px;
-      button {
-        margin-top: 20px;
-      }
-    }
-  
-    p {
-      font-size: 0.8em;
-    }
-  
-    ion-label {
-      margin-left: 5px;
-    }
-  
-    ion-input {
-      padding: 5px;
-    }
-  
-    .invalid {
-      border-bottom: 1px solid #FF6153;
-    }
-  
-    .error-message .item-inner {
-      border-bottom: 0 !important;
+  form {  
+    margin-top: 50px;
+    margin-bottom: 32px;
+    background: color($colors, light, base);
+    button {
+      margin-top: 20px;
     }
   }
+  
+  p {
+    font-size: 0.8em;
+  }
+  
+  ion-label {
+    margin-left: 5px;
+  }
+  
+  ion-input {
+    padding: 5px;
+  }
+  
+  .invalid {
+    border-bottom: 1px solid #FF6153;
+  }
+  
+  .error-message .item-inner {
+    border-bottom: 0 !important;
+  } 
+  
+  .error-message {
+    border-bottom: 0 !important;
+    background: color($colors, light, base);
+  }
+}

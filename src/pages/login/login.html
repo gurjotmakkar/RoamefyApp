@@ -1,14 +1,15 @@
-
-  <ion-content padding class="background">
+<ion-content padding class="background">
+  
   <form [formGroup]="loginForm" (submit)="loginUser()" novalidate>
+    
     <ion-item class="background">
       <ion-label stacked>Email</ion-label>
       <ion-input #email formControlName="email" type="email" placeholder="Your email address"
         [class.invalid]="!loginForm.controls.email.valid &&
-          loginForm.controls.email.dirty"></ion-input>
+          (loginForm.controls.email.dirty || submitAttempt)"></ion-input>
     </ion-item>
     <ion-item class="error-message" *ngIf="!loginForm.controls.email.valid  &&
-      loginForm.controls.email.dirty">
+      (loginForm.controls.email.dirty || submitAttempt)">
       <p>Please enter a valid email.</p>
     </ion-item>
 
@@ -16,37 +17,29 @@
       <ion-label stacked>Password</ion-label>
       <ion-input #password formControlName="password" type="password" placeholder="Your password"
         [class.invalid]="!loginForm.controls.password.valid &&
-          loginForm.controls.password.dirty"></ion-input>
+          (loginForm.controls.password.dirty || submitAttempt)"></ion-input>
     </ion-item>
     <ion-item class="error-message" *ngIf="!loginForm.controls.password.valid  &&
-      loginForm.controls.password.dirty">
+      (loginForm.controls.password.dirty || submitAttempt)">
       <p>Your password needs more than 8 characters.</p>
     </ion-item>
 
-    <button ion-button block color="danger" type="submit">
+    <button ion-button block color="primary" type="submit">
       Login
     </button>
 
   </form>
 
-
-
-  <p></p>
-  <p></p>
-
-  <button ion-button block clear color="danger" (click)="goToResetPassword()">
-    I forgot my password
+  <button ion-button block outline color="primary" (click)="goToResetPassword()">
+      Intentionally forgot password!
   </button>
-  <p></p>
-  <p></p>
 
-  <button ion-button block clear color="danger" (click)="createAccount()">
-    Create a new account
+  <button ion-button block outline color="primary" (click)="createAccount()">
+    Get into application
   </button>
-  <p></p>
-  <p></p>
 
-  <button ion-button block clear color="danger" (click)="createProAccount()">
-    Create a pro account
+  <button ion-button block outline color="primary" (click)="createProAccount()">
+    Getting in as a pro
   </button>
+  
 </ion-content>
