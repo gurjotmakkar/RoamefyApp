@@ -1,28 +1,65 @@
 page-login {
 
   .background{
-    background: color($colors, light, base);
+    background-image: url('../../assets/imgs/login.jpg');
+    color: #000;
+  }
+
+  .item{
+    background: rgba($color: #fff, $alpha: 0.1);
+    color: #000;
+  }
+
+  .logo{
+    margin-top: 50px;
+    color: color($colors, primary, base);
+    font-size: 50px;
+    font-weight: bolder;
+    text-align: center;
+    font-family: "Sofia";
+    text-shadow: 0 0 5px #000;
+  }
+
+  .loginButton{
+    background: rgba($color: color($colors, darkSecondary, base), $alpha: 1.0);
+  }
+
+  .otherButton{
+    background: rgba($color: color($colors, darkSecondary, base), $alpha: 1);
+    box-shadow: 0 0 5px #000;
+    margin-top: 10px;
   }
 
   form {  
-    margin-top: 50px;
     margin-bottom: 32px;
-    background: color($colors, light, base);
-    button {
-      margin-top: 20px;
-    }
+    background: rgba($color: #fff, $alpha: 0.3);
+    box-shadow: 0 0 5px #000;
+    border-radius: 10px;
   }
   
   p {
     font-size: 0.8em;
+    color: #000;
   }
-  
+
   ion-label {
-    margin-left: 5px;
+    color: #000;
   }
   
   ion-input {
-    padding: 5px;
+    color: #000;
+  }
+
+  .text-input::-moz-placeholder {
+    color: #000;
+  }
+  
+  .text-input:-ms-input-placeholder {
+    color: #000;
+  }
+  
+  .text-input::-webkit-input-placeholder {
+    color: #000;
   }
   
   .invalid {
@@ -31,10 +68,12 @@ page-login {
   
   .error-message .item-inner {
     border-bottom: 0 !important;
+    color: #000;
   } 
   
   .error-message {
     border-bottom: 0 !important;
-    background: color($colors, light, base);
+    color: #000;
+    background: rgba($color: #fff, $alpha: 0.1);
   }
 }

@@ -1,7 +1,8 @@
-<ion-content padding class="background">
+<ion-content padding class="background"> 
+  <h1 class="logo">Roamefy</h1>
   <form [formGroup]="signupForm" (submit)="signupUser()" novalidate>
-      <ion-item class="background">
-        <ion-label stacked>First Name</ion-label>
+      <ion-item class="item">
+        <ion-label color="black" stacked>First Name</ion-label>
         <ion-input formControlName="firstName" type="text" placeholder="Your first name"
           [class.invalid]="!signupForm.controls.firstName.valid && (signupForm.controls.firstName.dirty || submitAttempt)"></ion-input>
       </ion-item>
@@ -20,8 +21,8 @@
         </p>  
       </ion-item>
 
-      <ion-item class="background">
-        <ion-label stacked>Last Name</ion-label>
+      <ion-item class="item">
+        <ion-label color="black" stacked>Last Name</ion-label>
         <ion-input formControlName="lastName" type="text" placeholder="Your last name"
           [class.invalid]="!signupForm.controls.lastName.valid && (signupForm.controls.lastName.dirty || submitAttempt)"></ion-input>
       </ion-item>
@@ -40,8 +41,8 @@
         </p>  
       </ion-item>
 
-      <ion-item class="background">
-        <ion-label stacked>Email</ion-label>
+      <ion-item class="item">
+        <ion-label color="black" stacked>Email</ion-label>
         <ion-input formControlName="email" type="email" placeholder="Your email address"
           [class.invalid]="!signupForm.controls.email.valid && (signupForm.controls.email.dirty || submitAttempt)"></ion-input>
       </ion-item>
@@ -49,8 +50,8 @@
         <p>Please enter a valid email.</p>
       </ion-item>
 
-      <ion-item class="background">
-        <ion-label stacked>Password</ion-label>
+      <ion-item class="item">
+        <ion-label color="black" stacked>Password</ion-label>
         <ion-input formControlName="password" type="password"  placeholder="Your password"
           [class.invalid]="!signupForm.controls.password.valid && (signupForm.controls.password.dirty || submitAttempt)"></ion-input>
       </ion-item>
@@ -60,8 +61,8 @@
         <p>lowercase, uppercase and a number.</p>
       </ion-item>
 
-      <ion-item (click)="showAddressModal()" class="background">
-        <ion-label stacked>Address</ion-label>
+      <ion-item (click)="showAddressModal()" class="item">
+        <ion-label color="black" stacked>Address</ion-label>
         <ion-input formControlName="address" type="search" placeholder="Your address"
           [class.invalid]="!signupForm.controls.address.valid && (signupForm.controls.address.dirty || submitAttempt)"></ion-input>
       </ion-item>
@@ -69,8 +70,8 @@
         <p>Please enter your address.</p>
       </ion-item>
 
-      <ion-item class="background">
-        <ion-label stacked>Date of Birth (DD/MM/YYYY)</ion-label>
+      <ion-item class="item">
+        <ion-label color="black" stacked>Date of Birth (DD/MM/YYYY)</ion-label>
         <ion-input formControlName="dateOfBirth" type="text" placeholder="Your date of birth"
           [class.invalid]="!signupForm.controls.dateOfBirth.valid && (signupForm.controls.dateOfBirth.dirty || submitAttempt)"></ion-input>
       </ion-item>
@@ -83,8 +84,8 @@
         </p>
       </ion-item>
 
-      <ion-item class="background">
-        <ion-label stacked>Driver Licence Number</ion-label>
+      <ion-item class="item">
+        <ion-label color="black" stacked>Driver Licence Number</ion-label>
         <ion-input formControlName="driverLicenceNumber" type="text" placeholder="Your driver's licence number"
           [class.invalid]="!signupForm.controls.driverLicenceNumber.valid && (signupForm.controls.driverLicenceNumber.dirty || submitAttempt)"></ion-input>
       </ion-item>
@@ -92,8 +93,8 @@
         <p>Please enter your driver's licence number.</p>
       </ion-item>
 
-      <ion-item class="background">
-        <ion-label stacked>Phone Number</ion-label>
+      <ion-item class="item">
+        <ion-label color="black" stacked>Phone Number</ion-label>
         <ion-input formControlName="phoneNumber" type="text" placeholder="Your phone number"
           [class.invalid]="!signupForm.controls.phoneNumber.valid && (signupForm.controls.phoneNumber.dirty || submitAttempt)"></ion-input>
       </ion-item>
@@ -101,13 +102,13 @@
         <p>Please enter your phone number.</p>
       </ion-item>
 
-    <button ion-button block color="danger" type="submit">
+    <button ion-button block class="loginButton" type="submit">
       Sign me up as a Pro please!
     </button>
 
   </form>
 
-  <button ion-button block outline color="primary" (click)="goHome()">
+  <button ion-button block class="otherButton" (click)="goHome()">
       Nah! I will login instead!
   </button>
 

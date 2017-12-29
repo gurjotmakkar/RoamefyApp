@@ -1,7 +1,10 @@
 <ion-content padding class="background">
+  <h1 class="logo">Roamefy</h1>
+
   <form [formGroup]="signupForm" (submit)="signupUser()" novalidate>
-      <ion-item class="background">
-        <ion-label stacked>First Name</ion-label>
+    
+      <ion-item class="item">
+        <ion-label color="black" stacked>First Name</ion-label>
         <ion-input formControlName="firstName" type="text" placeholder="Your first name"
           [class.invalid]="!signupForm.controls.firstName.valid && (signupForm.controls.firstName.dirty || submitAttempt)"></ion-input>
       </ion-item>
@@ -21,8 +24,8 @@
         </p>  
       </ion-item>
       
-      <ion-item class="background">
-        <ion-label stacked>Last Name</ion-label>
+      <ion-item class="item">
+        <ion-label color="black" stacked>Last Name</ion-label>
         <ion-input formControlName="lastName" type="text" placeholder="Your last name"
           [class.invalid]="!signupForm.controls.lastName.valid && (signupForm.controls.lastName.dirty || submitAttempt)"></ion-input>
       </ion-item>
@@ -41,8 +44,8 @@
         </p>  
       </ion-item>
 
-      <ion-item class="background">
-        <ion-label stacked>Email</ion-label>
+      <ion-item class="item">
+        <ion-label color="black" stacked>Email</ion-label>
         <ion-input formControlName="email" type="email" placeholder="Your email address"
           [class.invalid]="!signupForm.controls.email.valid && (signupForm.controls.email.dirty || submitAttempt)"></ion-input>
       </ion-item>
@@ -50,8 +53,8 @@
         <p>Please enter a valid email.</p>
       </ion-item>
 
-      <ion-item class="background">
-        <ion-label stacked>Password</ion-label>
+      <ion-item class="item">
+        <ion-label color="black" stacked>Password</ion-label>
         <ion-input formControlName="password" type="password"  placeholder="Your password"
           [class.invalid]="!signupForm.controls.password.valid && (signupForm.controls.password.dirty || submitAttempt)"></ion-input>
       </ion-item>
@@ -69,13 +72,13 @@
           lowercase, uppercase and a number.
         </p> 
       </ion-item>
-    <button ion-button block color="danger" type="submit">
+    <button ion-button class="loginButton" block type="submit">
       Sign me up please
     </button>
 
   </form>
 
-  <button ion-button block outline color="primary" (click)="goHome()">
+  <button ion-button block class="otherButton" (click)="goHome()">
     Nah! I will login instead!
   </button>
 
