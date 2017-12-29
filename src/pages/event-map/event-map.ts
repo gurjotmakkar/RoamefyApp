@@ -119,14 +119,15 @@ export class EventMapPage {
       });
 
       var infoWindow = new google.maps.InfoWindow({
-        maxWidth: 350
+        maxWidth: 350,
+        content: contentString
       }); 
 
       google.maps.event.addListener(marker, 'click', function() {
         infoWindow.open(this.map, marker);
         infoWindow.setContent(contentString);   
       });
-
+/*
       google.maps.event.addListener(infoWindow, 'domready', function() {        
                 // Reference to the DIV that wraps the bottom of infowindow
                 var iwOuter = $('.gm-style-iw');
@@ -135,8 +136,8 @@ export class EventMapPage {
                  * We use jQuery and create a iwBackground variable,
                  * and took advantage of the existing reference .gm-style-iw for the previous div with .prev().
                 */
-
-                
+/*
+         
                 var iwBackground = iwOuter.prev();
             
                 // Removes background shadow DIV
@@ -173,7 +174,9 @@ export class EventMapPage {
                   $(this).css({opacity: '1'});
                 });
               });
+              */
             } 
+            
             //google.maps.event.addDomListener(window, 'load', initialize)
     }
 
@@ -201,7 +204,8 @@ export class EventMapPage {
         });
 
         var infoWindow = new google.maps.InfoWindow({
-          maxWidth: 350
+          maxWidth: 350,
+          content: contentString
         }); 
 
         google.maps.event.addListener(marker, 'click', function() {
@@ -209,7 +213,7 @@ export class EventMapPage {
           infoWindow.setContent(contentString);   
         });
 
-        google.maps.event.addListener(infoWindow, 'domready', function() {        
+/*        google.maps.event.addListener(infoWindow, 'domready', function() {        
                   // Reference to the DIV that wraps the bottom of infowindow
                   var iwOuter = $('.gm-style-iw');
                   
@@ -248,6 +252,6 @@ export class EventMapPage {
                   iwCloseBtn.mouseout(function(){
                     $(this).css({opacity: '1'});
                   });
-                });
+                });*/
           }
 }
