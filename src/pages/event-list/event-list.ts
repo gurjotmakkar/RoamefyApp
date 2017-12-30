@@ -97,6 +97,7 @@ export class EventListPage {
   }
 
   addEvent(item){
+    console.log(item);
     if( this.icon(item.recId) == 'bookmark' ){
       this.firebase.bookmarkEvent(item.eventName, item.locations[0].coords.lat, item.locations[0].coords.lng, item.recId);
       this.eventArr.push(item.recId);

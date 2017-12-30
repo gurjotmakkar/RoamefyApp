@@ -1,0 +1,108 @@
+<ion-content padding>     
+  <form #editAttractionForm="ngForm">
+
+    <ion-item>
+      <ion-label floating>attraction Name</ion-label>
+      <ion-input [(ngModel)]="attraction.name" type="text" name="name" required minlength="2"
+      maxlength="64" pattern="[^0-9]*" #name="ngModel" [class.invalid]="name.errors 
+      && (name.dirty || name.touched)"></ion-input>
+    </ion-item>
+    <ion-item class="error-message" *ngIf="name.errors && (name.dirty || name.touched)">
+      <p [hidden]="!name.errors.required">
+        attraction name is required!
+      </p>
+      <p [hidden]="!name.errors.minlength">
+          attraction name must be at least 2 characters long.
+      </p>
+      <p [hidden]="!name.errors.maxlength">
+          attraction name cannot be more than 64 characters long.
+      </p>
+      <p [hidden]="!name.errors.pattern">
+        Only letters are allowed.
+      </p>
+    </ion-item>
+
+  <ion-item>
+    <ion-label floating>attraction Description</ion-label>
+    <ion-input [(ngModel)]="attraction.description" type="text" name="description" required minlength="5" 
+    maxlength="5000" pattern="[^0-9]*" #description="ngModel" [class.invalid]="description.errors 
+    && (description.dirty || description.touched)"></ion-input>
+  </ion-item>
+
+  <ion-item class="error-message" *ngIf="description.errors && (description.dirty || description.touched)">
+      <p [hidden]="!description.errors.required">
+        attraction description is required!
+      </p>
+      <p [hidden]="!description.errors.minlength">
+        attraction description must be at least 5 characters long.
+      </p>
+      <p [hidden]="!description.errors.maxlength">
+        attraction description cannot be more than 5000 characters long.
+      </p>
+      <p [hidden]="!description.errors.pattern">
+        Only letters are allowed.
+      </p>
+  </ion-item>
+
+  <ion-item (click)="showAddressModal()">
+      <ion-label floating>attraction Address</ion-label>
+      <ion-input [(ngModel)]="attraction.address" name="address" type="search" required 
+      #address="ngModel" [class.invalid]="address.errors && (address.dirty || address.touched)"></ion-input>
+  </ion-item>
+
+  <ion-item class="error-message" *ngIf="address.errors && (address.dirty || address.touched)">
+    <p [hidden]="!address.errors.required">Address is required!</p>
+  </ion-item>
+
+  <ion-item>
+    <ion-label floating>Website</ion-label>
+    <ion-input [(ngModel)]="attraction.website" name="website" minlength = 10 pattern="(https?://|www\.)..[0-9a-zA-Z]+\..[0-9a-zA-Z]+" #website="ngModel" 
+    [class.invalid]="website.errors && (website.dirty || website.touched)"></ion-input>
+  </ion-item>
+
+  <ion-item class="error-message" *ngIf="website.errors && (website.dirty || website.touched)">
+      <p [hidden]="!website.errors.pattern">Website url is not valid.</p>
+  </ion-item>
+
+  <ion-item>
+    <ion-label floating>Contact Phone</ion-label>
+    <ion-input [(ngModel)]="attraction.phone" name="phone" required pattern="[^a-zA-Z!@#$%^\&*( )\t_-]*" minlength="10"
+      maxlength="10" #phone="ngModel" [class.invalid]="phone.errors 
+    && (phone.dirty || phone.touched)"></ion-input>
+  </ion-item>
+
+  <ion-item class="error-message" *ngIf="phone.errors && (phone.dirty || phone.touched)">
+    <p [hidden]="!phone.errors.required">Phone number is required!</p>
+    <p [hidden]="!phone.errors.pattern">Phone number is not valid</p>
+    <p [hidden]="!phone.errors.minlength">Phone number is too short</p>
+  </ion-item>
+
+  <ion-item>
+    <ion-label floating>attraction hours</ion-label>
+    <ion-input [(ngModel)]="attraction.hours" type="text" name="hours" required minlength="5" 
+    maxlength="5000" pattern="[^0-9]*" #hours="ngModel" [class.invalid]="hours.errors 
+    && (hours.dirty || hours.touched)"></ion-input>
+  </ion-item>
+
+  <ion-item class="error-message" *ngIf="hours.errors && (hours.dirty || hours.touched)">
+      <p [hidden]="!hours.errors.required">
+        attraction hours is required!
+      </p>
+      <p [hidden]="!hours.errors.minlength">
+        attraction hours must be at least 5 characters long.
+      </p>
+      <p [hidden]="!hours.errors.maxlength">
+        attraction hours cannot be more than 5000 characters long.
+      </p>
+      <p [hidden]="!hours.errors.pattern">
+        Only letters are allowed.
+      </p>
+  </ion-item>
+
+  <button ion-button black clear color="primary" (click)="editAttraction(attraction)" [disabled]="!editAttractionForm.form.valid">Update</button> 
+  
+  <button ion-button black clear color="danger" (click)="cancel()">Cancel</button>    
+
+  <button ion-button black clear color="danger" (click)="delete()">Remove</button>      
+</form>
+</ion-content>

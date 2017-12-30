@@ -1,61 +1,62 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
+import { Attractions } from '../../models/attractions/attractions.model';
+import { FirebaseProvider } from '../../providers/firebase/firebase';
+import { EditAttractionPage } from '../edit-attraction/edit-attraction';
 
-declare var google: any;
-/**
- * Generated class for the PlacesViewPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+interface Access{
+  name: string;
+}
 
 @IonicPage()
 @Component({
   selector: 'page-places-view',
   templateUrl: 'places-view.html',
 })
+
 export class PlacesViewPage {
 
-  autocompleteItems: any;
-  geocoder: any;
-  GooglePlaces: any;
-  nearblyItems: any;
+  attractionCollection: AngularFirestoreCollection<Attractions>;
+  attractions: any;
+  access: string;
+  userID: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-    //this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
-    //this.autocomplete = { input: '' };
-    this.autocompleteItems = [];
-    this.geocoder = new google.maps.Geocoder;
-   // this.GooglePlaces = new google.maps.places.nearblySearch;
-    this.nearblyItems = [];
-  }
+  constructor(public navCtrl: NavController, public navParams: NavParams, 
+    private afs: AngularFirestore, private firebase: FirebaseProvider) {
 
-  selectSearchResult(item) {
-    this.autocompleteItems = [];
+      this.userID = this.firebase.getUserId();
 
-    this.geocoder.geocode({'placeId': item.placeId}, (results, status) => {
-      if(status === 'OK' && results[0]){
-        this.autocompleteItems = [];
-        this.GooglePlaces.nearblySearch({
-            location: results[0].geometry.location,
-            radius: '500',
-            types: ['restaurant'],
-            key: 'AIzaSyBrqqpoBbtYrhjAnRogxfg8f3FWdydeF00'
-        }, (near_places) => {
-             //this.zone.run(() => {
-                this.nearblyItems = [];
-                for(var i = 0; i < near_places.length; i++){
-                  this.nearblyItems.push(near_places[i]);
-                }
-              }); 
-        }
+      this.attractionCollection = this.afs.collection<Attractions>("attractions");
+  
+      this.attractions = this.attractionCollection.snapshotChanges().map(actions => {
+        return actions.map(snap => {
+          let id = snap.payload.doc.id;
+          let data = { id, ...snap.payload.doc.data() };
+          return data;
+        });
       });
+
+      this.afs.collection('superiorLevelAccess').doc<Access>(this.userID).snapshotChanges()
+      .forEach(a => {
+        if (a.payload.exists){
+          this.access = this.userID;
+        }
+      })
   }
-//    })
-//  }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PlacesViewPage');
+  }
+
+  editAttraction(key){
+    this.navCtrl.setRoot(EditAttractionPage, {id: key})
+  }
+
+  checkIfDev(){
+    if( this.access == this.userID)
+      return true;
+    return false;
   }
 
 }

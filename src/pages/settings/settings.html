@@ -14,5 +14,6 @@
           {{p.title}}
         </button>
         <button ion-button block color="danger" *ngIf="checkUserRole()" (click)="openPage(userEventPage)" padding="10px">Events by you</button>
+        <button ion-button block color="danger" *ngIf="checkIfDev()" (click)="openPage(addAttractionPage)" padding="10px">Add must see attractions</button>
   </ion-list>
 </ion-content>

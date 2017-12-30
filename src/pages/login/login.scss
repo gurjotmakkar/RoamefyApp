@@ -1,7 +1,9 @@
 page-login {
 
   .background{
-    background-image: url('../../assets/imgs/login.jpg');
+    background-image: url('../assets/imgs/login.jpg');
+    background-repeat:no-repeat;
+    background-size:cover;
     color: #000;
   }
 

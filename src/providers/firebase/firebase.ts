@@ -509,4 +509,19 @@ pushMessage(chatKey, message){
 
 }
 
+//-------------- attractions ----------------
+
+addAttraction(attractions){
+  this.afdOf.collection("attractions").add(attractions);
 }
+
+updateAttraction(attractions, id){
+  this.afdOf.doc("attractions/" + id).update(attractions);
+}
+
+deleteAttraction(id){
+  this.afdOf.doc("attractions/" + id).delete();
+}
+
+}
+

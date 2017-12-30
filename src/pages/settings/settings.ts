@@ -8,10 +8,15 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { EventChatsPage } from '../event-chats/event-chats';
 import { UserBookmarkedEventsPage } from '../user-bookmarked-events/user-bookmarked-events';
 import { UserProfilePage } from '../user-profile/user-profile';
+import { AddAttractionPage } from '../add-attraction/add-attraction';
 import { HomePage } from '../home/home';
 
 interface User {
   role: string;
+}
+
+interface Access{
+  name: string;
 }
 
 @IonicPage()
@@ -23,7 +28,10 @@ interface User {
 export class SettingsPage {
   pages: Array<{title: string, component: any}>;
   userEventPage: {title: string, component: any};
+  addAttractionPage: {title: string, component: any};
   role: string = 'normal';
+  access: string = null;
+  userID: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, 
     public firebase: FirebaseProvider, private afs: AngularFirestore) {
@@ -35,11 +43,19 @@ export class SettingsPage {
       { title: "User Profile", component: UserProfilePage}
     ];
     this.userEventPage = { title: "Events by you", component: UserCreatedEventPage };
+    this.addAttractionPage = { title: "Add attractions", component: AddAttractionPage };
     
-    var userID = this.firebase.getUserId();
-    this.afs.collection('users').doc<User>(userID).valueChanges()
+    this.userID = this.firebase.getUserId();
+    this.afs.collection('users').doc<User>(this.userID).valueChanges()
     .subscribe(a => {
       this.role = a.role == null ? 'normal' : a.role;
+    })
+
+    this.afs.collection('superiorLevelAccess').doc<Access>(this.userID).snapshotChanges()
+    .forEach(a => {
+      if (a.payload.exists){
+        this.access = this.userID;
+      }
     })
   }
 
@@ -49,6 +65,12 @@ export class SettingsPage {
 
   checkUserRole(){
     if( this.role == "pro")
+      return true;
+    return false;
+  }
+
+  checkIfDev(){
+    if( this.access == this.userID)
       return true;
     return false;
   }
