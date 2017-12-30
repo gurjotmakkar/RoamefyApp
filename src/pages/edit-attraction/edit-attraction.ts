@@ -3,7 +3,6 @@ import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angu
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { Attractions } from '../../models/attractions/attractions.model';
 import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
-import { HomePage } from '../home/home';
 import { AutocompletePage } from '../autocomplete/autocomplete';
 import { PlacesViewPage } from '../places-view/places-view';
 
