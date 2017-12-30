@@ -6,7 +6,7 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { UserEvent } from '../../models/events/userevent.model';
 
 declare var google: any;
-declare var $: any;
+//declare var $: any;
 
 @Component({
   selector: 'page-event-map',
@@ -81,35 +81,49 @@ export class EventMapPage {
     
     for(let marker of markers) { 
       var loc = marker.calEvent.locations[0]["coords"];
-      let name  = marker.calEvent["eventName"];
+      let startDate = marker.calEvent["startDate"].substr(0,10);
+      //let startTime = marker.calEvent["startDateTime"] === undefined || marker.calEvent["startDateTime"] === null ? "" : marker.calEvent["startDateTime"];
+      let endDate = marker.calEvent["endDate"].substr(0,10);
+      //let endTime = marker.calEvent["endDateTime"]  === undefined || marker.calEvent["endDateTime"] === null ? "" : marker.calEvent["endDateTime"];
+      let name = marker.calEvent["eventName"];
+      let shortDesc =  marker.calEvent["shortDescription"];
+      if(shortDesc === undefined){
+        shortDesc = "";
+      }
       let webSite = marker.calEvent["eventWebsite"];
       let description = marker.calEvent["description"];
-      let orgPhone  = marker.calEvent["orgPhone"];
+      let orgPhone = marker.calEvent["orgPhone"];
+      let orgAddress = marker.calEvent["orgAddress"];
+      //let orgName = marker.calEvent["orgName"];
+      //let orgEmail = marker.calEvent["orgEmail"];  
       let categories = marker.calEvent["categoryString"];
       let img = "http://mnlct.org/wp-content/uploads/2014/10/toronto-skyline.jpg";
-
+      let bookimg = "assets/imgs/bookmark.png";
       if( marker.calEvent["image"] !== undefined)
         img = "https://secure.toronto.ca" + marker.calEvent["image"]["url"];
 
       //variable to pass into setContent of infoWindow
       let contentString =              
                     '<div id="iw-container">' +
-
-                    '<div class="iw-title">' + name +'</div>' + 
+                    '<div class="iw-title">' + "From: " + startDate + " To: " + endDate
+                     + '<p>' + name + '</p>' + '</div>' + 
                     '<div class="iw-content">' +
-                    '<div class="iw-subTitle"> Description: </div>' +
-                    '<img src= "' + img + '" height="115" width="93">' +
+                    shortDesc +
+                    '<button type="submit" click="addUserEvent(event)">' +
+                    '<img src="' + bookimg + '" height="50" width="50"/> </button>' +
+                    '<img src= "' + img + '" height="210" width="230">' +
+                    '<div class="iw-subTitle"> Event Details: </div>' +
                     '<p>' + description + '</p>' +
 
-                                   '<div class="iw-subTitle">Website: </div>' + '<a href="  '+ webSite +'     ">'  +  'link'     +       '</a>'    +              
-                                   '<div class="iw-subTitle">Phone: </div> '   +
+                                   '<div class="iw-subTitle">More information: </div>' + '<a href="  '+ webSite +'     ">'  +  'link'     +       '</a>'    +              
+                                   '<div class="iw-subTitle">Event Location: </div> '   +
+                                   '<p>'    + orgAddress    + '</p>'   +
+                                   '<div class="iw-subTitle">Contact Information: </div> '   +
                                    '<p>'    + orgPhone    + '</p>'   +                                          
-                                   '<div class="iw-subTitle">category(s): </div> '  + 
+                                   '<div class="iw-subTitle">Category(s): </div> '  + 
                                    '<p>' + categories  + '</p>' +
-    
-
                                    '</div>' + //end content
-                                   '<div class="iw-bottom-gradient"></div>' +
+                                  // '<div class="iw-bottom-gradient"></div>' +
                                    '</div>' //end container
       //console.log(name); //displays name of each event within this object
  
@@ -119,14 +133,15 @@ export class EventMapPage {
       });
 
       var infoWindow = new google.maps.InfoWindow({
-        maxWidth: 350
+        maxWidth: 350,
+        content: contentString
       }); 
 
       google.maps.event.addListener(marker, 'click', function() {
         infoWindow.open(this.map, marker);
         infoWindow.setContent(contentString);   
       });
-
+/*
       google.maps.event.addListener(infoWindow, 'domready', function() {        
                 // Reference to the DIV that wraps the bottom of infowindow
                 var iwOuter = $('.gm-style-iw');
@@ -135,8 +150,8 @@ export class EventMapPage {
                  * We use jQuery and create a iwBackground variable,
                  * and took advantage of the existing reference .gm-style-iw for the previous div with .prev().
                 */
-
-                
+/*
+         
                 var iwBackground = iwOuter.prev();
             
                 // Removes background shadow DIV
@@ -173,7 +188,9 @@ export class EventMapPage {
                   $(this).css({opacity: '1'});
                 });
               });
+              */
             } 
+            
             //google.maps.event.addDomListener(window, 'load', initialize)
     }
 
@@ -201,7 +218,8 @@ export class EventMapPage {
         });
 
         var infoWindow = new google.maps.InfoWindow({
-          maxWidth: 350
+          maxWidth: 350,
+          content: contentString
         }); 
 
         google.maps.event.addListener(marker, 'click', function() {
@@ -209,7 +227,7 @@ export class EventMapPage {
           infoWindow.setContent(contentString);   
         });
 
-        google.maps.event.addListener(infoWindow, 'domready', function() {        
+/*        google.maps.event.addListener(infoWindow, 'domready', function() {        
                   // Reference to the DIV that wraps the bottom of infowindow
                   var iwOuter = $('.gm-style-iw');
                   
@@ -248,6 +266,6 @@ export class EventMapPage {
                   iwCloseBtn.mouseout(function(){
                     $(this).css({opacity: '1'});
                   });
-                });
+                });*/
           }
 }
