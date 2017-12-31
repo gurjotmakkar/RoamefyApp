@@ -1,9 +1,13 @@
-<ion-content padding class="background"> 
-  <h1 class="logo">Roamefy</h1>
+<ion-header>
+  <ion-navbar color="primary">
+    <h1 class="logo">Roamefy</h1>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
   <form [formGroup]="signupForm" (submit)="signupUser()" novalidate>
       <ion-item class="item">
-        <ion-label color="black" stacked>First Name</ion-label>
-        <ion-input formControlName="firstName" type="text" placeholder="Your first name"
+        <ion-label stacked class="register">First Name</ion-label>
+        <ion-input formControlName="firstName" type="text" placeholder="Enter your first name"
           [class.invalid]="!signupForm.controls.firstName.valid && (signupForm.controls.firstName.dirty || submitAttempt)"></ion-input>
       </ion-item>
       <ion-item class="error-message" *ngIf="!signupForm.controls.firstName.valid  && (signupForm.controls.firstName.dirty || submitAttempt)">
@@ -11,19 +15,19 @@
           Please enter your name.
         </p>
         <p *ngIf="signupForm.controls.firstName.errors.minlength">
-          Name is too short.
+          Oops, name is too short.
         </p>
         <p *ngIf="signupForm.controls.firstName.errors.maxlength">
-          Name is too long.
+          Oops, name is too long.
         </p>
         <p *ngIf="signupForm.controls.firstName.errors.pattern">
-          Numbers are not allowed.
+          Oops, numbers are not allowed.
         </p>  
       </ion-item>
 
       <ion-item class="item">
-        <ion-label color="black" stacked>Last Name</ion-label>
-        <ion-input formControlName="lastName" type="text" placeholder="Your last name"
+        <ion-label stacked class="register">Last Name</ion-label>
+        <ion-input formControlName="lastName" type="text" placeholder="Enter your last name"
           [class.invalid]="!signupForm.controls.lastName.valid && (signupForm.controls.lastName.dirty || submitAttempt)"></ion-input>
       </ion-item>
       <ion-item class="error-message" *ngIf="!signupForm.controls.lastName.valid  && (signupForm.controls.lastName.dirty || submitAttempt)">
@@ -42,8 +46,8 @@
       </ion-item>
 
       <ion-item class="item">
-        <ion-label color="black" stacked>Email</ion-label>
-        <ion-input formControlName="email" type="email" placeholder="Your email address"
+        <ion-label stacked class="register">Email</ion-label>
+        <ion-input formControlName="email" type="email" placeholder="Enter your email address"
           [class.invalid]="!signupForm.controls.email.valid && (signupForm.controls.email.dirty || submitAttempt)"></ion-input>
       </ion-item>
       <ion-item class="error-message" *ngIf="!signupForm.controls.email.valid  && (signupForm.controls.email.dirty || submitAttempt)">
@@ -51,8 +55,8 @@
       </ion-item>
 
       <ion-item class="item">
-        <ion-label color="black" stacked>Password</ion-label>
-        <ion-input formControlName="password" type="password"  placeholder="Your password"
+        <ion-label stacked class="register">Password</ion-label>
+        <ion-input formControlName="password" type="password"  placeholder="Enter your password"
           [class.invalid]="!signupForm.controls.password.valid && (signupForm.controls.password.dirty || submitAttempt)"></ion-input>
       </ion-item>
       <ion-item class="error-message" *ngIf="!signupForm.controls.password.valid  && (signupForm.controls.password.dirty || submitAttempt)">
@@ -62,8 +66,8 @@
       </ion-item>
 
       <ion-item (click)="showAddressModal()" class="item">
-        <ion-label color="black" stacked>Address</ion-label>
-        <ion-input formControlName="address" type="search" placeholder="Your address"
+        <ion-label stacked class="register">Address</ion-label>
+        <ion-input formControlName="address" type="search" placeholder="Enter your address"
           [class.invalid]="!signupForm.controls.address.valid && (signupForm.controls.address.dirty || submitAttempt)"></ion-input>
       </ion-item>
       <ion-item class="error-message" *ngIf="!signupForm.controls.address.valid  && (signupForm.controls.address.dirty || submitAttempt)">
@@ -71,8 +75,8 @@
       </ion-item>
 
       <ion-item class="item">
-        <ion-label color="black" stacked>Date of Birth (DD/MM/YYYY)</ion-label>
-        <ion-input formControlName="dateOfBirth" type="text" placeholder="Your date of birth"
+        <ion-label stacked class="register">Date of Birth (DD/MM/YYYY)</ion-label>
+        <ion-input formControlName="dateOfBirth" type="text" placeholder="Enter your date of birth"
           [class.invalid]="!signupForm.controls.dateOfBirth.valid && (signupForm.controls.dateOfBirth.dirty || submitAttempt)"></ion-input>
       </ion-item>
       <ion-item class="error-message" *ngIf="!signupForm.controls.dateOfBirth.valid  && (signupForm.controls.dateOfBirth.dirty || submitAttempt)">
@@ -85,8 +89,8 @@
       </ion-item>
 
       <ion-item class="item">
-        <ion-label color="black" stacked>Driver Licence Number</ion-label>
-        <ion-input formControlName="driverLicenceNumber" type="text" placeholder="Your driver's licence number"
+        <ion-label stacked class="register">Driver Licence Number</ion-label>
+        <ion-input formControlName="driverLicenceNumber" type="text" placeholder="Enter your driver's licence number"
           [class.invalid]="!signupForm.controls.driverLicenceNumber.valid && (signupForm.controls.driverLicenceNumber.dirty || submitAttempt)"></ion-input>
       </ion-item>
       <ion-item class="error-message" *ngIf="!signupForm.controls.driverLicenceNumber.valid  && (signupForm.controls.driverLicenceNumber.dirty || submitAttempt)">
@@ -94,8 +98,8 @@
       </ion-item>
 
       <ion-item class="item">
-        <ion-label color="black" stacked>Phone Number</ion-label>
-        <ion-input formControlName="phoneNumber" type="text" placeholder="Your phone number"
+        <ion-label stacked class="register">Phone Number</ion-label>
+        <ion-input formControlName="phoneNumber" type="text" placeholder="Enter your phone number"
           [class.invalid]="!signupForm.controls.phoneNumber.valid && (signupForm.controls.phoneNumber.dirty || submitAttempt)"></ion-input>
       </ion-item>
       <ion-item class="error-message" *ngIf="!signupForm.controls.phoneNumber.valid  && (signupForm.controls.phoneNumber.dirty || submitAttempt)">
@@ -107,6 +111,8 @@
     </button>
 
   </form>
+
+  <p id="or">OR</p>
 
   <button ion-button block class="otherButton" (click)="goHome()">
       Nah! I will login instead!
