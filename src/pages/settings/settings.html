@@ -10,7 +10,7 @@
 </ion-header>
 <ion-content padding>
     <ion-list>
-        <button ion-button block color="danger" *ngFor="let p of pages" (click)="openPage(p)" padding="10px">
+        <button ion-button block color="secondary" *ngFor="let p of pages" (click)="openPage(p)" padding="10px">
           {{p.title}}
         </button>
         <button ion-button block color="danger" *ngIf="checkUserRole()" (click)="openPage(userEventPage)" padding="10px">Events by you</button>

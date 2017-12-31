@@ -35,16 +35,18 @@ $app-direction: ltr;
 
 $colors: (
   primary:        #008291, // #488aff,
-  secondary:      #7dc1c9, // #32db64,
-  darkSecondary:  #035a63, 
-  danger:         #f29295,//#fc6767,//#ff6060,//#f53d3d,
+  secondary:      #4fb2c1,//#7dc1c9, // #32db64, 
+  darkSecondary:  #005563,//#79A1E1,//#035a63, 
+  danger:         #ff6060,//#f29295, #fc6767,//#ff6060,//#f53d3d,
   darkDanger:     #cf383d,//#fc6767,//#ff6060,//#f53d3d,
   light:          #f4f4f4,
   dark:           #222,
   setup:          #457,
   event:          #49a,
   homeColor:      #0b376c,
-  black:        #000
+  black:        #000,
+  primary_text:   #ffffff,
+  ligth_text:     #000000
 );
 
 

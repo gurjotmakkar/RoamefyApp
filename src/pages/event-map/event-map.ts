@@ -2,11 +2,17 @@ import { Component , ViewChild, ElementRef } from '@angular/core';
 import { NavController, LoadingController } from 'ionic-angular';
 import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/map';
-import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { UserEvent } from '../../models/events/userevent.model';
+import { FirebaseProvider } from '../../providers/firebase/firebase';
 
 declare var google: any;
 //declare var $: any;
+
+interface Member{
+  id: string;
+  name: string;
+}
 
 @Component({
   selector: 'page-event-map',
@@ -17,9 +23,24 @@ export class EventMapPage {
   @ViewChild('map') mapElement: ElementRef;
   map: any;
   api: string = 'http://app.toronto.ca/cc_sr_v1_app/data/edc_eventcal_APR?limit=500';
+  userEventCollection: AngularFirestoreCollection<Member>;
+  userEvents: any;
+  userID: string;
+  eventArr: string[] = [];
 
   constructor(public navCtrl: NavController, public http: HttpClient, 
-    public loading: LoadingController, private afs: AngularFirestore) {}
+    public loading: LoadingController, private afs: AngularFirestore,
+    private firebase: FirebaseProvider) {
+      
+    this.userID = this.firebase.getUserId();
+    
+    this.userEventCollection = this.afs.collection('users').doc(this.userID).collection<Member>('bookmarkedEvents');
+    this.userEvents = this.userEventCollection.snapshotChanges().forEach(a => {
+      this.eventArr = [];
+      for ( var i in a )
+        this.eventArr.push(a[i].payload.doc.id);
+    });
+    }
 
   ionViewDidLoad(){
     this.setDefaultMap();
@@ -39,10 +60,10 @@ export class EventMapPage {
       loader.dismiss();
     });
 
-    this.afs.collection<UserEvent>("events").valueChanges()
+    this.afs.collection<UserEvent>("events").snapshotChanges()
     .forEach(event => {
       event.forEach(e => {
-        this.addUserEventMarkersMap(e);
+        this.addUserEventMarkersMap(e.payload.doc.data(), e.payload.doc.id);
       })
     })
     
@@ -74,6 +95,38 @@ export class EventMapPage {
       mapTypeId : google.maps.MapTypeId.ROADMAP
     }
     this.map = new google.maps.Map(this.mapElement.nativeElement, options);
+  }
+
+  icon(id){
+    var checker = false;
+    this.eventArr.forEach(i => {
+      if ( i == id )
+        checker = true;
+    })
+    if (checker)
+      return 'star';
+    return 'bookmark';
+  }
+
+  addEvent(item){
+    console.log(item);
+    if( this.icon(item.recId) == 'bookmark' ){
+      this.firebase.bookmarkEvent(item.eventName, item.locations[0].coords.lat, item.locations[0].coords.lng, item.recId);
+      this.eventArr.push(item.recId);
+    } else {
+      this.firebase.unbookmarkEvent(item.recId);
+      this.eventArr.splice(item.recId);
+    }
+  }
+
+  addUserEvent(item, id){
+    if( this.icon(id) == 'bookmark' ){
+      this.firebase.bookmarkEvent(item.name, item.latitude, item.longitude, id);
+      this.eventArr.push(id);
+    } else {
+      this.firebase.unbookmarkEvent(id);
+      this.eventArr.splice(id);
+    }
   }
 
   addMarkersMap(markers){
@@ -109,7 +162,7 @@ export class EventMapPage {
                      + '<p>' + name + '</p>' + '</div>' + 
                     '<div class="iw-content">' +
                     shortDesc +
-                    '<button type="submit" click="addUserEvent(event)">' +
+                    '<input type="submit" click="addUserEvent('+ marker +')">' +
                     '<img src="' + bookimg + '" height="50" width="50"/> </button>' +
                     '<img src= "' + img + '" height="210" width="230">' +
                     '<div class="iw-subTitle"> Event Details: </div>' +
@@ -194,7 +247,7 @@ export class EventMapPage {
             //google.maps.event.addDomListener(window, 'load', initialize)
     }
 
-    addUserEventMarkersMap(e){
+    addUserEventMarkersMap(e, id){
         let img = "http://mnlct.org/wp-content/uploads/2014/10/toronto-skyline.jpg";
         let contentString =              
                       '<div id="iw-container">' +
