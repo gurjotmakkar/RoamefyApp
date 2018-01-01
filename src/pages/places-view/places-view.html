@@ -1,12 +1,21 @@
 <ion-content>
   <ion-list *ngFor="let attraction of attractions | async">
-    <ion-card padding >
-      <div class="card-title">{{attraction.name}}<ion-icon item-right *ngIf="checkIfDev()" ios="ios-cog" md="md-cog" (click)="editAttraction(attraction.id)"></ion-icon></div>
-      <div class="card-subtitle">Description: {{attraction.description}}</div>
-      <div class="card-subtitle">Location: {{attraction.address}}</div>
-      <div class="card-subtitle"><ion-icon name="information-circle"></ion-icon>for more info: {{attraction.website}}</div>
-      <div class="card-subtitle"><ion-icon name="call"></ion-icon>{{attraction.phone}}</div>
-      <div class="card-subtitle">{{attraction.hours}}</div>
+    <ion-card>
+      <img src="http://css1.www.cntower.ca/site_Files/Content/rotator/View_shot_-_Slacker_-_1024x380.jpg"/>
+      <ion-card-header>
+          <div class="card-title">{{attraction.name}}<ion-icon icon-end *ngIf="checkIfDev()" ios="ios-create" md="md-create" class="icon-edit" (click)="editAttraction(attraction.id)"></ion-icon></div>
+      </ion-card-header>
+      <ion-card-content>
+      <div class="card-subtitle">Description: </div>
+      <p>{{attraction.description}}</p> 
+      <div class="card-subtitle">Location: </div>
+      <p>{{attraction.address}}</p>
+      <div class="card-subtitle">Website: </div>
+      <a href="attraction.website">{{attraction.website}}</a>
+      <div class="card-subtitle"><ion-icon name="call" class="call"></ion-icon>{{attraction.phone}}</div>
+      <div class="card-subtitle">Hours: </div>
+      <p>{{attraction.hours}}</p>
+    </ion-card-content>
     </ion-card>   
   </ion-list>
 </ion-content>

@@ -31,7 +31,7 @@
   <ion-item>
     <ion-label floating>attraction Description</ion-label>
     <ion-input [(ngModel)]="attraction.description" type="text" name="description" required minlength="5" 
-    maxlength="5000" pattern="[^0-9]*" #description="ngModel" [class.invalid]="description.errors 
+    maxlength="5000" #description="ngModel" [class.invalid]="description.errors 
     && (description.dirty || description.touched)"></ion-input>
   </ion-item>
 
@@ -44,9 +44,6 @@
       </p>
       <p [hidden]="!description.errors.maxlength">
         attraction description cannot be more than 5000 characters long.
-      </p>
-      <p [hidden]="!description.errors.pattern">
-        Only letters are allowed.
       </p>
   </ion-item>
 
@@ -86,7 +83,7 @@
   <ion-item>
     <ion-label floating>attraction hours</ion-label>
     <ion-input [(ngModel)]="attraction.hours" type="text" name="hours" required minlength="5" 
-    maxlength="5000" pattern="[^0-9]*" #hours="ngModel" [class.invalid]="hours.errors 
+    maxlength="5000" #hours="ngModel" [class.invalid]="hours.errors 
     && (hours.dirty || hours.touched)"></ion-input>
   </ion-item>
 
@@ -99,9 +96,6 @@
       </p>
       <p [hidden]="!hours.errors.maxlength">
         attraction hours cannot be more than 5000 characters long.
-      </p>
-      <p [hidden]="!hours.errors.pattern">
-        Only letters are allowed.
       </p>
   </ion-item>
 

@@ -1,10 +1,14 @@
-<ion-content padding class="background">
-  <h1 class="logo">Roamefy</h1>
-  <form [formGroup]="loginForm" (submit)="loginUser()" novalidate>
+<ion-header>
+  <ion-navbar color="primary">
+    <h1 class="logo">Roamefy</h1>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+   <form [formGroup]="loginForm" (submit)="loginUser()" novalidate>
     
-    <ion-item class="item">
-      <ion-label color="black" stacked>Email</ion-label>
-      <ion-input #email formControlName="email" type="email" placeholder="Your email address" [class.invalid]="!loginForm.controls.email.valid && (loginForm.controls.email.dirty || submitAttempt)"></ion-input>
+    <ion-item>
+      <ion-label stacked class="loginC">Email</ion-label>
+      <ion-input #email formControlName="email" type="email" placeholder="Enter email address" [class.invalid]="!loginForm.controls.email.valid && (loginForm.controls.email.dirty || submitAttempt)"></ion-input>
     </ion-item>
     
     <ion-item class="error-message" *ngIf="!loginForm.controls.email.valid  &&
@@ -12,9 +16,9 @@
       <p>Please enter a valid email.</p>
     </ion-item>
 
-    <ion-item class="item">
-      <ion-label color="black" stacked>Password</ion-label>
-      <ion-input #password formControlName="password" type="password" placeholder="Your password"
+    <ion-item>
+      <ion-label stacked class="loginC">Password</ion-label>
+      <ion-input #password formControlName="password" type="password" placeholder="Enter password"
         [class.invalid]="!loginForm.controls.password.valid &&
           (loginForm.controls.password.dirty || submitAttempt)"></ion-input>
     </ion-item>
@@ -29,16 +33,18 @@
 
   </form>
 
+  <p id="or">OR</p>
+
   <button ion-button block class="otherButton" (click)="goToResetPassword()">
       Intentionally forgot password!
   </button>
 
   <button ion-button block class="otherButton" (click)="createAccount()">
-    Get into application
+      Register
   </button>
 
   <button ion-button block class="otherButton" (click)="createProAccount()">
-    Getting in as a pro
+    Register as a pro
   </button>
   
 </ion-content>

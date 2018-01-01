@@ -1,11 +1,14 @@
-<ion-content padding class="background">
-  <h1 class="logo">Roamefy</h1>
-
+<ion-header>
+  <ion-navbar color="primary">
+    <h1 class="logo">Roamefy</h1>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
   <form [formGroup]="signupForm" (submit)="signupUser()" novalidate>
     
       <ion-item class="item">
-        <ion-label color="black" stacked>First Name</ion-label>
-        <ion-input formControlName="firstName" type="text" placeholder="Your first name"
+        <ion-label stacked class="register">First Name</ion-label>
+        <ion-input formControlName="firstName" type="text" placeholder="Enter your first name"
           [class.invalid]="!signupForm.controls.firstName.valid && (signupForm.controls.firstName.dirty || submitAttempt)"></ion-input>
       </ion-item>
       <ion-item class="error-message" *ngIf="!signupForm.controls.firstName.valid  && (signupForm.controls.firstName.dirty || submitAttempt)">
@@ -14,19 +17,19 @@
           Please enter your name.
         </p>
         <p *ngIf="signupForm.controls.firstName.errors.minlength">
-          Name is too short.
+          Oops, name is too short.
         </p>
         <p *ngIf="signupForm.controls.firstName.errors.maxlength">
-          Name is too long.
+          Oops, name is too long.
         </p>
         <p *ngIf="signupForm.controls.firstName.errors.pattern">
-          Numbers are not allowed.
+          Oops, numbers are not allowed.
         </p>  
       </ion-item>
       
       <ion-item class="item">
-        <ion-label color="black" stacked>Last Name</ion-label>
-        <ion-input formControlName="lastName" type="text" placeholder="Your last name"
+        <ion-label stacked class="register">Last Name</ion-label>
+        <ion-input formControlName="lastName" type="text" placeholder="Enter your last name"
           [class.invalid]="!signupForm.controls.lastName.valid && (signupForm.controls.lastName.dirty || submitAttempt)"></ion-input>
       </ion-item>
       <ion-item class="error-message" *ngIf="!signupForm.controls.lastName.valid  && (signupForm.controls.lastName.dirty || submitAttempt)">
@@ -34,19 +37,19 @@
           Please enter your last name.
         </p>
         <p *ngIf="signupForm.controls.lastName.errors.minlength">
-          Last name is too short.
+          Oops, last name is too short.
         </p>
         <p *ngIf="signupForm.controls.lastName.errors.maxlength">
-          last name is too long.
+          Oops, last name is too long.
         </p>
         <p *ngIf="signupForm.controls.lastName.errors.pattern">
-          Numbers are not allowed.
+          Oops, numbers are not allowed.
         </p>  
       </ion-item>
 
       <ion-item class="item">
-        <ion-label color="black" stacked>Email</ion-label>
-        <ion-input formControlName="email" type="email" placeholder="Your email address"
+        <ion-label stacked class="register">Email</ion-label>
+        <ion-input formControlName="email" type="email" placeholder="Enter your email address"
           [class.invalid]="!signupForm.controls.email.valid && (signupForm.controls.email.dirty || submitAttempt)"></ion-input>
       </ion-item>
       <ion-item class="error-message" *ngIf="!signupForm.controls.email.valid  && (signupForm.controls.email.dirty || submitAttempt)">
@@ -54,8 +57,8 @@
       </ion-item>
 
       <ion-item class="item">
-        <ion-label color="black" stacked>Password</ion-label>
-        <ion-input formControlName="password" type="password"  placeholder="Your password"
+        <ion-label stacked class="register">Password</ion-label>
+        <ion-input formControlName="password" type="password"  placeholder="Enter your password"
           [class.invalid]="!signupForm.controls.password.valid && (signupForm.controls.password.dirty || submitAttempt)"></ion-input>
       </ion-item>
       <ion-item class="error-message" *ngIf="!signupForm.controls.password.valid  && (signupForm.controls.password.dirty || submitAttempt)">
@@ -63,7 +66,7 @@
           Please enter a password.
         </p>
         <p *ngIf="signupForm.controls.password.errors.maxlength">
-          Opps, password is too long.
+          Oops, password is too long.
         </p>
         <p *ngIf="signupForm.controls.password.errors.pattern">
           At least 8 characters with one 
@@ -77,6 +80,8 @@
     </button>
 
   </form>
+
+  <p id="or">OR</p>
 
   <button ion-button block class="otherButton" (click)="goHome()">
     Nah! I will login instead!

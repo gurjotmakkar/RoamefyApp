@@ -9,7 +9,7 @@
           [showCancelButton]="true" 
           (ionInput)="updateSearch()" 
           (ionCancel)="dismiss()"
-          placeholder="Start typing and select ...">
+          placeholder="Enter address...">
       </ion-searchbar>
       <ion-list>
           <ion-item *ngFor="let item of autocompleteItems" 

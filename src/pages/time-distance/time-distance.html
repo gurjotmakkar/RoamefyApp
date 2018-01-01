@@ -13,14 +13,14 @@
   <ion-list>
     <ion-item>
       <ion-label>Distance ({{distance}} meters )</ion-label>
-      <ion-range min="10" max="1000" debounce="500" [(ngModel)]="distance" color="danger" pin="true" (ionChange)="updateDistance(distance)">
+      <ion-range min="10" max="1000" debounce="500" [(ngModel)]="distance" color="secondary" pin="true" (ionChange)="updateDistance(distance)">
         <ion-label range-left>10</ion-label>
         <ion-label range-right>1000</ion-label>
       </ion-range>
     </ion-item>
     <ion-item>
         <ion-label>Time ({{time}} hours )</ion-label>
-        <ion-range min="1" max="24" debounce="500" [(ngModel)]="time" color="danger" pin="true" (ionChange)="updateTime(time)">
+        <ion-range min="1" max="24" debounce="500" [(ngModel)]="time" color="secondary" pin="true" (ionChange)="updateTime(time)">
           <ion-label range-left>1</ion-label>
           <ion-label range-right>24</ion-label>
         </ion-range>
