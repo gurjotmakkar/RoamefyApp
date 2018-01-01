@@ -464,12 +464,31 @@ export class FirebaseProvider {
   
 //-------------- bookmark event ----------------
 
-bookmarkEvent(name, lat, lng, id) {
-  this.afdOf.collection("bookmarkedEvents").doc(id).set({
-    name: name,
-    lat: lat,
-    lng: lng
-  }).then(a => {
+bookmarkEvent(item, id) {
+  this.afdOf.collection("bookmarkedEvents").doc(id).set(event).then(a => {
+    this.afdOf.collection("bookmarkedEvents").doc(id).collection("members").doc(this.userID).set({
+      name: this.userID
+    });
+    this.afdOf.collection("users").doc(this.userID).collection("bookmarkedEvents").doc(id).set({
+      name: name
+    });
+  });
+
+  this.afdOf.collection("chatrooms").doc(id).set({
+    name: name
+  }).then(  a => {
+    this.afdOf.collection("chatrooms").doc(id).collection("members").doc(this.userID).set({
+      name: this.userID
+    });
+    this.afdOf.collection("users").doc(this.userID).collection("chatrooms").doc(id).set({
+      name: name
+    });
+  });
+}
+
+
+bookmarkUserEvent(item, id) {
+  this.afdOf.collection("bookmarkedEvents").doc(id).set(event).then(a => {
     this.afdOf.collection("bookmarkedEvents").doc(id).collection("members").doc(this.userID).set({
       name: this.userID
     });

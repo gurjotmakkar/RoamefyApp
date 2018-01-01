@@ -15,4 +15,5 @@ export interface UserEvent {
     phone?: string;
     host: string;
     categories: string[];
+    categoryString: string;
 }

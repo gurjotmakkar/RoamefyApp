@@ -111,7 +111,7 @@ export class EventMapPage {
   addEvent(item){
     console.log(item);
     if( this.icon(item.recId) == 'bookmark' ){
-      this.firebase.bookmarkEvent(item.eventName, item.locations[0].coords.lat, item.locations[0].coords.lng, item.recId);
+      this.firebase.bookmarkEvent(item, item.recId);
       this.eventArr.push(item.recId);
     } else {
       this.firebase.unbookmarkEvent(item.recId);
@@ -121,7 +121,7 @@ export class EventMapPage {
 
   addUserEvent(item, id){
     if( this.icon(id) == 'bookmark' ){
-      this.firebase.bookmarkEvent(item.name, item.latitude, item.longitude, id);
+      this.firebase.bookmarkUserEvent(item, id);
       this.eventArr.push(id);
     } else {
       this.firebase.unbookmarkEvent(id);
@@ -260,7 +260,9 @@ export class EventMapPage {
 
                                     '<div class="iw-subTitle">Website: </div>' + '<a href="  '+ e.website +'     ">'  +  'link'     +       '</a>'    +              
                                     '<div class="iw-subTitle">Phone: </div> '   +
-                                    '<p>'    + e.phone    + '</p>'   +
+                                    '<p>'    + e.phone    + '</p>'   +                                        
+                                    '<div class="iw-subTitle">Category(s): </div> '  + 
+                                    '<p>' + e.categoryString  + '</p>' +
                                     '<div class="iw-bottom-gradient"></div>' +
                                     '</div>' //end container
         //console.log(name); //displays name of each event within this object

@@ -99,7 +99,7 @@ export class EventListPage {
   addEvent(item){
     console.log(item);
     if( this.icon(item.recId) == 'bookmark' ){
-      this.firebase.bookmarkEvent(item.eventName, item.locations[0].coords.lat, item.locations[0].coords.lng, item.recId);
+      this.firebase.bookmarkEvent(item, item.recId);
       this.eventArr.push(item.recId);
     } else {
       this.firebase.unbookmarkEvent(item.recId);
@@ -109,7 +109,7 @@ export class EventListPage {
 
   addUserEvent(item){
     if( this.icon(item.id) == 'bookmark' ){
-      this.firebase.bookmarkEvent(item.name, item.latitude, item.longitude, item.id);
+      this.firebase.bookmarkUserEvent(item, item.id);
       this.eventArr.push(item.id);
     } else {
       this.firebase.unbookmarkEvent(item.id);

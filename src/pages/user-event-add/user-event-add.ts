@@ -32,13 +32,16 @@ export class UserEventAddPage {
     website: null,
     phone: null,
     host: null,
-    categories: null
+    categories: null,
+    categoryString: null
   };
   interestCollection: AngularFirestoreCollection<Interest>;
   interest: any;
+  interestArr: string[] = [];
+  interestId: string[] = [];
   userID: string;
   categories: any[];
-  catString: string = null;;
+  catString: string = null;
 
 constructor(public navCtrl: NavController, public navParams: NavParams, 
   public alertCtrl: AlertController, private firebase: FirebaseProvider, 
@@ -57,6 +60,14 @@ constructor(public navCtrl: NavController, public navParams: NavParams,
   });
 
   this.userID = this.firebase.getUserId();
+
+    this.afs.collection<Interest>('interest').snapshotChanges()
+    .forEach(i => {
+      i.forEach(a => {
+        this.interestId.push(a.payload.doc.id);
+        this.interestArr.push(a.payload.doc.data().name);
+      })
+    })
  }
 
 ionViewDidLoad() {
@@ -79,9 +90,8 @@ addEvent(event, categories) {
   } else {
     event.categories = categories;
     event.host = this.userID;
-    //this.createString(categories);
-    //console.log(this.catString);
-    //event.categoryString = this.catString;
+    this.createString(categories);
+    event.categoryString = this.catString;
     this.firebase.addEvent(event);
     this.navCtrl.setRoot(UserCreatedEventPage);
   }
@@ -90,13 +100,14 @@ addEvent(event, categories) {
 createString(categories){
   this.catString = null;
   for(var i in categories){
-    this.afs.collection('interest').doc<Interest>(categories[i]).valueChanges()
-    .forEach(i => {
-      if(this.catString == null )
-        this.catString = i.name;
-      else
-        this.catString += ', ' + i.name;
-    })
+    for(var j in this.interestId){
+      if(categories[i] == this.interestId[j]){
+        if(this.catString == null )
+          this.catString = this.interestArr[j];
+        else
+          this.catString += ', ' + this.interestArr[j];
+      }
+    }
   }
 }
 
