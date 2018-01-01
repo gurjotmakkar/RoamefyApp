@@ -2,17 +2,17 @@
     <ion-list *ngFor="let event of userEventData | async">
       <ion-card>
         <img src = "http://mnlct.org/wp-content/uploads/2014/10/toronto-skyline.jpg"/>
+        <ion-card-header>
+            <div class="card-title">{{event.name}} <ion-icon icon-end class="bookmark" [name]="icon(event.id)" (click)="addUserEvent(event)"></ion-icon></div>
+        </ion-card-header>
         <ion-card-content>
-        <ion-card-title>
-        {{event.name}} 
-        <ion-icon icon-end class="bookmark" [name]="icon(event.id)" (click)="addUserEvent(event)"></ion-icon>
-        </ion-card-title>
-        <div class="card-subtitle">Description: {{event.description}}</div>
+        <div class="card-subtitle">Description: </div>
+        <p>{{event.description}}</p>
         <div class="card-subtitle">
-          <ion-icon name="information-circle"></ion-icon>
-          for more info <a href src="event.website">click here</a>
+          Website: 
         </div>
-        <div class="card-subtitle"><ion-icon name="call"></ion-icon> {{event.phone}}</div>
+        <a href src="event.website">{{event.website}}</a>
+        <div class="card-subtitle"><ion-icon name="call" class="call"></ion-icon> {{event.phone}}</div>
         <!-- <div>Categories: {{event.calEvent.categoryString}}</div> -->
       </ion-card-content>
       </ion-card>   
@@ -20,16 +20,16 @@
     <ion-list *ngFor="let event of eventData">
       <ion-card>
         <img [src]= imgLink+event.calEvent.image?.url/>
+        <ion-card-header>
+            <div class="card-title">{{event.calEvent.eventName}}<ion-icon icon-end class="bookmark" [name]="icon(event.calEvent.recId)" (click)="addEvent(event.calEvent)"></ion-icon></div>
+        </ion-card-header>
         <ion-card-content>
-        <ion-card-title>
-        {{event.calEvent.eventName}} 
-        <ion-icon icon-end class="bookmark" [name]="icon(event.calEvent.recId)" (click)="addEvent(event.calEvent)"></ion-icon>
-        </ion-card-title>
-        <div class="card-subtitle">Description: {{event.calEvent.description}}</div>
+        <div class="card-subtitle">Description: </div>
+        <p>{{event.calEvent.description}}</p>
         <div class="card-subtitle">
-          <ion-icon name="information-circle"></ion-icon>
-          for more info <a href src="event.calEvent.eventWebsite">click here</a>
-        </div>
+            Website: 
+          </div>
+          <a href src="event.calEvent.eventWebsite">{{event.calEvent.eventWebsite}}</a>
         <div class="card-subtitle"><ion-icon name="call"></ion-icon> {{event.calEvent.orgPhone}}</div>
         <div>Categories: {{event.calEvent.categoryString}}</div>
       </ion-card-content>

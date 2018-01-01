@@ -4,6 +4,9 @@ page-home {
     }
     .footRight {
         width: 45%;
-        background-color: #ff6060;
+        background-color: white;
+        color: color($colors, primary, base);
+        border: 1px solid color($colors, primary, base);
     }
+
 }
