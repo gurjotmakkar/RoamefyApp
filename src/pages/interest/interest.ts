@@ -66,16 +66,16 @@ export class InterestPage {
   }
 
   isChecked(id){
-    var checker = false;
+    var checker = 'interest';
     this.interestArr.forEach(i => {
       if ( i == id )
-        checker = true;
+        checker = 'interestActive';
     })
     return checker;
   }
 
   toggleCheck(id){
-    if(this.isChecked(id)){
+    if(this.isChecked(id) == 'interestActive'){
       console.log("uncheck")
       this.afs.collection("interest").doc(id).collection('members').doc(this.userID).delete();
       this.afs.collection("users").doc(this.userID).collection('userInterest').doc(id).delete();

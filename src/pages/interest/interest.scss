@@ -8,8 +8,15 @@ page-interest {
          opacity: 0.5;
     }
 
+    .interestActive {
+        background-color: color($colors, primary, base);
+        color: color($colors, primary_text, base);
+        height: 50px;
+    }
+    /*
     .interest:active {
         background-color: color($colors, primary, base);
         color: color($colors, primary_text, base);
     }
+    */
 }

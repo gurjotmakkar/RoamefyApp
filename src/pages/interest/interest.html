@@ -16,7 +16,7 @@
       </button>
     </ion-item>
   -->
-    <button ion-button full outline class="interest" *ngFor="let item of interest | async" (click)="toggleCheck(item.id)">
+    <button ion-button full outline [ngClass]="isChecked(item.id)" *ngFor="let item of interest | async" (click)="toggleCheck(item.id)">
         {{item.name}}
     </button>
 </ion-list>
