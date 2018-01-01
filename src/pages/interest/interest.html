@@ -9,12 +9,16 @@
   </ion-navbar>
 </ion-header>
 <ion-content padding>
-  <ion-list *ngFor="let item of interest | async">
-    <ion-item>
+  <ion-list>
+<!--    <ion-item>
       <ion-label>{{item.name}}</ion-label>
-      <ion-checkbox [checked]="isChecked(item.id)" (click)="toggleCheck(item.id)">
-      </ion-checkbox>
+      <button ion-button full outline class="interest" [checked]="isChecked(item.id)" (click)="toggleCheck(item.id)">
+      </button>
     </ion-item>
+  -->
+    <button ion-button full outline class="interest" *ngFor="let item of interest | async" (click)="toggleCheck(item.id)">
+        {{item.name}}
+    </button>
 </ion-list>
   <button *ngIf="!isConfigured()" ion-button block color="danger" (click)="nextSetupPage()">
       Next
