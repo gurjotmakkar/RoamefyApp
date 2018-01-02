@@ -1,4 +1,8 @@
 page-places-view {
+    
+    .shadow {
+        box-shadow: 0px 2px 2px color($colors, darkSecondary, base);
+    }
 
     ion-card-header {
         background-color: #008291;
@@ -8,7 +12,7 @@ page-places-view {
         opacity: 1;
         font-weight: bolder;
         font-family: "Helvetica";
-        box-shadow: color($colors, darkSecondary, base);
+        box-shadow: 0px 2px 4px color($colors, darkSecondary, base);
     }
 
     .card-title {
