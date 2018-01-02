@@ -2,21 +2,18 @@ page-interest {
 
     .interest {
          color: color($colors, ligth_text, base);
-         border: 2px ridge #005563;
+         border: 2px ridge #4fb2c1;
          height: 50px;
          border-top: 0px solid white;
          opacity: 0.5;
     }
 
     .interestActive {
-        background-color: color($colors, primary, base);
+        background-color: color($colors, secondary, base);
         color: color($colors, primary_text, base);
         height: 50px;
-    }
-    /*
-    .interest:active {
-        background-color: color($colors, primary, base);
-        color: color($colors, primary_text, base);
-    }
-    */
+        border-top: 0px solid #4fb2c1;
+        border-bottom: 2px solid #4fb2c1;
+    } 
+
 }
