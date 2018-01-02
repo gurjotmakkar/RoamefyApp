@@ -552,13 +552,13 @@ bookmarkUserEvent(item, id) {
   });
 
   this.afdOf.collection("chatrooms").doc(id).set({
-    name: name
+    name: item.name
   }).then(  a => {
     this.afdOf.collection("chatrooms").doc(id).collection("members").doc(this.userID).set({
       name: this.userID
     });
     this.afdOf.collection("users").doc(this.userID).collection("chatrooms").doc(id).set({
-      name: name
+      name: item.name
     });
   });
 }
