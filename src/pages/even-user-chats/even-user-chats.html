@@ -10,17 +10,15 @@
 </ion-header>
 <ion-content padding>
     <ion-list *ngFor="let chat of chats | async">
-        <ion-card>
-         {{chat.userName}}
-          <ion-card-title>
-              {{chat.message}}
-          </ion-card-title>
+        <div [ngClass]="cardTitle(chat.userName)">{{chat.userName}}</div>
+        <ion-card padding [ngClass]="cardSubtitle(chat.userName)">
+            {{chat.message}}
         </ion-card>   
-      </ion-list>
+    </ion-list>
 </ion-content>
-<ion-footer no-border>
-    <ion-textarea placeholder="Type your message here" [(ngModel)]="message" (keyup.enter)="pushChat()"></ion-textarea>
-    <button class="send" ion-button clear icon-only color="danger" (click)="pushChat()">
-        <ion-icon name="send"></ion-icon>
+<ion-footer class="footer">
+    <ion-textarea placeholder="Type your message here" class="text" [(ngModel)]="message" (keyup.enter)="pushChat()"></ion-textarea>
+    <button class="send" ion-button full (click)="pushChat()">
+        Send
     </button>
 </ion-footer>

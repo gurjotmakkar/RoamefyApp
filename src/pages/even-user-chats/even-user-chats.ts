@@ -32,12 +32,15 @@ export class EvenUserChatsPage {
   userCollection: AngularFirestoreCollection<User>;
   users: any;
   message: string;
+  userName: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private firebase: FirebaseProvider, private afs:AngularFirestore) {
     this.chatKey = this.navParams.get('id');
     this.chatName = this.navParams.get('name');
   
+    this.userName = this.firebase.getUserEmail().split('@')[0];
+
     this.chatCollection = this.afs.collection('chatrooms').doc(this.chatKey).collection<Chat>('chats', ref => {
       return ref.orderBy('time', 'desc')
     });
@@ -63,6 +66,20 @@ export class EvenUserChatsPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad EvenUserChatsPage');
+  }
+
+  cardTitle(name){
+    if(name == this.userName)
+      return 'card-title-right';
+    else
+      return 'card-title-left';
+  }
+
+  cardSubtitle(name){
+    if(name == this.userName)
+      return 'card-subtitle-right';
+    else
+      return 'card-subtitle-left';
   }
 
   pushChat(){
