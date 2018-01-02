@@ -12,12 +12,19 @@
     
     <ion-list *ngFor="let event of events | async">
       <ion-card>
-        <ion-card-content>
-        <ion-card-title>
-        <ion-icon class="bookmark" name="star" (click)="removeEvent(event.id)"></ion-icon>
-        {{event.name}}
-        </ion-card-title>
-      </ion-card-content>
+          <ion-card-header>
+              <div class="card-title">{{event.name}} <ion-icon icon-end class="bookmark" name="star" (click)="removeEvent(event.id)"></ion-icon></div>
+          </ion-card-header>
+          <ion-card-content>
+          <div class="card-subtitle">Description: </div>
+          <p>{{event.description}}</p>
+          <div class="card-subtitle">
+            Website: 
+          </div>
+          <a href src="event.website">{{event.website}}</a>
+          <div class="card-subtitle"><ion-icon name="call" class="call"></ion-icon> {{event.phone}}</div>
+          <div>Categories: {{event.categories}}</div>
+        </ion-card-content>
       </ion-card>   
     </ion-list>
   

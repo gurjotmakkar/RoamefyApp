@@ -485,7 +485,19 @@ bookmarkEvent(lat, lng, startDate, startTime, endDate, endTime, name,
       name: this.userID
     });
     this.afdOf.collection("users").doc(this.userID).collection("bookmarkedEvents").doc(id).set({
-      name: name
+      latitude: lat,
+      longitude: lng,
+      name: name,
+      description: description,
+      price: price,
+      startDate: startDate,
+      startTime: startTime,
+      endDate: endDate,
+      endTime: endTime,
+      address: orgAddress, 
+      website: webSite,
+      phone: orgPhone,
+      categories: categories
     });
   });
 
@@ -523,7 +535,19 @@ bookmarkUserEvent(item, id) {
       name: this.userID
     });
     this.afdOf.collection("users").doc(this.userID).collection("bookmarkedEvents").doc(id).set({
-      name: name
+      latitude: item.latitude,
+      longitude: item.longitude,
+      name: item.name,
+      description: item.description,
+      price: item.price,
+      startDate: item.startDate,
+      startTime: item.startTime,
+      endDate: item.endDate,
+      endTime: item.endTime,
+      address: item.address, 
+      website: item.website,
+      phone: item.phone,
+      categories: item.categoryString
     });
   });
 

@@ -3,4 +3,48 @@ page-user-bookmarked-events {
         padding: 10px;
         size: 100px;
     }
+
+    ion-card-header {
+        background-color: #008291;
+        text-align: center;
+        margin-bottom: 20px;
+        opacity: 1;
+        box-shadow: color($colors, darkSecondary, base);
+    }
+
+    .card-title {
+        color: color($colors, primary_text, base);
+        opacity: 1;
+        font-size: 14px;
+        font-weight: 900;
+        letter-spacing: 0.01em;
+    }   
+
+    .card-subtitle {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        font-size: 14px;
+        font-weight: bolder;
+        opacity: 0.7;
+    }
+
+    .icon-edit {
+        margin-left: 20px;
+    }
+
+    div {
+        font-size: 14px;
+        font-weight: bolder;
+        opacity: 1;
+    }
+/*
+    div item-text-wrap {
+        color: color($colors, primary_text, base);
+        opacity: 1;
+        font-size: 18px;
+    }
+*/
+    .call {
+        margin-right: 5px;
+    }
 }

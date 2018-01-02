@@ -66,11 +66,10 @@ export class EvenUserChatsPage {
   }
 
   pushChat(){
-    console.log(this.message);
-
-    this.firebase.pushMessage(this.chatKey, this.message);
-
-    this.message = '';
+    if (this.message !== undefined && this.message != ''){
+      this.firebase.pushMessage(this.chatKey, this.message);
+      this.message = '';
+    }
   }
 
   goHome(){

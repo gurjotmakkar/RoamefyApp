@@ -19,17 +19,8 @@
       </ion-list>
 </ion-content>
 <ion-footer no-border>
-    <ion-grid class="input-wrap">
-        <ion-row>
-            <ion-col>
-                <ion-textarea placeholder="Type your message here" [(ngModel)]="message" (keyup.enter)="pushChat()">
-                </ion-textarea>
-            </ion-col>
-            <ion-col>
-                <button ion-button clear icon-only item-right color="danger" (click)="pushChat()">
-                    <ion-icon name="send"></ion-icon>
-                </button>
-            </ion-col>
-        </ion-row>
-    </ion-grid>
+    <ion-textarea placeholder="Type your message here" [(ngModel)]="message" (keyup.enter)="pushChat()"></ion-textarea>
+    <button class="send" ion-button clear icon-only color="danger" (click)="pushChat()">
+        <ion-icon name="send"></ion-icon>
+    </button>
 </ion-footer>

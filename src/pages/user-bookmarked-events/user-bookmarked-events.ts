@@ -3,11 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { SettingsPage } from '../settings/settings';
-
-interface Event{
-  id: string;
-  name: string;
-}
+import { UserEvent } from '../../models/events/userevent.model';
 
 @IonicPage()
 @Component({
@@ -16,14 +12,14 @@ interface Event{
 })
 export class UserBookmarkedEventsPage {
 
-  eventCollection: AngularFirestoreCollection<Event>;
+  eventCollection: AngularFirestoreCollection<UserEvent>;
   events: any;
   userID: string;
   constructor(public navCtrl: NavController, public navParams: NavParams, 
     private firebase: FirebaseProvider, private afs: AngularFirestore) {
     this.userID = this.firebase.getUserId();
 
-    this.eventCollection = this.afs.collection('users').doc(this.userID).collection<Event>('bookmarkedEvents', ref => {
+    this.eventCollection = this.afs.collection('users').doc(this.userID).collection<UserEvent>('bookmarkedEvents', ref => {
       return ref.orderBy('name')
     });
     this.events = this.eventCollection.snapshotChanges().map(actions => {

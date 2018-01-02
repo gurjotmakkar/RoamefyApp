@@ -19,15 +19,19 @@
 <ion-content>
     <ion-list *ngFor="let event of events | async">
       <ion-card padding >
-        <div class="card-title">{{event.name}}<ion-icon item-right ios="ios-cog" md="md-cog" (click)="editUserEventPage(event.id)"></ion-icon></div>
-        <div class="card-subtitle">Description: {{event.description}}</div>
-        <div class="card-subtitle">Price: ${{event.price}}</div>
-        <div class="card-subtitle">Starts: {{event.startDate}} at {{event.startTime}} </div>
-        <div class="card-subtitle">Ends: {{event.endDate}} at {{event.endTime}}</div>
-        <div class="card-subtitle">Location: {{event.address}}</div>
-        <div class="card-subtitle"><ion-icon name="information-circle"></ion-icon>for more info: {{event.website}}</div>
-        <div class="card-subtitle"><ion-icon name="call"></ion-icon>{{event.phone}}</div>
-        <div>Categories: {{event.categoryString}}</div>
+        <ion-card-header>
+          <div class="card-title">{{event.name}} <ion-icon icon-end class="bookmark" ios="ios-create" md="md-create" (click)="editUserEventPage(event.id)"></ion-icon></div>
+      </ion-card-header>
+      <ion-card-content>
+      <div class="card-subtitle">Description: </div>
+      <p>{{event.description}}</p>
+      <div class="card-subtitle">
+        Website: 
+      </div>
+      <a href src="event.website">{{event.website}}</a>
+      <div class="card-subtitle"><ion-icon name="call" class="call"></ion-icon> {{event.phone}}</div>
+      <div>Categories: {{event.categoryString}}</div>
+    </ion-card-content>
       </ion-card>   
     </ion-list>
 </ion-content>
