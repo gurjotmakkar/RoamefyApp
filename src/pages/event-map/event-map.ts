@@ -135,7 +135,7 @@ export class EventMapPage {
       if(shortDesc === undefined){
         shortDesc = "";
       }
-      let price = marker.calEvent["otherCostInfo"];
+      let price = marker.calEvent["otherCostInfo"] === undefined || marker.calEvent["otherCostInfo"] === null ? "" : marker.calEvent["otherCostInfo"];
       let webSite = marker.calEvent["eventWebsite"];
       let description = marker.calEvent["description"];
       let orgPhone = marker.calEvent["orgPhone"];
@@ -155,8 +155,8 @@ export class EventMapPage {
                     '<p><span id="eventLat" hidden>' + lat + '</span></p>' + 
                     '<p><span id="eventLng" hidden>' + lng + '</span></p>' + 
                     '<div class="iw-title">' + "From: " +
-                      '<p><span id="eventStartDate">' + startDate + '</span> at <span id="eventStartTime">' + startTime + '</span></p>' + "To: " +
-                      '<p><span id="eventEndDate">' + endDate + '</span> at <span id="eventEndTime">' + endTime + '</span></p>' +
+                      '<p><span id="eventStartDate">' + startDate + '</span>  <span id="eventStartTime">' + startTime + '</span></p>' + "To: " +
+                      '<p><span id="eventEndDate">' + endDate + '</span>  <span id="eventEndTime">' + endTime + '</span></p>' +
                       '<p><span id="eventName">' + name + '</span></p>' + 
                       '</div>' + 
                       '<div>' + 
@@ -241,8 +241,8 @@ export class EventMapPage {
                     '<p><span id="eventLat" hidden>' + e.latitude + '</span></p>' + 
                     '<p><span id="eventLng" hidden>' + e.longitude + '</span></p>' + 
                     '<div class="iw-title">' + "From: " +
-                      '<p><span id="eventStartDate">' + e.startDate + '</span> at <span id="eventStartTime">' + e.startTime + '</span></p>' + "To: " +
-                      '<p><span id="eventEndDate">' + e.endDate + '</span> at <span id="eventEndTime">' + e.endTime + '</span></p>' +
+                      '<p><span id="eventStartDate">' + e.startDate + '</span> <span id="eventStartTime">' + e.startTime + '</span></p>' + "To: " +
+                      '<p><span id="eventEndDate">' + e.endDate + '</span> <span id="eventEndTime">' + e.endTime + '</span></p>' +
                       '<p><span id="eventName">' + e.name + '</span></p>' + 
                       '</div>' + 
                       '<div>' + 
