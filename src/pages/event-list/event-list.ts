@@ -99,7 +99,24 @@ export class EventListPage {
   addEvent(item){
     console.log(item);
     if( this.icon(item.recId) == 'bookmark' ){
-      this.firebase.bookmarkEvent(item, item.recId);
+      let id = item.recId;
+      let lat = item.locations[0]["coords"].lat;
+      let lng = item.locations[0]["coords"].lng;
+      let startDate = item.startDate.substr(0,10);
+      let endDate = item.endDate.substr(0,10);
+      let name = item.eventName;
+      let shortDesc =  item.shortDescription;
+      let webSite = item.eventWebsite;
+      let description = item.description;
+      let orgPhone = item.orgPhone;
+      let orgAddress = item.orgAddress;
+      let categories = item.categoryString;
+      let endTime = item.endDateTime  === undefined || item.endDateTime === null ? "" : item.endDateTime;
+      let startTime = item.startDateTime === undefined || item.startDateTime === null ? "" : item.startDateTime;
+      let price = item.otherCostInfo;
+      
+      this.firebase.bookmarkEvent(lat, lng, startDate, startTime, endDate, endTime, name,
+        price, webSite, description, orgPhone, orgAddress, categories, id);
       this.eventArr.push(item.recId);
     } else {
       this.firebase.unbookmarkEvent(item.recId);
