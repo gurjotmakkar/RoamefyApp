@@ -140,8 +140,8 @@ export class EventMapPage {
       let description = marker.calEvent["description"];
       let orgPhone = marker.calEvent["orgPhone"];
       let orgAddress = marker.calEvent["orgAddress"];
-      let orgName = marker.calEvent["orgName"];
-      let orgEmail = marker.calEvent["orgEmail"];  
+      //let orgName = marker.calEvent["orgName"];
+      //let orgEmail = marker.calEvent["orgEmail"];  
       let categories = marker.calEvent["categoryString"];
       let img = "http://mnlct.org/wp-content/uploads/2014/10/toronto-skyline.jpg";
       if( marker.calEvent["image"] !== undefined)

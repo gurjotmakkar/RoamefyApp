@@ -9,7 +9,7 @@
   </ion-navbar>
 </ion-header>
 <ion-content padding>
-    <ion-list *ngFor="let chat of chats | async">
+    <ion-list class="list" *ngFor="let chat of chats | async">
         <div [ngClass]="cardTitle(chat.userName)">{{chat.userName}}</div>
         <div [ngClass]="cardTime(chat.userName)">{{formatTime(chat.time)}}</div>
         <div [ngClass]="cardSubtitle(chat.userName)">{{chat.message}}</div>   
