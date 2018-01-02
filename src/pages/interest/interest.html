@@ -8,14 +8,8 @@
     <ion-title>Interests</ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content padding>
+<ion-content>
   <ion-list>
-<!--    <ion-item>
-      <ion-label>{{item.name}}</ion-label>
-      <button ion-button full outline class="interest" [checked]="isChecked(item.id)" (click)="toggleCheck(item.id)">
-      </button>
-    </ion-item>
-  -->
     <button ion-button full outline [ngClass]="isChecked(item.id)" *ngFor="let item of interest | async" (click)="toggleCheck(item.id)">
         {{item.name}}
     </button>
