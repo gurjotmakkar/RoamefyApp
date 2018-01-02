@@ -227,7 +227,7 @@ export class FirebaseProvider {
         lastName: newLastName,
         joinDate: joinDate,
         configured: false,
-        distance: 50,
+        //distance: 50,
         time: 10,
         role: 'normal'
       });
@@ -266,7 +266,7 @@ export class FirebaseProvider {
         address: newAddress,
         driverLicenceNumber: newDLN,
         phoneNumber: newPhoneNumber,
-        distance: 50,
+        //distance: 50,
         time: 10,
         role: 'pro'
       });

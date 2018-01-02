@@ -8,7 +8,7 @@ import { ViewController } from 'ionic-angular/navigation/view-controller';
 
 interface User{
   configured: boolean;
-  distance: number;
+  //distance: number;
   time: number;
 }
 
@@ -19,7 +19,7 @@ interface User{
 })
 
 export class TimeDistancePage {
-  distance: number = 0;
+  //distance: number = 0;
   time: number = 0;
   userID: string;
   userDoc: AngularFirestoreDocument<User>;
@@ -38,17 +38,19 @@ export class TimeDistancePage {
 
     this.userDoc = this.afs.doc<User>('users/' + this.userID);
     this.user = this.userDoc.valueChanges().forEach(a => {
-      this.distance = a.distance == null ? 0 : a.distance;
+      //this.distance = a.distance == null ? 0 : a.distance;
       this.time = a.time == null ? 0 : a.time;
     });
   }
 
+/*
   updateDistance(distance){
     this.afs.doc("users/" + this.userID)
     .update({
       distance: distance
     });
   }
+*/
 
   updateTime(time){
     this.afs.doc("users/" + this.userID)
