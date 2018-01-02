@@ -11,9 +11,8 @@
 <ion-content padding>
     <ion-list *ngFor="let chat of chats | async">
         <div [ngClass]="cardTitle(chat.userName)">{{chat.userName}}</div>
-        <ion-card padding [ngClass]="cardSubtitle(chat.userName)">
-            {{chat.message}}
-        </ion-card>   
+        <div [ngClass]="cardTime(chat.userName)">{{formatTime(chat.time)}}</div>
+        <div [ngClass]="cardSubtitle(chat.userName)">{{chat.message}}</div>   
     </ion-list>
 </ion-content>
 <ion-footer class="footer">

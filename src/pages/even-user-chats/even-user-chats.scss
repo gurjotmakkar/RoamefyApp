@@ -18,30 +18,41 @@ page-even-user-chats {
         letter-spacing: 0.01em;
     }   
 
-    .card-subtitle-left {
-        white-space: normal;
+    .card-time-left {
         text-align: left;
+        color: color($colors, grey_text, base);
+        opacity: 1;
+        font-size: 8px;
+        letter-spacing: 0.01em;
+    }  
+
+    .card-time-right {
+        text-align: right;
+        color: color($colors, grey_text, base);
+        opacity: 1;
+        font-size: 8px;
+        letter-spacing: 0.01em;
+    }  
+
+    .card-subtitle-left {
+        text-align: left;
+        padding: 10px;
         border-radius: 20px;
-        display: inline-block;
-        padding: 10px 18px;
-        position: relative;
-        margin: 10px;
         color: color($colors, ligth_text, base);
         margin-top: 2px;
         margin-bottom: 2px;
         font-size: 14px;
         font-weight: bolder;
         opacity: 1;
+        width: fit-content;
     }  
 
     .card-subtitle-right {
-        white-space: normal;
+        margin-left:auto; 
+        margin-right:0;
         text-align: right;
+        padding: 10px;
         border-radius: 20px;
-        display: inline-block;
-        padding: 10px 18px;
-        position: relative;
-        margin: 10px;
         background-color: color($colors, secondary, base);
         color: color($colors, primary_text, base);
         margin-top: 2px;
@@ -49,12 +60,14 @@ page-even-user-chats {
         font-size: 14px;
         font-weight: bolder;
         opacity: 1;
+        width: fit-content;
     }
 
     .send {
-        background-color: color($colors, secondary, base);
+        background-color: color($colors, primary, base);
         color: color($colors, primary_text, base);
-        height: 30px;
+        height: 50px;
+        margin-bottom: -7px;
     }
 
 }

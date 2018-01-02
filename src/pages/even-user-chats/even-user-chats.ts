@@ -68,6 +68,10 @@ export class EvenUserChatsPage {
     console.log('ionViewDidLoad EvenUserChatsPage');
   }
 
+  formatTime(time){
+    return time.substr(11, 5) + ' (' + time.substr(0, 10) + ')';
+  }
+
   cardTitle(name){
     if(name == this.userName)
       return 'card-title-right';
@@ -80,6 +84,13 @@ export class EvenUserChatsPage {
       return 'card-subtitle-right';
     else
       return 'card-subtitle-left';
+  }
+
+  cardTime(name){
+    if(name == this.userName)
+      return 'card-time-right';
+    else
+      return 'card-time-left';
   }
 
   pushChat(){
