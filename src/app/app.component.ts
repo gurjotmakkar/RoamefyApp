@@ -39,7 +39,7 @@ export class MyApp {
               a.forEach(() => { this.counter++ });
             if (this.config) {
               console.log('set home')
-              this.rootPage = InterestPage; //HomePage;
+              this.rootPage = HomePage;
             } else if (this.counter == 0) {
               console.log('set interest')
               this.rootPage = InterestPage;

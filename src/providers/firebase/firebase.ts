@@ -464,11 +464,60 @@ export class FirebaseProvider {
   
 //-------------- bookmark event ----------------
 
-bookmarkEvent(name, lat, lng, id) {
+bookmarkEvent(lat, lng, startDate, startTime, endDate, endTime, name,
+  price, webSite, description, orgPhone, orgAddress, categories, id) {
   this.afdOf.collection("bookmarkedEvents").doc(id).set({
+    latitude: lat,
+    longitude: lng,
     name: name,
-    lat: lat,
-    lng: lng
+    description: description,
+    price: price,
+    startDate: startDate,
+    startTime: startTime,
+    endDate: endDate,
+    endTime: endTime,
+    address: orgAddress, 
+    website: webSite,
+    phone: orgPhone,
+    categories: categories
+  }).then(a => {
+    this.afdOf.collection("bookmarkedEvents").doc(id).collection("members").doc(this.userID).set({
+      name: this.userID
+    });
+    this.afdOf.collection("users").doc(this.userID).collection("bookmarkedEvents").doc(id).set({
+      name: name
+    });
+  });
+
+  this.afdOf.collection("chatrooms").doc(id).set({
+    name: name
+  }).then(  a => {
+    this.afdOf.collection("chatrooms").doc(id).collection("members").doc(this.userID).set({
+      name: this.userID
+    });
+    this.afdOf.collection("users").doc(this.userID).collection("chatrooms").doc(id).set({
+      name: name
+    });
+  });
+}
+
+
+bookmarkUserEvent(item, id) {
+  console.log(item)
+  this.afdOf.collection("bookmarkedEvents").doc(id).set({
+    latitude: item.latitude,
+    longitude: item.longitude,
+    name: item.name,
+    description: item.description,
+    price: item.price,
+    startDate: item.startDate,
+    startTime: item.startTime,
+    endDate: item.endDate,
+    endTime: item.endTime,
+    address: item.address, 
+    website: item.website,
+    phone: item.phone,
+    categories: item.categoryString
   }).then(a => {
     this.afdOf.collection("bookmarkedEvents").doc(id).collection("members").doc(this.userID).set({
       name: this.userID

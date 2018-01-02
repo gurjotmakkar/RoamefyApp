@@ -20,12 +20,14 @@ export class UserEventEditPage {
   userID: string;
   eventInterest: any;
   interestArr: string[] = [];
+  interestId: string[] = [];
   eventKey: string;
   interestCollection: AngularFirestoreCollection<Interest>;
   interest: any;
   eventDocument: AngularFirestoreDocument<UserEvent>;
   eventDoc: any;
   event: UserEvent = {
+    id: null,
     name: null,
     description: null,
     price: 0,
@@ -40,7 +42,8 @@ export class UserEventEditPage {
     website: null,
     phone: null,
     host: null,
-    categories: null
+    categories: null,
+    categoryString: null
   };
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private firebase: FirebaseProvider,
@@ -51,8 +54,7 @@ export class UserEventEditPage {
     this.eventKey = this.navParams.get('id');
 
     this.eventDocument = this.afs.collection("events").doc<UserEvent>(this.eventKey);
-    this.eventDoc = this.eventDocument.valueChanges().forEach( e => {
-        this.event.id = e.id;
+    this.eventDoc = this.eventDocument.valueChanges().take(1).forEach( e => {
         this.event.address = e.address;
         this.event.addressID = e.addressID;
         this.event.categories = e.categories;
@@ -68,7 +70,7 @@ export class UserEventEditPage {
         this.event.startDate = e.startDate;
         this.event.startTime = e.startTime;
         this.event.website = e.website;
-    })
+    });
 
     this.interestCollection = this.afs.collection<Interest>('interest', ref => {
       return ref.orderBy('name')
@@ -80,6 +82,14 @@ export class UserEventEditPage {
         return data;
       });
     });
+
+    this.afs.collection<Interest>('interest').snapshotChanges()
+    .forEach(i => {
+      i.forEach(a => {
+        this.interestId.push(a.payload.doc.id);
+        this.interestArr.push(a.payload.doc.data().name);
+      })
+    })
 
   }
 
@@ -111,9 +121,25 @@ export class UserEventEditPage {
     });
     alert.present();
     } else {
-    this.firebase.updateEvent(this.eventKey, this.event);
-    this.navCtrl.setRoot(UserCreatedEventPage);
+      this.event.categoryString = this.createString(this.event.categories);
+      this.firebase.updateEvent(this.eventKey, this.event);
+      this.navCtrl.setRoot(UserCreatedEventPage);
     }
+  }
+
+  createString(categories){
+    var catString = null;
+    for(var i in categories){
+      for(var j in this.interestId){
+        if(categories[i] == this.interestId[j]){
+          if(catString == null )
+            catString = this.interestArr[j];
+          else
+            catString += ', ' + this.interestArr[j];
+        }
+      }
+    }
+    return catString;
   }
 
   showAddressModal (){

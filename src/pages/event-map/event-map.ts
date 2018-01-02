@@ -103,25 +103,14 @@ export class EventMapPage {
       if ( i == id )
         checker = true;
     })
-    if (checker)
-      return 'star';
-    return 'bookmark';
+    return checker
   }
 
-  addEvent(item){
-    console.log(item);
-    if( this.icon(item.recId) == 'bookmark' ){
-      this.firebase.bookmarkEvent(item.eventName, item.locations[0].coords.lat, item.locations[0].coords.lng, item.recId);
-      this.eventArr.push(item.recId);
-    } else {
-      this.firebase.unbookmarkEvent(item.recId);
-      this.eventArr.splice(item.recId);
-    }
-  }
-
-  addUserEvent(item, id){
-    if( this.icon(id) == 'bookmark' ){
-      this.firebase.bookmarkEvent(item.name, item.latitude, item.longitude, id);
+  addEvent(lat, lng, startDate, startTime, endDate, endTime, name,
+    price, webSite, description, orgPhone, orgAddress, categories, id){
+    if(!this.icon(id)){
+      this.firebase.bookmarkEvent(lat, lng, startDate, startTime, endDate, endTime, name,
+        price, webSite, description, orgPhone, orgAddress, categories, id);
       this.eventArr.push(id);
     } else {
       this.firebase.unbookmarkEvent(id);
@@ -133,16 +122,20 @@ export class EventMapPage {
     console.log(markers.length);
     
     for(let marker of markers) { 
-      var loc = marker.calEvent.locations[0]["coords"];
+      let id = marker.calEvent["recId"];
+      let loc = marker.calEvent.locations[0]["coords"];
+      let lat = marker.calEvent.locations[0]["coords"].lat
+      let lng = marker.calEvent.locations[0]["coords"].lng;
       let startDate = marker.calEvent["startDate"].substr(0,10);
-      //let startTime = marker.calEvent["startDateTime"] === undefined || marker.calEvent["startDateTime"] === null ? "" : marker.calEvent["startDateTime"];
+      let startTime = marker.calEvent["startDateTime"] === undefined || marker.calEvent["startDateTime"] === null ? "" : marker.calEvent["startDateTime"].substr(11,5);
       let endDate = marker.calEvent["endDate"].substr(0,10);
-      //let endTime = marker.calEvent["endDateTime"]  === undefined || marker.calEvent["endDateTime"] === null ? "" : marker.calEvent["endDateTime"];
+      let endTime = marker.calEvent["endDateTime"]  === undefined || marker.calEvent["endDateTime"] === null ? "" : marker.calEvent["endDateTime"].substr(11,5);
       let name = marker.calEvent["eventName"];
       let shortDesc =  marker.calEvent["shortDescription"];
       if(shortDesc === undefined){
         shortDesc = "";
       }
+      let price = marker.calEvent["otherCostInfo"] === undefined || marker.calEvent["otherCostInfo"] === null ? "" : marker.calEvent["otherCostInfo"];
       let webSite = marker.calEvent["eventWebsite"];
       let description = marker.calEvent["description"];
       let orgPhone = marker.calEvent["orgPhone"];
@@ -151,40 +144,43 @@ export class EventMapPage {
       let orgEmail = marker.calEvent["orgEmail"];  
       let categories = marker.calEvent["categoryString"];
       let img = "http://mnlct.org/wp-content/uploads/2014/10/toronto-skyline.jpg";
-      let bookimg = "assets/imgs/bookmark.png";
       if( marker.calEvent["image"] !== undefined)
         img = "https://secure.toronto.ca" + marker.calEvent["image"]["url"];
 
       //variable to pass into setContent of infoWindow
       let contentString =              
                     '<div id="iw-container">' +
-                    '<div class="iw-title">' + "From: " + startDate + " To: " + endDate
-                     + '<p>' + name + '</p>' + '</div>' + 
-                    '<div class="iw-content">' +
-                    shortDesc +
-                    '<input type="submit" click="addUserEvent('+ marker +')">' +
-                    '<img src="' + bookimg + '" height="50" width="50"/> </button>' +
-                    '<img src= "' + img + '" height="210" width="230">' +
-                    '<div class="iw-subTitle"> Event Details: </div>' +
-                    '<p>' + description + '</p>' +
-
-                                   '<div class="iw-subTitle">More information: </div>' + '<a href="  '+ webSite +'     ">'  +  'link'     +       '</a>'    +              
-                                   '<div class="iw-subTitle">Event Location: </div> '   +
-                                   '<p>'    + orgAddress    + '</p>'   +
-                                   '<div class="iw-subTitle">Contact Information: </div> '   +
-                                   '<p>'    + orgName    + '</p>'   + 
-                                   '<p>'    + orgEmail    + '</p>'   + 
-                                   '<p>'    + orgPhone    + '</p>'   +                                          
-                                   '<div class="iw-subTitle">Category(s): </div> '  + 
-                                   '<p>' + categories  + '</p>' +
-                                   '</div>' + //end content
-                                  // '<div class="iw-bottom-gradient"></div>' +
-                                   '</div>' //end container
-      //console.log(name); //displays name of each event within this object
- 
-      marker = new google.maps.Marker({
+                    '<p><span id="eventId" hidden>' + id + '</span></p>' + 
+                    '<p><span id="eventWebsite" hidden>' + webSite + '</span></p>' + 
+                    '<p><span id="eventLat" hidden>' + lat + '</span></p>' + 
+                    '<p><span id="eventLng" hidden>' + lng + '</span></p>' + 
+                    '<div class="iw-title">' + "From: " +
+                      '<p><span id="eventStartDate">' + startDate + '</span>  <span id="eventStartTime">' + startTime + '</span></p>' + "To: " +
+                      '<p><span id="eventEndDate">' + endDate + '</span>  <span id="eventEndTime">' + endTime + '</span></p>' +
+                      '<p><span id="eventName">' + name + '</span></p>' + 
+                      '</div>' + 
+                      '<div>' + 
+                      '<input type="button" id="bookmarkImage" value="Bookmark"/>' +
+                      '</div>' +
+                      '<div class="iw-content">' +
+                        shortDesc +
+                      '</div>' +
+                      '<img src= "' + img + '" height="210" width="230">' +
+                      '<div class="iw-subTitle"> Event Details: </div>' +
+                      '<p><span id="eventDescription">' + description + '</span></p>' +
+                      '<div class="iw-subTitle">More information: </div>' + '<a href="'+ webSite +'">'  +  'link'     +       '</a>'    +              
+                      '<div class="iw-subTitle">Event Location: </div> '   +
+                      '<p><span id="eventAddress">'    + orgAddress    + '</span></p>'   +
+                      '<div class="iw-subTitle">Contact Information: </div> '   +
+                      '<p><span id="eventPhone">'    + orgPhone    + '</span></p>'   +                                          
+                      '<div class="iw-subTitle">Category(s): </div> '  + 
+                      '<p><span id="eventCat">' + categories  + '</span></p>' +
+                      '<p><span id="eventPrice">' + price  + '</span></p>' +
+                    '</div>'; 
+        
+      var mapmarker = new google.maps.Marker({
         position: loc,
-        map: this.map,   
+        map: this.map
       });
 
       var infoWindow = new google.maps.InfoWindow({
@@ -192,80 +188,78 @@ export class EventMapPage {
         content: contentString
       }); 
 
-      google.maps.event.addListener(marker, 'click', function() {
-        infoWindow.open(this.map, marker);
+      google.maps.event.addListener(mapmarker, 'click', function() {
         infoWindow.setContent(contentString);   
+        infoWindow.open(this.map, mapmarker);
       });
-/*
-      google.maps.event.addListener(infoWindow, 'domready', function() {        
-                // Reference to the DIV that wraps the bottom of infowindow
-                var iwOuter = $('.gm-style-iw');
-            
-                /* Since this div is in a position prior to .gm-div style-iw.
-                 * We use jQuery and create a iwBackground variable,
-                 * and took advantage of the existing reference .gm-style-iw for the previous div with .prev().
-                */
-/*
-         
-                var iwBackground = iwOuter.prev();
-            
-                // Removes background shadow DIV
-                iwBackground.children(':nth-child(2)').css({'display' : 'none'});
-            
-                // Removes white background DIV
-                iwBackground.children(':nth-child(4)').css({'display' : 'none'});
-            
-                // Moves the infowindow 115px to the right.
-                iwOuter.parent().parent().css({left: '20px'});
-            
-                // Moves the shadow of the arrow 76px to the left margin.
-                iwBackground.children(':nth-child(1)').attr('style', function(i,s){ return s + 'left: 76px !important;'});
-            
-                // Moves the arrow 76px to the left margin.
-                iwBackground.children(':nth-child(3)').attr('style', function(i,s){ return s + 'left: 76px !important;'});
-            
-                // Changes the desired tail shadow color.
-                iwBackground.children(':nth-child(3)').find('div').children().css({'box-shadow': 'rgba(72, 181, 233, 0.6) 0px 1px 6px', 'z-index' : '1'});
-            
-                // Reference to the div that groups the close button elements.
-                var iwCloseBtn = iwOuter.next();
-            
-                // Apply the desired effect to the close button
-                iwCloseBtn.css({opacity: '1', right: '38px', top: '3px', border: '7px solid #48b5e9', 'border-radius': '13px', 'box-shadow': '0 0 5px #3990B9'});
-            
-                // If the content of infowindow not exceed the set maximum height, then the gradient is removed.
-                if($('.iw-content').height() < 140){
-                  $('.iw-bottom-gradient').css({display: 'none'});
-                }
-            
-                // The API automatically applies 0.7 opacity to the button after the mouseout event. This function reverses this event to the desired value.
-                iwCloseBtn.mouseout(function(){
-                  $(this).css({opacity: '1'});
-                });
-              });
-              */
-            } 
-            
-            //google.maps.event.addDomListener(window, 'load', initialize)
-    }
+
+      var self = this;
+
+      google.maps.event.addListener(infoWindow, 'domready', function() {
+        var bookmarkImage = document.getElementById('bookmarkImage');
+
+        var id = document.getElementById('eventId').outerText;
+        var lat = document.getElementById('eventLat').outerText;
+        var lng = document.getElementById('eventLng').outerText;
+        var startDate = document.getElementById('eventStartDate').outerText;
+        var startTime = document.getElementById('eventStartTime').outerText;
+        var endDate = document.getElementById('eventEndDate').outerText;
+        var endTime = document.getElementById('eventEndTime').outerText;
+        var name = document.getElementById('eventName').outerText;
+        var price = document.getElementById('eventPrice').outerText;
+        var webSite = document.getElementById('eventWebsite').outerText;
+        var description = document.getElementById('eventDescription').outerText;
+        var orgPhone = document.getElementById('eventPhone').outerText;
+        var orgAddress = document.getElementById('eventAddress').outerText;
+        var categories = document.getElementById('eventCat').outerText;
+        
+        bookmarkImage.addEventListener('click', () => {
+          self.addEvent(lat, lng, startDate, startTime, endDate, endTime, name,
+            price, webSite, description, orgPhone, orgAddress, categories, id);
+            if (self.icon(id)){
+              bookmarkImage.setAttribute('value','Unbookmark')
+            } else {
+              bookmarkImage.setAttribute('value','Bookmark')
+            }
+        });
+        if (self.icon(id)){
+          bookmarkImage.setAttribute('value','Unbookmark')
+        } else {
+          bookmarkImage.setAttribute('value','Bookmark')
+        }
+     });
+    } 
+  }
 
     addUserEventMarkersMap(e, id){
         let img = "http://mnlct.org/wp-content/uploads/2014/10/toronto-skyline.jpg";
         let contentString =              
-                      '<div id="iw-container">' +
+                    '<div id="iw-container">' +
+                    '<p><span id="eventId" hidden>' + id + '</span></p>' + 
+                    '<p><span id="eventWebsite" hidden>' + e.website + '</span></p>' + 
+                    '<p><span id="eventLat" hidden>' + e.latitude + '</span></p>' + 
+                    '<p><span id="eventLng" hidden>' + e.longitude + '</span></p>' + 
+                    '<div class="iw-title">' + "From: " +
+                      '<p><span id="eventStartDate">' + e.startDate + '</span> <span id="eventStartTime">' + e.startTime + '</span></p>' + "To: " +
+                      '<p><span id="eventEndDate">' + e.endDate + '</span> <span id="eventEndTime">' + e.endTime + '</span></p>' +
+                      '<p><span id="eventName">' + e.name + '</span></p>' + 
+                      '</div>' + 
+                      '<div>' + 
+                      '<input type="button" id="bookmarkImage" value="Bookmark"/>' +
+                      '</div>' +
+                      '<img src= "' + img + '" height="210" width="230">' +
+                      '<div class="iw-subTitle"> Event Details: </div>' +
+                      '<p><span id="eventDescription">' + e.description + '</span></p>' +
+                      '<div class="iw-subTitle">More information: </div>' + '<a href="'+ e.website +'">'  +  'link'     +       '</a>'    +              
+                      '<div class="iw-subTitle">Event Location: </div> '   +
+                      '<p><span id="eventAddress">'    + e.address    + '</span></p>'   +
+                      '<div class="iw-subTitle">Contact Information: </div> '   +
+                      '<p><span id="eventPhone">'    + e.phone    + '</span></p>'   +                                          
+                      '<div class="iw-subTitle">Category(s): </div> '  + 
+                      '<p><span id="eventCat">' + e.categoryString  + '</span></p>' +
+                      '<p><span id="eventPrice">' + e.price  + '</span></p>' +
+                    '</div>';
 
-                      '<div class="iw-title">' + e.name +'</div>' + 
-                      '<div class="iw-content">' +
-                      '<div class="iw-subTitle"> Description: </div>' +
-                      '<img src= "' + img + '" height="115" width="93">' +
-                      '<p>' + e.description + '</p>' +
-
-                                    '<div class="iw-subTitle">Website: </div>' + '<a href="  '+ e.website +'     ">'  +  'link'     +       '</a>'    +              
-                                    '<div class="iw-subTitle">Phone: </div> '   +
-                                    '<p>'    + e.phone    + '</p>'   +
-                                    '<div class="iw-bottom-gradient"></div>' +
-                                    '</div>' //end container
-        //console.log(name); //displays name of each event within this object
         let loc = {lng: e.longitude, lat: e.latitude};
         var marker = new google.maps.Marker({
           position: loc,
@@ -282,45 +276,40 @@ export class EventMapPage {
           infoWindow.setContent(contentString);   
         });
 
-/*        google.maps.event.addListener(infoWindow, 'domready', function() {        
-                  // Reference to the DIV that wraps the bottom of infowindow
-                  var iwOuter = $('.gm-style-iw');
-                  
-                  var iwBackground = iwOuter.prev();
-              
-                  // Removes background shadow DIV
-                  iwBackground.children(':nth-child(2)').css({'display' : 'none'});
-              
-                  // Removes white background DIV
-                  iwBackground.children(':nth-child(4)').css({'display' : 'none'});
-              
-                  // Moves the infowindow 115px to the right.
-                  iwOuter.parent().parent().css({left: '20px'});
-              
-                  // Moves the shadow of the arrow 76px to the left margin.
-                  iwBackground.children(':nth-child(1)').attr('style', function(i,s){ return s + 'left: 76px !important;'});
-              
-                  // Moves the arrow 76px to the left margin.
-                  iwBackground.children(':nth-child(3)').attr('style', function(i,s){ return s + 'left: 76px !important;'});
-              
-                  // Changes the desired tail shadow color.
-                  iwBackground.children(':nth-child(3)').find('div').children().css({'box-shadow': 'rgba(72, 181, 233, 0.6) 0px 1px 6px', 'z-index' : '1'});
-              
-                  // Reference to the div that groups the close button elements.
-                  var iwCloseBtn = iwOuter.next();
-              
-                  // Apply the desired effect to the close button
-                  iwCloseBtn.css({opacity: '1', right: '38px', top: '3px', border: '7px solid #48b5e9', 'border-radius': '13px', 'box-shadow': '0 0 5px #3990B9'});
-              
-                  // If the content of infowindow not exceed the set maximum height, then the gradient is removed.
-                  if($('.iw-content').height() < 140){
-                    $('.iw-bottom-gradient').css({display: 'none'});
-                  }
-              
-                  // The API automatically applies 0.7 opacity to the button after the mouseout event. This function reverses this event to the desired value.
-                  iwCloseBtn.mouseout(function(){
-                    $(this).css({opacity: '1'});
-                  });
-                });*/
-          }
+      var self = this;
+
+      google.maps.event.addListener(infoWindow, 'domready', function() {
+        var bookmarkImage = document.getElementById('bookmarkImage');
+
+        var id = document.getElementById('eventId').outerText;
+        var lat = document.getElementById('eventLat').outerText;
+        var lng = document.getElementById('eventLng').outerText;
+        var startDate = document.getElementById('eventStartDate').outerText;
+        var startTime = document.getElementById('eventStartTime').outerText;
+        var endDate = document.getElementById('eventEndDate').outerText;
+        var endTime = document.getElementById('eventEndTime').outerText;
+        var name = document.getElementById('eventName').outerText;
+        var price = document.getElementById('eventPrice').outerText;
+        var webSite = document.getElementById('eventWebsite').outerText;
+        var description = document.getElementById('eventDescription').outerText;
+        var orgPhone = document.getElementById('eventPhone').outerText;
+        var orgAddress = document.getElementById('eventAddress').outerText;
+        var categories = document.getElementById('eventCat').outerText;
+        
+        bookmarkImage.addEventListener('click', () => {
+          self.addEvent(lat, lng, startDate, startTime, endDate, endTime, name,
+            price, webSite, description, orgPhone, orgAddress, categories, id);
+            if (self.icon(id)){
+              bookmarkImage.setAttribute('value','Unbookmark')
+            } else {
+              bookmarkImage.setAttribute('value','Bookmark')
+            }
+        });
+        if (self.icon(id)){
+          bookmarkImage.setAttribute('value','Unbookmark')
+        } else {
+          bookmarkImage.setAttribute('value','Bookmark')
+        }
+     });
+    }
 }

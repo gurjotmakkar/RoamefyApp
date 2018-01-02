@@ -21,11 +21,11 @@
 <ion-footer no-border>
     <ion-grid class="input-wrap">
         <ion-row>
-            <ion-col col-8>
+            <ion-col>
                 <ion-textarea placeholder="Type your message here" [(ngModel)]="message" (keyup.enter)="pushChat()">
                 </ion-textarea>
             </ion-col>
-            <ion-col col-2>
+            <ion-col>
                 <button ion-button clear icon-only item-right color="danger" (click)="pushChat()">
                     <ion-icon name="send"></ion-icon>
                 </button>
