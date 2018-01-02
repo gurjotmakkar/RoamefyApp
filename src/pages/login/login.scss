@@ -1,73 +1,21 @@
 page-login {
-/*
-  .background{
-    background-image: url('../assets/imgs/login.jpg');
-    background-repeat:no-repeat;
-    background-size:cover;
-    color: #000;
-  }
 
-  .item{
-    background: rgba($color: #fff, $alpha: 0.1);
-    color: #000;
-  }
-*/
   .logo{
-    //margin-top: 50px;
     color: color($colors, primary_text, base);
     font-size: 30px;
     font-weight: bolder;
     text-align: center;
-    //font-family: "Sofia";
-    text-shadow: 0 0 5px #005563;
-    //background-color: color($colors, primary, base);
-  }
-/*
-  .loginButton{
-    background: rgba($color: color($colors, primary, base), $alpha: 1.0);
+    text-shadow: 4px 4px 5px #00424d;
   }
 
-  .otherButton{
-    background: rgba($color: color($colors, primary, base), $alpha: 1);
-    box-shadow: 0 0 5px #005563;
-    margin-top: 10px;
-  }
-*/
   form {  
     margin-top: 10px;
-   // color: #000000;
-   // opacity: 87 38;
-  //  background: rgba($color: #fff, $alpha: 0.3);
-  //  box-shadow: 0 0 5px #005563;
-  //  border-radius: 10px;
   }
   
-  /*p {
-    font-size: 0.8em;
-    color: #000;
-  }
-*/
   .item .loginC {
     color: #000000;
     opacity: 0.8;
   }
-  /*
-  ion-input {
-    color: #000;
-  }
-
-  .text-input::-moz-placeholder {
-    color: #000;
-  }
-  
-  .text-input:-ms-input-placeholder {
-    color: #000;
-  }
-  
-  .text-input::-webkit-input-placeholder {
-    color: #000;
-  }
-  */
 
   .invalid {
     border-bottom: 1.3px solid #FF6153 !important;
@@ -75,13 +23,10 @@ page-login {
   
   .error-message .item-inner {
     border-bottom: 0 !important;
-    //color: #000;
   } 
   
   .error-message {
     border-bottom: 0 !important;
-    //color: #000;
-    //background: rgba($color: #fff, $alpha: 0.1);
   }
 
   .loginButton {
