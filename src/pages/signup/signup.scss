@@ -5,24 +5,29 @@ page-signup {
     font-size: 30px;
     font-weight: bolder;
     text-align: center;
-    text-shadow: 4px 4px 5px #00424d;
+    text-shadow: 4px 4px 5px #002c39;
   }
 
   form {  
     margin-top: 10px;
   }
-  
+
   .item .register {
-    color: #000000;
+    color: color($colors, dark_text, base);
     opacity: 0.8;
   }
-  
+
+  .item {
+    margin-bottom: 5px;
+  }
+
   .error-message .item-inner {
     border-bottom: 0 !important;
   } 
   
-  .error-message {
+  .error-message p{
     border-bottom: 0 !important;
+    color: color($colors, darkDanger, base);
   }
 
   .loginButton {
@@ -32,14 +37,14 @@ page-signup {
 
   .otherButton {
     margin-top: 20px;
-    background-color: white;
+    background-color: color($colors, primary_text, base);
     color: color($colors, primary, base);
     border: 1px solid color($colors, primary, base);
   }
 
   #or {
     text-align: center;
-    color: #000000;
+    color: color($colors, dark_text, base);
     opacity: 0.7;
     margin-bottom: 30px;
   }
