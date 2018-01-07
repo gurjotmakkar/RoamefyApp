@@ -43,7 +43,7 @@ export class EventMapPage {
     }
 
   ionViewDidLoad(){
-    this.setDefaultMap();
+    /*this.setDefaultMap();
     //this.displayGoogleMap(); // To get current user position
     
     let loader = this.loading.create({
@@ -66,7 +66,7 @@ export class EventMapPage {
         this.addUserEventMarkersMap(e.payload.doc.data(), e.payload.doc.id);
       })
     })
-    
+    */
   }
 
   displayGoogleMap(){

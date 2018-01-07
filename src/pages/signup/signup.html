@@ -6,10 +6,9 @@
 <ion-content padding>
   <form [formGroup]="signupForm" (submit)="signupUser()" novalidate>
     
-      <ion-item class="item">
+      <ion-item>
         <ion-label stacked class="register">First Name</ion-label>
-        <ion-input formControlName="firstName" type="text" placeholder="Enter your first name"
-          [class.invalid]="!signupForm.controls.firstName.valid && (signupForm.controls.firstName.dirty || submitAttempt)"></ion-input>
+        <ion-input formControlName="firstName" type="text" placeholder="Enter your first name"></ion-input>
       </ion-item>
       <ion-item class="error-message" *ngIf="!signupForm.controls.firstName.valid  && (signupForm.controls.firstName.dirty || submitAttempt)">
       
@@ -27,10 +26,9 @@
         </p>  
       </ion-item>
       
-      <ion-item class="item">
+      <ion-item>
         <ion-label stacked class="register">Last Name</ion-label>
-        <ion-input formControlName="lastName" type="text" placeholder="Enter your last name"
-          [class.invalid]="!signupForm.controls.lastName.valid && (signupForm.controls.lastName.dirty || submitAttempt)"></ion-input>
+        <ion-input formControlName="lastName" type="text" placeholder="Enter your last name"></ion-input>
       </ion-item>
       <ion-item class="error-message" *ngIf="!signupForm.controls.lastName.valid  && (signupForm.controls.lastName.dirty || submitAttempt)">
         <p *ngIf="signupForm.controls.lastName.errors.required">
@@ -49,8 +47,7 @@
 
       <ion-item class="item">
         <ion-label stacked class="register">Email</ion-label>
-        <ion-input formControlName="email" type="email" placeholder="Enter your email address"
-          [class.invalid]="!signupForm.controls.email.valid && (signupForm.controls.email.dirty || submitAttempt)"></ion-input>
+        <ion-input formControlName="email" type="email" placeholder="Enter your email address"></ion-input>
       </ion-item>
       <ion-item class="error-message" *ngIf="!signupForm.controls.email.valid  && (signupForm.controls.email.dirty || submitAttempt)">
         <p>Please enter a valid email.</p>
@@ -58,8 +55,7 @@
 
       <ion-item class="item">
         <ion-label stacked class="register">Password</ion-label>
-        <ion-input formControlName="password" type="password"  placeholder="Enter your password"
-          [class.invalid]="!signupForm.controls.password.valid && (signupForm.controls.password.dirty || submitAttempt)"></ion-input>
+        <ion-input formControlName="password" type="password"  placeholder="Enter your password"></ion-input>
       </ion-item>
       <ion-item class="error-message" *ngIf="!signupForm.controls.password.valid  && (signupForm.controls.password.dirty || submitAttempt)">
         <p *ngIf="signupForm.controls.password.errors.required">

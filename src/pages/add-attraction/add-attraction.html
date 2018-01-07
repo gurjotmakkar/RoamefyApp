@@ -99,8 +99,8 @@
       </p>
   </ion-item>
 
-  <button ion-button black clear color="primary" (click)="addattraction(attraction)" [disabled]="!addattractionForm.form.valid">Create</button> 
+  <button ion-button black clear (click)="addattraction(attraction)" [disabled]="!addattractionForm.form.valid">Create</button> 
   
-  <button ion-button black clear color="danger" (click)="cancel()" [disabled]="addattractionForm.form.valid">Cancel</button>      
+  <button ion-button black clear (click)="cancel()" [disabled]="addattractionForm.form.valid">Cancel</button>      
 </form>
 </ion-content>
