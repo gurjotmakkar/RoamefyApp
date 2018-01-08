@@ -42,7 +42,6 @@ page-even-user-chats {
         margin-top: 2px;
         margin-bottom: 2px;
         font-size: 14px;
-        font-weight: bolder;
         opacity: 1;
         width: fit-content;
     }  
@@ -53,12 +52,11 @@ page-even-user-chats {
         text-align: right;
         padding: 10px;
         border-radius: 20px;
-        background-color: color($colors, secondary, base);
+        background-color: color($colors, darkSecondary, base);
         color: color($colors, primary_text, base);
         margin-top: 2px;
         margin-bottom: 2px;
         font-size: 14px;
-        font-weight: bolder;
         opacity: 1;
         width: fit-content;
     }
@@ -68,6 +66,10 @@ page-even-user-chats {
         color: color($colors, primary_text, base);
         height: 50px;
         margin-bottom: -7px;
+    }
+
+    .list{
+        
     }
 
 }

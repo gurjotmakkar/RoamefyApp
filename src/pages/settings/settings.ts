@@ -37,7 +37,7 @@ export class SettingsPage {
     public firebase: FirebaseProvider, private afs: AngularFirestore) {
     this.pages = [
       { title: "Interests", component: InterestPage },
-      { title: "Time and Distance", component: TimeDistancePage },
+      { title: "Time", component: TimeDistancePage },
       { title: "Bookmarked Events", component: UserBookmarkedEventsPage },
       { title: "Chatrooms", component: EventChatsPage },
       { title: "User Profile", component: UserProfilePage}

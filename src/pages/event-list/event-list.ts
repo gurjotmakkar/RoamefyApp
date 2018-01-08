@@ -105,7 +105,7 @@ export class EventListPage {
       let startDate = item.startDate.substr(0,10);
       let endDate = item.endDate.substr(0,10);
       let name = item.eventName;
-      let shortDesc =  item.shortDescription;
+      //let shortDesc =  item.shortDescription;
       let webSite = item.eventWebsite;
       let description = item.description;
       let orgPhone = item.orgPhone;
