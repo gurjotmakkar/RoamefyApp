@@ -174,7 +174,7 @@ export class UserBookmarkedEventsPage {
           text: 'Yes',
           handler: () => {
             this.calArr.splice(item.id);
-
+/*
             var start = new Date(item.startDate + 'T' + (item.startTime == ));
             var end = new Date(item.startDate + 'T' + item.startTime)
 
@@ -182,8 +182,8 @@ export class UserBookmarkedEventsPage {
               (msg) => { console.log(msg); },
               (err) => { console.log(err); }
             );
-
-            this.firebase.cancelNotification(item.id);
+*/
+            //this.firebase.cancelNotification(item.id);
             alert.dismiss();
           }
         }]
@@ -212,7 +212,7 @@ export class UserBookmarkedEventsPage {
               this.calArr.push(item.id);
 
 
-              this.firebase.scheduleNotification(item.id, item.startDate, item.startTime, data.time, item.name);
+              //this.firebase.scheduleNotification(item.id, item.startDate, item.startTime, data.time, item.name);
               alert.dismiss();
               }
           }]
