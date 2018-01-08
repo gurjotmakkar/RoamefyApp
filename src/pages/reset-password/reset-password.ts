@@ -16,7 +16,8 @@ export class ResetPasswordPage {
 
   constructor(public authData: FirebaseProvider, public formBuilder: FormBuilder,
   public nav: NavController, public alertCtrl: AlertController, public menu: MenuController) {
-  this.menu.swipeEnable(false);
+
+  // build reset form
   this.resetPasswordForm = formBuilder.group({
     email: ['', Validators.compose([Validators.required, EmailValidator.isValid])],
   })
@@ -24,9 +25,13 @@ export class ResetPasswordPage {
 
 resetPassword(){
   this.submitAttempt = true;
+
+  // check if reset form is valid
   if (!this.resetPasswordForm.valid){
     console.log(this.resetPasswordForm.value);
   } else {
+
+    // send reset password email to the user
     this.authData.resetPassword(this.resetPasswordForm.value.email)
     .then((user) => {
       let alert = this.alertCtrl.create({
@@ -58,6 +63,7 @@ resetPassword(){
   }
 }
 
+// redirect to login page
 goHome(){
   this.nav.setRoot(LoginPage);
 }

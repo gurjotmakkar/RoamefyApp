@@ -21,8 +21,8 @@ interface Member{
 
 export class EventMapPage {
   @ViewChild('map') mapElement: ElementRef;
+  api: string;
   map: any;
-  api: string = 'http://app.toronto.ca/cc_sr_v1_app/data/edc_eventcal_APR?limit=500';
   userEventCollection: AngularFirestoreCollection<Member>;
   userEvents: any;
   userID: string;
@@ -32,8 +32,13 @@ export class EventMapPage {
     public loading: LoadingController, private afs: AngularFirestore,
     private firebase: FirebaseProvider) {
       
+    // get toronto event api
+    this.api = this.firebase.getTorontoEvents();
+
+    // get user id
     this.userID = this.firebase.getUserId();
     
+    // get events list bookmarked by user
     this.userEventCollection = this.afs.collection('users').doc(this.userID).collection<Member>('bookmarkedEvents');
     this.userEvents = this.userEventCollection.snapshotChanges().forEach(a => {
       this.eventArr = [];
@@ -42,6 +47,7 @@ export class EventMapPage {
     });
     }
 
+  // load events on map when the page is loaded
   ionViewDidLoad(){
     this.setDefaultMap();
     //this.displayGoogleMap(); // To get current user position
@@ -51,6 +57,7 @@ export class EventMapPage {
     });  
     loader.present();
     
+    // get events from toronto api
     this.http.get(this.api)
     .subscribe(data => {
       this.addMarkersMap(data);
@@ -60,6 +67,7 @@ export class EventMapPage {
       loader.dismiss();
     });
 
+    // get events created by user
     this.afs.collection<UserEvent>("events").snapshotChanges()
     .forEach(event => {
       event.forEach(e => {
@@ -69,6 +77,7 @@ export class EventMapPage {
     
   }
 
+  // display map showing current position of user
   displayGoogleMap(){
     let locationOptions = {timeout: 20000, enableHighAccuracy: true};
  
@@ -87,6 +96,7 @@ export class EventMapPage {
     ); 
   }
 
+  // display map with fixed position
   setDefaultMap(){
     let latLng = new google.maps.LatLng(43.653908,-79.384293);
     let options = {
@@ -97,6 +107,7 @@ export class EventMapPage {
     this.map = new google.maps.Map(this.mapElement.nativeElement, options);
   }
 
+  // check if user has bookmarked an event
   icon(id){
     var checker = false;
     this.eventArr.forEach(i => {
@@ -106,6 +117,7 @@ export class EventMapPage {
     return checker
   }
 
+  // bookmark / unbookmark event
   addEvent(lat, lng, startDate, startTime, endDate, endTime, name,
     price, webSite, description, orgPhone, orgAddress, categories, id){
     if(!this.icon(id)){
@@ -118,6 +130,8 @@ export class EventMapPage {
     }
   }
 
+
+  // add markers to the map
   addMarkersMap(markers){
     console.log(markers.length);
     
@@ -186,16 +200,19 @@ export class EventMapPage {
                       '<p class="content"><span id="eventPrice">' + price  + '</span></p>' +
                     '</div>'; 
         
+      // adding markers              
       var mapmarker = new google.maps.Marker({
         position: loc,
         map: this.map
       });
 
+      // generating info window and setting content
       var infoWindow = new google.maps.InfoWindow({
         maxWidth: 350,
         content: contentString
       }); 
 
+      // adding listener for click on marker
       google.maps.event.addListener(mapmarker, 'click', function() {
         infoWindow.setContent(contentString);   
         infoWindow.open(this.map, mapmarker);
@@ -203,6 +220,7 @@ export class EventMapPage {
 
       var self = this;
 
+      // adding listener for click inside infowindow
       google.maps.event.addListener(infoWindow, 'domready', function() {
         var bookmarkImage = document.getElementById('bookmarkImage');
 
@@ -221,6 +239,7 @@ export class EventMapPage {
         var orgAddress = document.getElementById('eventAddress').outerText;
         var categories = document.getElementById('eventCat').outerText;
         
+        // adding listener for click on infowindow bookmark button
         bookmarkImage.addEventListener('click', () => {
           self.addEvent(lat, lng, startDate, startTime, endDate, endTime, name,
             price, webSite, description, orgPhone, orgAddress, categories, id);
@@ -238,8 +257,9 @@ export class EventMapPage {
      });
     } 
   }
-
-    addUserEventMarkersMap(e, id){
+    
+  // add user events to map
+  addUserEventMarkersMap(e, id){
         let img = "http://mnlct.org/wp-content/uploads/2014/10/toronto-skyline.jpg";
         let contentString =              
                     '<div id="iw-container">' +
@@ -268,17 +288,22 @@ export class EventMapPage {
                       '<p class="content"><span id="eventPrice">' + "Price: $" + e.price + '</span></p>' +
                     '</div>'; 
 
+        // generating location object
         let loc = {lng: e.longitude, lat: e.latitude};
+
+        // adding marker
         var marker = new google.maps.Marker({
           position: loc,
           map: this.map,   
         });
 
+        // generating info window
         var infoWindow = new google.maps.InfoWindow({
           maxWidth: 350,
           content: contentString
         }); 
 
+        // add listener for click on marker
         google.maps.event.addListener(marker, 'click', function() {
           infoWindow.open(this.map, marker);
           infoWindow.setContent(contentString);   
@@ -286,6 +311,7 @@ export class EventMapPage {
 
       var self = this;
 
+      // add listener to click inside info window
       google.maps.event.addListener(infoWindow, 'domready', function() {
         var bookmarkImage = document.getElementById('bookmarkImage');
 
@@ -304,6 +330,7 @@ export class EventMapPage {
         var orgAddress = document.getElementById('eventAddress').outerText;
         var categories = document.getElementById('eventCat').outerText;
         
+        // add listener for click on bookmark button
         bookmarkImage.addEventListener('click', () => {
           self.addEvent(lat, lng, startDate, startTime, endDate, endTime, name,
             price, webSite, description, orgPhone, orgAddress, categories, id);

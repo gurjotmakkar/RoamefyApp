@@ -31,6 +31,7 @@ export class LoginPage {
     public formBuilder: FormBuilder, public alertCtrl: AlertController,
     public loadingCtrl: LoadingController, private afs: AngularFirestore, 
     public viewCtrl: ViewController) {
+      // build login form with email and password validations
       this.loginForm = formBuilder.group({
         email: ['', Validators.compose([Validators.required, EmailValidator.isValid])],
         password: ['', Validators.compose([Validators.required, PasswordValidator.isValid])]
@@ -38,14 +39,23 @@ export class LoginPage {
   }
 
   loginUser(){
+    // set submit attempt to true if the user tried to login the first time
     this.submitAttempt = true;
+    
+    //check if login form was valid
     if (!this.loginForm.valid){
+
       console.log(this.loginForm.value);
+
     } else {
+
       this.authData.loginUser(this.loginForm.value.email, this.loginForm.value.password)
       .then( authData => {
+        // check if the email is verified by the user
+        // If email is not verified then user will be prompted to verify the email
         if (this.authData.afAuth.auth.currentUser.emailVerified == false){
           this.authData.logoutUser();
+
           this.loading.dismiss().then( () => {
             let alert = this.alertCtrl.create({
               message: "Please verify your email",
@@ -56,14 +66,23 @@ export class LoginPage {
                 }
               ]
             });
+
             alert.present();
           });
+
         } else {
+          // assign user id
           var userID = this.authData.getUserId();
+
           var configured = false;
+
           this.afs.collection('users').doc<User>(userID).valueChanges()
           .subscribe(a => {
+
             configured = a.configured == null ? false : a.configured;
+
+            // check if user has already configured interests
+            // if not configured then redirected to interest page instead of homepage
             if(configured == false) {
               this.navCtrl.setRoot(InterestPage);
             }
@@ -73,6 +92,7 @@ export class LoginPage {
           })
         }
       }, error => {
+        // prompt if any error occur
         this.loading.dismiss().then( () => {
           let alert = this.alertCtrl.create({
             message: error.message,
@@ -90,24 +110,24 @@ export class LoginPage {
       this.loading = this.loadingCtrl.create({
         dismissOnPageChange: true,
       });
+
       this.loading.present();
     }
   }
 
+  // redirect to passwor page
   goToResetPassword(){
     this.navCtrl.setRoot(ResetPasswordPage);
   }
 
+  // redirect to signup page
   createAccount(){
     this.navCtrl.setRoot(SignupPage);
   }
 
+  // redirect to signup as a pro page
   createProAccount(){
     this.navCtrl.setRoot(SignupProPage);
-  }
-
-  ngOnDestroy() {
-    //this.viewCtrl.dismiss();
   }
 
 }

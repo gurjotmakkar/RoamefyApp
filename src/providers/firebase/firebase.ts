@@ -4,10 +4,12 @@ import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/fires
 import { UserEvent } from '../../models/events/userevent.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
+// get interest name interface
 interface Interest{
   name: string;
 }
 
+// get chat object interface
 interface Chat{
   message: string;
   time: Date;
@@ -15,15 +17,18 @@ interface Chat{
   userName: string;
 }
 
+// get event partial object inteface
 interface Event{
   name: string;
   host: string;
 }
 
+// get any collection name interface
 interface Collection{
   name: string;
 }
 
+// get user partial object interface
 interface UserNotificationId{
   notificationID: string;
   time: number;
@@ -32,9 +37,19 @@ interface UserNotificationId{
 @Injectable()
 
 export class FirebaseProvider {
+
+  // one signal api key
   oneSignalKey: string = 'e979d775-d7e2-46e7-88c9-864d62ac51b2';
+
+  // one signal rest api id
   oneSignalRest: string = 'Basic NGNmYTA3ZDMtYTRiOC00MmJmLWE5ODEtOWJlNTFhNzY2NDFm';
+
+  // event json api link
+  torontoEventApi: string = 'http://app.toronto.ca/cc_sr_v1_app/data/edc_eventcal_APR?limit=500';
+
   userID: string;
+
+  // empty chat object
   chat: Chat = {
     message: '',
     time: new Date(),
@@ -44,11 +59,11 @@ export class FirebaseProvider {
 
   eventCollection: AngularFirestoreCollection<Event>; // host
   events: any;
-  bookmarkEventCollection: AngularFirestoreCollection<Collection>; // member
+  bookmarkEventCollection: AngularFirestoreCollection<Collection>; // bookmark member
   bookmarkEvents: any;
-  chatCollection: AngularFirestoreCollection<Collection>; // member
+  chatCollection: AngularFirestoreCollection<Collection>; // chat member
   chats: any;
-  interestCollection: AngularFirestoreCollection<Collection>; // member
+  interestCollection: AngularFirestoreCollection<Collection>; // interest member
   interests: any;
   roleCollection: AngularFirestoreCollection<Collection>; // normal and pro member
   rolses: any;
@@ -57,6 +72,8 @@ export class FirebaseProvider {
 
   constructor(public afAuth: AngularFireAuth, public afdOf: AngularFirestore, 
     private http: HttpClient) {
+
+    // geting current user id when the provider is initialized
     const authObserver = afAuth.authState.subscribe( user => {
       if (user) {
         this.userID = user.uid;
@@ -68,16 +85,24 @@ export class FirebaseProvider {
     });
   }
 
+  // return one signal key
   getOSKey(){
     return this.oneSignalKey;
   }
 
+  // return one signal rest api id
   getOSRest(){
     return this.oneSignalRest;
   }
 
-  //-------------- user login ----------------
+  // return toronto city events api string
+  getTorontoEvents(){
+    return this.torontoEventApi;
+  }
 
+  //-------------- user delete ----------------
+
+  // delete user account is several stages
   deleteAccount(){
     // ---------- events by user ---------------
     this.eventCollection = this.afdOf.collection<Event>('events', ref => {
@@ -204,22 +229,29 @@ export class FirebaseProvider {
 
   }
 
+  //-------------- user login ----------------
+
+  // login user using email and password combination
   loginUser(newEmail: string, newPassword: string): Promise<any> {
     return this.afAuth.auth.signInWithEmailAndPassword(newEmail, newPassword)
       .then(() => this.userID = this.afAuth.auth.currentUser.uid);
    }
 
+   // reset user account password
    resetPassword(email: string) {
     return this.afAuth.auth.sendPasswordResetEmail(email);
    }
 
+   // logout user
    logoutUser() {
     return this.afAuth.auth.signOut()
     .then(() => console.log("user logged out"))
     .catch(e => console.log("exception: " + e));
-}
+  }
    
   //-------------- user signup ----------------
+
+  // signup new user
   signupUser(newEmail: string, newPassword: string, newFirstName: string, newLastName: string) {
     return this.afAuth.auth.createUserWithEmailAndPassword(newEmail, newPassword)
     .then(() => {
@@ -233,6 +265,7 @@ export class FirebaseProvider {
     });
   }
   
+  // add new user info after signup-normal
    addNewUserProfile(newId, newFirstName, newLastName) {
     var user = this.afAuth.auth.currentUser;
     var joinDate = new Date().toISOString();
@@ -244,16 +277,18 @@ export class FirebaseProvider {
         joinDate: joinDate,
         configured: false,
         //distance: 50,
-        time: 10,
+        //time: 10,
         role: 'normal'
       });
 
+    // add to normal role
     this.afdOf.collection("roles/normal/members").doc(newId)
     .set({
       name: newId
     });
   }
 
+  // signup new user as a pro
    signupProUser(newEmail: string, newPassword: string, newFirstName: string, newLastName: string, 
     newAddress: string, newDOB: string, newDLN: string, newPhoneNumber: string) {
     return this.afAuth.auth.createUserWithEmailAndPassword(newEmail, newPassword)
@@ -268,6 +303,7 @@ export class FirebaseProvider {
     });
   }
   
+  //add new user info after signup-pro
    addProUserProfile(newId, newFirstName, newLastName, newAddress, newDOB, newDLN, newPhoneNumber) {
     var user = this.afAuth.auth.currentUser;
     var joinDate = new Date().toISOString();
@@ -283,28 +319,39 @@ export class FirebaseProvider {
         driverLicenceNumber: newDLN,
         phoneNumber: newPhoneNumber,
         //distance: 50,
-        time: 10,
+        //time: 10,
         role: 'pro'
       });
 
+      // add to pro role
       this.afdOf.collection("roles/pro/members").doc(newId)
       .set({
         name: newId
       })
   }
 
+  //-------------- user profile update ----------------
+
+  // edit user profile-normal
   editUserProfile(newEmail: string, newFirstName: string, newLastName: string): Promise<any> {
-    return this.afAuth.auth.currentUser.updateEmail(newEmail)
-    .then(() => {
-        this.afAuth.auth.currentUser.sendEmailVerification()
-        .then(() => {
-          console.log('verification email sent');
-        });
-        this.updateUser(this.afAuth.auth.currentUser.uid, newFirstName, newLastName);
-        //this.logoutUser();
-    });
+  
+    // check if the email is changed or not
+    if (newEmail == this.getUserEmail()) {
+      this.updateUser(this.afAuth.auth.currentUser.uid, newFirstName, newLastName);
+    } else {
+      return this.afAuth.auth.currentUser.updateEmail(newEmail)
+      .then(() => {
+          this.afAuth.auth.currentUser.sendEmailVerification()
+          .then(() => {
+            console.log('verification email sent');
+          });
+          this.updateUser(this.afAuth.auth.currentUser.uid, newFirstName, newLastName);
+          //this.logoutUser();
+      });
+    }
   }
 
+  // update user info
   updateUser(Id, FirstName, LastName) {
     this.afdOf.collection("users").doc(Id)
     .update({ 
@@ -313,19 +360,27 @@ export class FirebaseProvider {
       });
   }
 
+  //  edit user profile-pro
   editUserProfilePro(newEmail: string, newFirstName: string, newLastName: string, 
     address:string, dob: string, driverLicense: string, phone: number): Promise<any> {
-    return this.afAuth.auth.currentUser.updateEmail(newEmail)
-    .then(() => {
-        this.afAuth.auth.currentUser.sendEmailVerification()
-        .then(() => {
-          console.log('verification email sent');
-        });
-        this.updateUserPro(this.afAuth.auth.currentUser.uid, newFirstName, newLastName, address, dob, driverLicense, phone);
-        //this.logoutUser();
-    });
+
+    // check if email is changed or not
+    if (newEmail == this.getUserEmail()){
+      this.updateUserPro(this.afAuth.auth.currentUser.uid, newFirstName, newLastName, address, dob, driverLicense, phone);
+    } else {
+      return this.afAuth.auth.currentUser.updateEmail(newEmail)
+      .then(() => {
+          this.afAuth.auth.currentUser.sendEmailVerification()
+          .then(() => {
+            console.log('verification email sent');
+          });
+          this.updateUserPro(this.afAuth.auth.currentUser.uid, newFirstName, newLastName, address, dob, driverLicense, phone);
+          //this.logoutUser();
+      });
+    }
   }
 
+  // update user info
   updateUserPro(Id, FirstName, LastName, address, dob, driverLicense, phone) {
     this.afdOf.collection("users").doc(Id)
     .update({ 
@@ -338,6 +393,16 @@ export class FirebaseProvider {
       });
   }
 
+  // set user as configured
+  configureUser(){
+    this.afdOf.collection("users").doc(this.userID)
+    .update(
+      { 
+        configured: true
+      });
+  }
+
+  // switch to a pro account
   switchToPro(address, dob, driverLicense, phone) {
     this.afdOf.collection("users").doc(this.userID)
     .set({ 
@@ -363,6 +428,19 @@ export class FirebaseProvider {
 
 
   //-------------- user info ----------------
+
+  // get user id
+  getUserId(){
+    return this.userID;
+  }
+
+  // get user email
+  getUserEmail() {
+    return this.afAuth.auth.currentUser.email;
+  }
+
+  /*
+
   getObject(){
     var userObj;
     var docRef = this.afdOf.collection("users").doc(this.userID).ref;
@@ -380,25 +458,9 @@ export class FirebaseProvider {
   
   }
 
-  getUserId(){
-    return this.userID;
-  }
-
-  getUserEmail() {
-    return this.afAuth.auth.currentUser.email;
-  }
-
   checkUserRole(){
     console.log(this.userID);
     return this.afdOf.collection('users').doc(this.userID).valueChanges();
-  }
-
-  configureUser(){
-    this.afdOf.collection("users").doc(this.userID)
-    .update(
-      { 
-        configured: true
-      });
   }
 
   isUserConfigured(){
@@ -406,7 +468,7 @@ export class FirebaseProvider {
   }
 
   //-------------- interest ----------------
-  /*
+
   getInterestList() {
     return "interest";
   }
@@ -426,7 +488,7 @@ export class FirebaseProvider {
       merge: true
     });
   }
-*/
+
 
   getInterestName(itemKey){
     var interest = "";
@@ -436,7 +498,9 @@ export class FirebaseProvider {
     });
     return interest;
   }
+*/
 
+/* not in use
   //-------------- distance and time ----------------
   updateDistance(value){
     this.afdOf.doc("users/" + this.userID)
@@ -451,8 +515,11 @@ export class FirebaseProvider {
       time: value
     });  
   }
-  
+  */
+
   //-------------- event ----------------
+
+  /*
   getUserEvents() {
     return this.afdOf.collection("events").snapshotChanges();
   }
@@ -460,11 +527,14 @@ export class FirebaseProvider {
   getSpecifiedEvent(eventID){
     return this.afdOf.doc("events/" + eventID).snapshotChanges();
   }
+*/
 
+  // add event to database
   addEvent(event: UserEvent) {
     this.afdOf.collection("events").add(event)
   }
 
+  // update event
   updateEvent(id, event: UserEvent) {
     console.log(event);
     this.afdOf.doc("events/" + id).update(event);
@@ -475,16 +545,18 @@ export class FirebaseProvider {
     .forEach(user => {
       user.forEach(u => {
         this.afdOf.collection("users").doc(u.payload.doc.id).collection("bookmarkedEvents").doc(id).update(event);
-        this.afdOf.collection("users").doc(u.payload.doc.id).collection("bookmarkedEvents").doc<UserNotificationId>(id).valueChanges()
-        .forEach(e => {
-          this.scheduleNotification(id, event.startDate, event.startTime, e.time, event.name);
-        });
-        this.cancelNotification(id);
+        if(this.cancelNotification(id)){
+          this.afdOf.collection("users").doc(u.payload.doc.id).collection("bookmarkedEvents").doc<UserNotificationId>(id).valueChanges()
+          .forEach(e => {
+            this.scheduleNotification(id, event.startDate, event.startTime, e.time, event.name);
+          });
+        }
       })
     });
 
   }
 
+  // remove event
   removeEvent(id) {
     this.afdOf.doc("events/" + id).delete();
     this.afdOf.collection("bookmarkedEvents").doc(id).delete();
@@ -508,6 +580,7 @@ export class FirebaseProvider {
   
 //-------------- bookmark event ----------------
 
+// bookmark event
 bookmarkEvent(lat, lng, startDate, startTime, endDate, endTime, name,
   price, webSite, description, orgPhone, orgAddress, categories, id) {
   this.afdOf.collection("bookmarkedEvents").doc(id).set({
@@ -557,7 +630,7 @@ bookmarkEvent(lat, lng, startDate, startTime, endDate, endTime, name,
   });
 }
 
-
+// bookmark user event
 bookmarkUserEvent(item, id) {
   console.log(item)
   this.afdOf.collection("bookmarkedEvents").doc(id).set({
@@ -607,6 +680,7 @@ bookmarkUserEvent(item, id) {
   });
 }
 
+// unbookmark event
 unbookmarkEvent(id) {
   this.afdOf.collection("bookmarkedEvents").doc(id).collection("members").doc(this.userID).delete();
   this.afdOf.collection("users").doc(this.userID).collection("bookmarkedEvents").doc(id).delete();
@@ -616,6 +690,7 @@ unbookmarkEvent(id) {
 
 //-------------- chats ----------------
 
+// push message to chatroom
 pushMessage(chatKey, message){
   this.chat.message = message;
   this.chat.userID = this.userID;
@@ -628,20 +703,24 @@ pushMessage(chatKey, message){
 
 //-------------- attractions ----------------
 
+// add attractions
 addAttraction(attractions){
   this.afdOf.collection("attractions").add(attractions);
 }
 
+// update attractions
 updateAttraction(attractions, id){
   this.afdOf.doc("attractions/" + id).update(attractions);
 }
 
+// delete attractions
 deleteAttraction(id){
   this.afdOf.doc("attractions/" + id).delete();
 }
 
 //-------------- notifications ----------------
 
+// set notification id
 setNotificationID(eventKey, id, time){
   this.afdOf.collection("users").doc(this.userID).collection("bookmarkedEvents").doc(eventKey)
   .set({
@@ -652,7 +731,7 @@ setNotificationID(eventKey, id, time){
   });  
 }
 
-scheduleNotification(id, startDate, startTime, time, title){
+scheduleNotification(id, startDate, startTime, time = 1, title){
   var dateString = '';
   if(startTime == null || startTime === undefined)
     dateString = startDate.toString();
@@ -694,7 +773,7 @@ scheduleNotification(id, startDate, startTime, time, title){
       },
       function (failedResponse) {
         console.log("Notification Post Failed: ", failedResponse);
-        //alert("Notification Post Failed:\n" + JSON.stringify(failedResponse));
+        alert("Notification Post Failed:\n" + JSON.stringify(failedResponse));
       }
     );
   });
@@ -727,7 +806,22 @@ cancelNotification(id){
     .update({
       notificationID: null
     });
+    return true;
+  }).catch(() => {
+    return false;
   });
+}
+
+//-------------- calendar ----------------
+
+// set notification id
+setCalendarID(eventKey, id, time){
+  this.afdOf.collection("users").doc(this.userID).collection("bookmarkedEvents").doc(eventKey)
+  .set({
+    calID: id
+  },{
+    merge: true
+  });  
 }
 
 

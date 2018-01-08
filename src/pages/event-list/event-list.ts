@@ -23,7 +23,7 @@ interface Member{
 })
 
 export class EventListPage {
-  api: string = 'http://app.toronto.ca/cc_sr_v1_app/data/edc_eventcal_APR?limit=500';
+  api: string
   eventData: any;
   userEventData: any;
   imgLink: string = "https://secure.toronto.ca";
@@ -38,12 +38,17 @@ export class EventListPage {
   constructor(public navCtrl: NavController, private http: HttpClient, 
     private firebase: FirebaseProvider, private afs: AngularFirestore,
     public loading: LoadingController) {
+
+    // get toronto events api
+    this.api = this.firebase.getTorontoEvents();
+
+    // get user id
     this.userID = this.firebase.getUserId();
 
+    // get list of bookmarked events
     this.eventCollection = this.afs.collection<Event>('bookmarkedEvents', ref => {
       return ref.orderBy('name')
     });
-    
     this.events = this.eventCollection.snapshotChanges().map(actions => {
       return actions.map(snap => {
         let id = snap.payload.doc.id;
@@ -52,6 +57,7 @@ export class EventListPage {
       });
     });
     
+    // get list of events bookmarked by user
     this.userEventCollection = this.afs.collection('users').doc(this.userID).collection<Member>('bookmarkedEvents');
     this.userEvents = this.userEventCollection.snapshotChanges().forEach(a => {
       this.eventArr = [];
@@ -59,6 +65,7 @@ export class EventListPage {
         this.eventArr.push(a[i].payload.doc.id);
     });
 
+    // get events created by all users
     this.userEventData = this.afs.collection<UserEvent>("events").snapshotChanges()
     .map(actions => {
       return actions.map(snap => {
@@ -69,6 +76,7 @@ export class EventListPage {
     });
   }
 
+  // get event data from api when page loads
   ionViewDidLoad(){
 
     let loader = this.loading.create({
@@ -79,6 +87,7 @@ export class EventListPage {
     this.http.get(this.api)
     .subscribe(data => {
       this.eventData = data;
+      console.log(data);
     }, err => {
       console.log(err);
     }, () => {
@@ -86,6 +95,7 @@ export class EventListPage {
     }); 
   }
 
+  // check if event is bookmarked by user
   icon(id){
     var checker = false;
     this.eventArr.forEach(i => {
@@ -97,6 +107,7 @@ export class EventListPage {
     return 'bookmark';
   }
 
+  // bookmark / unbookmark event
   addEvent(item){
     console.log(item);
     if( this.icon(item.recId) == 'bookmark' ){
@@ -130,6 +141,7 @@ export class EventListPage {
     }
   }
 
+  // bookmark / unbookmark user created events
   addUserEvent(item){
     if( this.icon(item.id) == 'bookmark' ){
 

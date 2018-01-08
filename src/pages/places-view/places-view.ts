@@ -25,10 +25,11 @@ export class PlacesViewPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, 
     private afs: AngularFirestore, private firebase: FirebaseProvider) {
 
+      // get user id
       this.userID = this.firebase.getUserId();
 
+      // get list of all attractions
       this.attractionCollection = this.afs.collection<Attractions>("attractions");
-  
       this.attractions = this.attractionCollection.snapshotChanges().map(actions => {
         return actions.map(snap => {
           let id = snap.payload.doc.id;
@@ -37,6 +38,7 @@ export class PlacesViewPage {
         });
       });
 
+      // check if current user have superior level access
       this.afs.collection('superiorLevelAccess').doc<Access>(this.userID).snapshotChanges()
       .forEach(a => {
         if (a.payload.exists){
@@ -45,14 +47,17 @@ export class PlacesViewPage {
       })
   }
 
+  // page load
   ionViewDidLoad() {
     console.log('ionViewDidLoad PlacesViewPage');
   }
 
+  // redirect to attraction edit page
   editAttraction(key){
     this.navCtrl.setRoot(EditAttractionPage, {id: key})
   }
 
+  // check if current user have superior level access
   checkIfDev(){
     if( this.access == this.userID)
       return true;

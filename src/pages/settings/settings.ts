@@ -35,6 +35,8 @@ export class SettingsPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, 
     public firebase: FirebaseProvider, private afs: AngularFirestore) {
+
+    // initializing pages array
     this.pages = [
       { title: "Interests", component: InterestPage },
       { title: "Time", component: TimeDistancePage },
@@ -45,12 +47,14 @@ export class SettingsPage {
     this.userEventPage = { title: "Events by you", component: UserCreatedEventPage };
     this.addAttractionPage = { title: "Add attractions", component: AddAttractionPage };
     
+    // get user role
     this.userID = this.firebase.getUserId();
     this.afs.collection('users').doc<User>(this.userID).valueChanges()
     .subscribe(a => {
       this.role = a.role == null ? 'normal' : a.role;
     })
 
+    // check if user has a superior level access
     this.afs.collection('superiorLevelAccess').doc<Access>(this.userID).snapshotChanges()
     .forEach(a => {
       if (a.payload.exists){
@@ -59,26 +63,27 @@ export class SettingsPage {
     })
   }
 
+  // open specified page
   openPage(page) {
     this.navCtrl.setRoot(page.component);
   }
 
+  // check user role
   checkUserRole(){
     if( this.role == "pro")
       return true;
     return false;
   }
 
+  // check if user has superior level access
   checkIfDev(){
     if( this.access == this.userID)
       return true;
     return false;
   }
 
+  // redirect to home
   goHome(){
     this.navCtrl.setRoot(HomePage);
-  }
-
-  ngOnDestroy() {
   }
 }

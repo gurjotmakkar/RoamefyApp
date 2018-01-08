@@ -25,18 +25,20 @@ export class AddAttractionPage {
   }
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    private firebase: FirebaseProvider, private modalCtrl: ModalController) {
-  }
+    private firebase: FirebaseProvider, private modalCtrl: ModalController) {}
 
+  // load page
   ionViewDidLoad() {
     console.log('ionViewDidLoad AddAttractionPage');
   }
 
+  // add the attraction to database
   addattraction(attraction) {
       this.firebase.addAttraction(attraction);
       this.navCtrl.setRoot(SettingsPage);
   }
   
+  // get address string from autocomplete api
   showAddressModal (){
     let modal = this.modalCtrl.create(AutocompletePage);
     modal.onDidDismiss(data => {
@@ -48,12 +50,8 @@ export class AddAttractionPage {
     modal.present();
   }
   
+  // redirect to settings page
   cancel(){
     this.navCtrl.setRoot(SettingsPage);
   }
-  
-  ngOnDestroy() {
-    console.log("exiting AddEventPage")
-  }
-  
 }

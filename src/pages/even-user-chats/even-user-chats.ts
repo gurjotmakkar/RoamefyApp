@@ -36,11 +36,15 @@ export class EvenUserChatsPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private firebase: FirebaseProvider, private afs:AngularFirestore) {
+
+    // get attributes sent from previous page
     this.chatKey = this.navParams.get('id');
     this.chatName = this.navParams.get('name');
   
+    // getting username
     this.userName = this.firebase.getUserEmail().split('@')[0];
 
+    // get chat messages for the current chatroom
     this.chatCollection = this.afs.collection('chatrooms').doc(this.chatKey).collection<Chat>('chats', ref => {
       return ref.orderBy('time', 'desc')
     });
@@ -52,6 +56,7 @@ export class EvenUserChatsPage {
       });
     });
 
+    // get list of all username
     this.userCollection = this.afs.collection<User>('users', ref => {
       return ref.orderBy('name')
     });
@@ -64,14 +69,17 @@ export class EvenUserChatsPage {
     });
   }
 
+  // on page load
   ionViewDidLoad() {
     console.log('ionViewDidLoad EvenUserChatsPage');
   }
 
+  // format time string to display above message
   formatTime(time){
     return time.toString().substr(16, 5) + ' (' + time.toString().substr(4, 11) + ')';
   }
 
+  // to align username depending on if it is current user or not
   cardTitle(name){
     if(name == this.userName)
       return 'card-title-right';
@@ -79,6 +87,7 @@ export class EvenUserChatsPage {
       return 'card-title-left';
   }
 
+  // to align message depending on if it is current user or not
   cardSubtitle(name){
     if(name == this.userName)
       return 'card-subtitle-right';
@@ -86,6 +95,7 @@ export class EvenUserChatsPage {
       return 'card-subtitle-left';
   }
 
+  // to align time depending on if it is current user or not
   cardTime(name){
     if(name == this.userName)
       return 'card-time-right';
@@ -93,6 +103,7 @@ export class EvenUserChatsPage {
       return 'card-time-left';
   }
 
+  // push the chat to database
   pushChat(){
     if (this.message !== undefined && this.message != ''){
       this.firebase.pushMessage(this.chatKey, this.message);
@@ -100,6 +111,7 @@ export class EvenUserChatsPage {
     }
   }
 
+  // redirect to home
   goHome(){
     this.navCtrl.setRoot(EventChatsPage);
   }
