@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { FirebaseProvider } from './../../providers/firebase/firebase';
-import { TimeDistancePage } from '../time-distance/time-distance';
 import { SettingsPage } from '../settings/settings'
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
 import { ViewController } from 'ionic-angular/navigation/view-controller';
@@ -12,6 +11,10 @@ interface Interest {
 
 interface userInterest {
   name: string;
+}
+
+interface User {
+  configured: boolean;
 }
 
 @IonicPage()
@@ -37,6 +40,11 @@ export class InterestPage {
     // get current user id
     this.userID = this.firebase.getUserId();
 
+    this.afs.collection('users').doc<User>(this.userID).valueChanges()
+    .forEach(a => {
+      this.config = a.configured == null ? false : a.configured;
+    });
+
     // get the interest collection from firebase database
     this.interestCollection = this.afs.collection<Interest>('interest', ref => {
       return ref.orderBy('name')
@@ -56,6 +64,11 @@ export class InterestPage {
       for ( var i in a )
         this.interestArr.push(a[i].name);
     });
+  }
+
+  // check if user is configured
+  isConfigured(){
+    return this.config;
   }
 
   // check if user is selected the interest using interest id

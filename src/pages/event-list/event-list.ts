@@ -116,9 +116,9 @@ export class EventListPage {
       let lat = item.locations[0]["coords"].lat === undefined ? (item.locations[0]["coords"][0].lat === undefined ? "" : item.locations[0]["coords"][0].lat) : item.locations[0]["coords"].lat;
       let lng = item.locations[0]["coords"].lng === undefined ? (item.locations[0]["coords"][0].lng === undefined ? "" : item.locations[0]["coords"][0].lng) : item.locations[0]["coords"].lng;
       let startDate = item["startDate"].substr(0,10);
-      let startTime = item["startDateTime"] === undefined || item["startDateTime"] === null ? "" : item["startDateTime"].substr(11,5);
+      let startTime = item["startDateTime"] === undefined || item["startDateTime"] === null ? item["startDate"].substr(11,5) : item["startDateTime"].substr(11,5);
       let endDate = item["endDate"].substr(0,10);
-      let endTime = item["endDateTime"]  === undefined || item["endDateTime"] === null ? "" : item["endDateTime"].substr(11,5);
+      let endTime = item["endDateTime"]  === undefined || item["endDateTime"] === null ? item["endDate"].substr(11,5) : item["endDateTime"].substr(11,5);
       let name = item.eventName;
       let webSite = item.eventWebsite;
       let description = item.description;
@@ -130,14 +130,10 @@ export class EventListPage {
       this.firebase.bookmarkEvent(lat, lng, startDate, startTime, endDate, endTime, name,
         price, webSite, description, orgPhone, orgAddress, categories, id);
       this.eventArr.push(item.recId);
-
-      //this.firebase.scheduleNotification(item.recId, startDate, startTime, this.time);
     } else {
 
       this.firebase.unbookmarkEvent(item.recId);
       this.eventArr.splice(item.recId);
-
-      //this.firebase.cancelNotification(item.recId);
     }
   }
 
@@ -148,14 +144,10 @@ export class EventListPage {
       this.firebase.bookmarkUserEvent(item, item.id);
       this.eventArr.push(item.id);
 
-     //this.firebase.scheduleNotification(item.id, item.startDate, item.startTime, this.time);
-
     } else {
 
       this.firebase.unbookmarkEvent(item.id);
       this.eventArr.splice(item.id);
-
-      //this.firebase.cancelNotification(item.id);
     }
   }
 

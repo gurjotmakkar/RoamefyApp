@@ -39,7 +39,7 @@
           <div class="card-subtitle">When: </div>
             <p>{{event.calEvent.startDate.substr(0,10)}} - {{event.calEvent.endDate.substr(0,10)}}</p>
           <div class="card-subtitle">Time: </div>
-            <p>{{event.calEvent.startDateTime.substr(11,5)}} - {{event.calEvent.startDateTime.substr(11,5)}}</p>
+            <p>{{event.calEvent.startDateTime?.substr(11,5)}} - {{event.calEvent.startDateTime?.substr(11,5)}}</p>
             <p>{{event.calEvent.timeInfo}}</p>
           <div class="card-subtitle">Where: </div>
             <p>{{event.calEvent.orgName}}</p>

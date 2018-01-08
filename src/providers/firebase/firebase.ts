@@ -4,11 +4,6 @@ import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/fires
 import { UserEvent } from '../../models/events/userevent.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-// get interest name interface
-interface Interest{
-  name: string;
-}
-
 // get chat object interface
 interface Chat{
   message: string;

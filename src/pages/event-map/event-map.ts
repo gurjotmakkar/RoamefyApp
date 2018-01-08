@@ -142,13 +142,15 @@ export class EventMapPage {
       let lat = marker.calEvent.locations[0]["coords"].lat === undefined ? (marker.calEvent.locations[0]["coords"][0].lat === undefined ? "" : marker.calEvent.locations[0]["coords"][0].lat) : marker.calEvent.locations[0]["coords"].lat;
       let lng = marker.calEvent.locations[0]["coords"].lng === undefined ? (marker.calEvent.locations[0]["coords"][0].lng === undefined ? "" : marker.calEvent.locations[0]["coords"][0].lng) : marker.calEvent.locations[0]["coords"].lng;
       let startDate = marker.calEvent["startDate"].substr(0,10);
-      let startTime = marker.calEvent["startDateTime"] === undefined || marker.calEvent["startDateTime"] === null ? "Time is not available" : marker.calEvent["startDateTime"].substr(11,5);
+      //let startTime = marker.calEvent["startDateTime"] === undefined || marker.calEvent["startDateTime"] === null ? "Time is not available" : marker.calEvent["startDateTime"].substr(11,5);
+      let startTime = marker.calEvent["startDateTime"] === undefined || marker.calEvent["startDateTime"] === null ? marker.calEvent["startDate"].substr(11,5) : marker.calEvent["startDateTime"].substr(11,5);
       if(marker.calEvent["startDateTime"] === undefined || marker.calEvent["startDateTime"] === null){
         marker.calEvent["endDateTime"] = "";
         del = "";
       }
       let endDate = marker.calEvent["endDate"].substr(0,10);
-      let endTime = marker.calEvent["endDateTime"]  === undefined || marker.calEvent["endDateTime"] === null ? "" : marker.calEvent["endDateTime"].substr(11,5);
+      //let endTime = marker.calEvent["endDateTime"]  === undefined || marker.calEvent["endDateTime"] === null ? "" : marker.calEvent["endDateTime"].substr(11,5);
+      let endTime = marker.calEvent["endDateTime"]  === undefined || marker.calEvent["endDateTime"] === null ? marker.calEvent["endDate"].substr(11,5) : marker.calEvent["endDateTime"].substr(11,5);
       if(marker.calEvent["endDateTime"]  === undefined || marker.calEvent["endDateTime"] === null || marker.calEvent["endDateTime"] === "") {
         del = "";
       } else {

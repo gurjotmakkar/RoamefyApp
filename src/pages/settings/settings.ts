@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { InterestPage } from '../interest/interest';
-import { TimeDistancePage } from '../time-distance/time-distance';
 import { UserCreatedEventPage } from '../user-created-event/user-created-event'
 import { AngularFirestore } from 'angularfire2/firestore';
 import { EventChatsPage } from '../event-chats/event-chats';
@@ -39,7 +38,7 @@ export class SettingsPage {
     // initializing pages array
     this.pages = [
       { title: "Interests", component: InterestPage },
-      { title: "Time", component: TimeDistancePage },
+      //{ title: "Time", component: TimeDistancePage },
       { title: "Bookmarked Events", component: UserBookmarkedEventsPage },
       { title: "Chatrooms", component: EventChatsPage },
       { title: "User Profile", component: UserProfilePage}
