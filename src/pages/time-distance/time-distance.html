@@ -21,7 +21,7 @@
     </ion-item>
     -->
     <ion-item>
-        <ion-label>Time ({{time}} hours )</ion-label>
+        <ion-label>Time ({{time}} minutes )</ion-label>
         <ion-range min="1" max="24" debounce="500" [(ngModel)]="time" color="secondary" pin="true" (ionChange)="updateTime(time)">
           <ion-label range-left>1</ion-label>
           <ion-label range-right>24</ion-label>

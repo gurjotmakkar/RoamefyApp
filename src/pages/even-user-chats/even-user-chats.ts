@@ -7,7 +7,7 @@ import { EventChatsPage } from '../event-chats/event-chats';
 interface Chat{
   id: string;
   message: string;
-  time: string;
+  time: Date;
   userID: string;
   userName: string;
 }
@@ -69,7 +69,7 @@ export class EvenUserChatsPage {
   }
 
   formatTime(time){
-    return time.substr(11, 5) + ' (' + time.substr(0, 10) + ')';
+    return time.toString().substr(16, 5) + ' (' + time.toString().substr(4, 11) + ')';
   }
 
   cardTitle(name){

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { UserEvent } from '../../models/events/userevent.model';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 interface Interest{
   name: string;
@@ -9,7 +10,7 @@ interface Interest{
 
 interface Chat{
   message: string;
-  time: string;
+  time: Date;
   userID: string;
   userName: string;
 }
@@ -23,13 +24,20 @@ interface Collection{
   name: string;
 }
 
+interface UserNotificationId{
+  notificationID: string;
+  time: number;
+}
+
 @Injectable()
 
 export class FirebaseProvider {
+  oneSignalKey: string = 'e979d775-d7e2-46e7-88c9-864d62ac51b2';
+  oneSignalRest: string = 'Basic NGNmYTA3ZDMtYTRiOC00MmJmLWE5ODEtOWJlNTFhNzY2NDFm';
   userID: string;
   chat: Chat = {
     message: '',
-    time: '',
+    time: new Date(),
     userID: '',
     userName: ''
   };
@@ -47,8 +55,8 @@ export class FirebaseProvider {
   userCollection: AngularFirestoreCollection<Collection>; // sub collections
   users: any;
 
-  constructor(public afAuth: AngularFireAuth, 
-    public afdOf: AngularFirestore) {
+  constructor(public afAuth: AngularFireAuth, public afdOf: AngularFirestore, 
+    private http: HttpClient) {
     const authObserver = afAuth.authState.subscribe( user => {
       if (user) {
         this.userID = user.uid;
@@ -59,7 +67,15 @@ export class FirebaseProvider {
       }
     });
   }
-  
+
+  getOSKey(){
+    return this.oneSignalKey;
+  }
+
+  getOSRest(){
+    return this.oneSignalRest;
+  }
+
   //-------------- user login ----------------
 
   deleteAccount(){
@@ -452,14 +468,42 @@ export class FirebaseProvider {
   updateEvent(id, event: UserEvent) {
     console.log(event);
     this.afdOf.doc("events/" + id).update(event);
+
+    this.afdOf.doc("bookmarkedEvents/" + id).update(event);
+
+    this.afdOf.collection("users").snapshotChanges()
+    .forEach(user => {
+      user.forEach(u => {
+        this.afdOf.collection("users").doc(u.payload.doc.id).collection("bookmarkedEvents").doc(id).update(event);
+        this.afdOf.collection("users").doc(u.payload.doc.id).collection("bookmarkedEvents").doc<UserNotificationId>(id).valueChanges()
+        .forEach(e => {
+          this.scheduleNotification(id, event.startDate, event.startTime, e.time, event.name);
+        });
+        this.cancelNotification(id);
+      })
+    });
+
   }
 
   removeEvent(id) {
     this.afdOf.doc("events/" + id).delete();
     this.afdOf.collection("bookmarkedEvents").doc(id).delete();
-    this.afdOf.collection("users").doc(this.userID).collection("bookmarkedEvents").doc(id).delete();
+
+    this.afdOf.collection("users").snapshotChanges()
+    .forEach(user => {
+      user.forEach(u => {
+        this.afdOf.collection("users").doc(u.payload.doc.id).collection("bookmarkedEvents").doc(id).delete();
+      })
+    });
+
+    this.afdOf.collection("users").snapshotChanges()
+    .forEach(user => {
+      user.forEach(u => {
+        this.afdOf.collection("users").doc(u.payload.doc.id).collection("chatrooms").doc(id).delete();
+      })
+    });
+
     this.afdOf.collection("chatrooms").doc(id).delete();
-    this.afdOf.collection("users").doc(this.userID).collection("chatrooms").doc(id).delete();
 }
   
 //-------------- bookmark event ----------------
@@ -575,7 +619,7 @@ unbookmarkEvent(id) {
 pushMessage(chatKey, message){
   this.chat.message = message;
   this.chat.userID = this.userID;
-  this.chat.time = new Date().toISOString();
+  this.chat.time = new Date();
   this.chat.userName = this.getUserEmail().split('@')[0];
 
   this.afdOf.collection("chatrooms").doc(chatKey).collection("chats").add(this.chat);
@@ -595,6 +639,97 @@ updateAttraction(attractions, id){
 deleteAttraction(id){
   this.afdOf.doc("attractions/" + id).delete();
 }
+
+//-------------- notifications ----------------
+
+setNotificationID(eventKey, id, time){
+  this.afdOf.collection("users").doc(this.userID).collection("bookmarkedEvents").doc(eventKey)
+  .set({
+    notificationID: id,
+    time: time
+  },{
+    merge: true
+  });  
+}
+
+scheduleNotification(id, startDate, startTime, time, title){
+  var dateString = '';
+  if(startTime == null || startTime === undefined)
+    dateString = startDate.toString();
+  else
+    dateString = startDate.toString() + 'T' + startTime.toString();
+
+  //Calculate notification delivery date
+  var calculatedDate = new Date(dateString);
+  calculatedDate.setHours(calculatedDate.getHours() - time);
+
+  //Debug purposes
+  console.log("start time is:" + dateString);
+  console.log("user time is: " + time);
+  console.log("Notification will be scheduled for: " + calculatedDate);
+
+  //create tag for notification CRUD operations
+  //window["plugins"].OneSignal.sendTag("category", "");
+
+  //Schedule notification
+  let sdate = calculatedDate;
+
+  let self = this;
+
+  var success = false;
+
+  // construct notification object to be delivered to a specific user and save notification ID from http response in database
+  window["plugins"].OneSignal.getIds(function(ids) {
+    var notificationObj = { contents: {en: title + " is going to begin soon!\n" + "at " +  dateString},
+                            send_after: sdate,
+                            include_player_ids: [ids.userId] };
+    console.log("User ID is: " + ids.userId);
+    window["plugins"].OneSignal.postNotification(notificationObj,
+      function(successResponse) {
+        console.log("Notification Post Success:", id + " " + successResponse);
+        console.log(successResponse.id);
+        self.setNotificationID(id, successResponse.id, time);
+        success = true;
+        //alert(id + " " + successResponse.id);
+      },
+      function (failedResponse) {
+        console.log("Notification Post Failed: ", failedResponse);
+        //alert("Notification Post Failed:\n" + JSON.stringify(failedResponse));
+      }
+    );
+  });
+
+  return success;
+
+}
+
+cancelNotification(id){
+  var eventId = id;
+  var app_id = this.getOSKey();
+  var rest_id = this.getOSRest();
+  
+  //Reference to database
+  this.afdOf.collection("users").doc(this.userID).collection("bookmarkedEvents").doc<UserNotificationId>(eventId).valueChanges().take(1)
+  .forEach(u => {
+    var notificationId = u.notificationID;
+    console.log(notificationId);
+
+    // construct headers
+    let headers = new HttpHeaders().set('Authorization', rest_id);
+    var url = "https://onesignal.com/api/v1/notifications/" + notificationId + "?app_id=" + app_id;
+
+    //Delete notification
+    this.http.delete(url, {
+      headers : headers
+    }).subscribe( response => console.log("Notification Deleted"));
+  }).then(() => {
+    this.afdOf.collection("users").doc(this.userID).collection("bookmarkedEvents").doc(eventId)
+    .update({
+      notificationID: null
+    });
+  });
+}
+
 
 }
 

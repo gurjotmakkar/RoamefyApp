@@ -1,7 +1,7 @@
 <ion-content>
     <ion-list *ngFor="let event of userEventData | async">
       <ion-card>
-        <img src = "http://mnlct.org/wp-content/uploads/2014/10/toronto-skyline.jpg"/>
+        <img src = "http://css1.www.cntower.ca/site_Files/Content/rotator/View_shot_-_Slacker_-_1024x380.jpg"/>
         <ion-card-header>
             <div class="card-title">{{event.name}} <ion-icon icon-end class="bookmark" [name]="icon(event.id)" (click)="addUserEvent(event)"></ion-icon></div>
         </ion-card-header>
@@ -13,6 +13,8 @@
         </div>
         <a href src="event.website">{{event.website}}</a>
         <div class="card-subtitle"><ion-icon name="call" class="call"></ion-icon> {{event.phone}}</div>
+        <div>Start: {{event.startDate}}  {{event.startTime}}</div>
+        <div>End: {{event.endDate}}  {{event.endTime}}</div>
         <div>Categories: {{event.categoryString}}</div>
       </ion-card-content>
       </ion-card>   
@@ -31,6 +33,8 @@
           </div>
           <a href src="event.calEvent.eventWebsite">{{event.calEvent.eventWebsite}}</a>
         <div class="card-subtitle"><ion-icon name="call"></ion-icon> {{event.calEvent.orgPhone}}</div>
+        <div>Start: {{event.calEvent.startDate.substr(0,10)}}  {{event.calEvent.startDateTime?.substr(11,5)}}</div>
+        <div>End: {{event.calEvent.endDate.substr(0,10)}}  {{event.calEvent.endDateTime?.substr(11,5)}}</div>
         <div>Categories: {{event.calEvent.categoryString}}</div>
       </ion-card-content>
       </ion-card>   
