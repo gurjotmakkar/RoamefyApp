@@ -99,10 +99,10 @@
       </p>
   </ion-item>
 
-  <button ion-button black clear color="primary" (click)="editAttraction(attraction)" [disabled]="!editAttractionForm.form.valid">Update</button> 
+  <button ion-button black clear (click)="editAttraction(attraction)" [disabled]="!editAttractionForm.form.valid">Update</button> 
   
-  <button ion-button black clear color="danger" (click)="cancel()">Cancel</button>    
+  <button ion-button black clear (click)="cancel()">Cancel</button>    
 
-  <button ion-button black clear color="danger" (click)="delete()">Remove</button>      
+  <button ion-button black clear (click)="delete()">Remove</button>      
 </form>
 </ion-content>

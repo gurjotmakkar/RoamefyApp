@@ -8,7 +8,8 @@
     
     <ion-item>
       <ion-label stacked class="loginC">Email</ion-label>
-      <ion-input #email formControlName="email" type="email" placeholder="Enter email address" [class.invalid]="!loginForm.controls.email.valid && (loginForm.controls.email.dirty || submitAttempt)"></ion-input>
+      <ion-input #email formControlName="email" type="email" placeholder="Enter email address" [class.invalid]="!loginForm.controls.email.valid  &&
+      (loginForm.controls.email.dirty || submitAttempt)"></ion-input>
     </ion-item>
     
     <ion-item class="error-message" *ngIf="!loginForm.controls.email.valid  &&
@@ -18,13 +19,13 @@
 
     <ion-item>
       <ion-label stacked class="loginC">Password</ion-label>
-      <ion-input #password formControlName="password" type="password" placeholder="Enter password"
-        [class.invalid]="!loginForm.controls.password.valid &&
-          (loginForm.controls.password.dirty || submitAttempt)"></ion-input>
+      <ion-input #password formControlName="password" type="password" placeholder="Enter password"></ion-input>
     </ion-item>
     <ion-item class="error-message" *ngIf="!loginForm.controls.password.valid  &&
       (loginForm.controls.password.dirty || submitAttempt)">
-      <p>Your password needs more than 8 characters.</p>
+      <p>Your password needs more than 8 </p>
+      <p>characters with atleast one </p>
+      <p>lowercase, uppercase and a number.</p>
     </ion-item>
 
     <button ion-button block class="loginButton" type="submit">
@@ -44,7 +45,7 @@
   </button>
 
   <button ion-button block class="otherButton" (click)="createProAccount()">
-    Register as a pro
+    Register as a pro user
   </button>
   
 </ion-content>
