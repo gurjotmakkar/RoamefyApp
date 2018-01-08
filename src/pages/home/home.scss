@@ -1,10 +1,11 @@
 page-home {
     .footLeft {
         width: 45%;
+        box-shadow: 1px 1px solid color($colors, primary, base);
     }
     .footRight {
         width: 45%;
-        background-color: white;
+        background-color: color($colors, light, base);
         color: color($colors, primary, base);
         border: 1px solid color($colors, primary, base);
     }

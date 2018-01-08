@@ -83,7 +83,7 @@ export class EventListPage {
       console.log(err);
     }, () => {
       loader.dismiss();
-    });
+    }); 
   }
 
   icon(id){

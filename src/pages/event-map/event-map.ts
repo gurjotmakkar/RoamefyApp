@@ -122,14 +122,24 @@ export class EventMapPage {
     console.log(markers.length);
     
     for(let marker of markers) { 
+      let del = "";
       let id = marker.calEvent["recId"];
       let loc = marker.calEvent.locations[0]["coords"] === undefined ? (marker.calEvent.locations[0]["coords"][0] === undefined ? "" : marker.calEvent.locations[0]["coords"][0]) : marker.calEvent.locations[0]["coords"];
       let lat = marker.calEvent.locations[0]["coords"].lat === undefined ? (marker.calEvent.locations[0]["coords"][0].lat === undefined ? "" : marker.calEvent.locations[0]["coords"][0].lat) : marker.calEvent.locations[0]["coords"].lat;
       let lng = marker.calEvent.locations[0]["coords"].lng === undefined ? (marker.calEvent.locations[0]["coords"][0].lng === undefined ? "" : marker.calEvent.locations[0]["coords"][0].lng) : marker.calEvent.locations[0]["coords"].lng;
       let startDate = marker.calEvent["startDate"].substr(0,10);
-      let startTime = marker.calEvent["startDateTime"] === undefined || marker.calEvent["startDateTime"] === null ? "" : marker.calEvent["startDateTime"].substr(11,5);
+      let startTime = marker.calEvent["startDateTime"] === undefined || marker.calEvent["startDateTime"] === null ? "Time is not available" : marker.calEvent["startDateTime"].substr(11,5);
+      if(marker.calEvent["startDateTime"] === undefined || marker.calEvent["startDateTime"] === null){
+        marker.calEvent["endDateTime"] = "";
+        del = "";
+      }
       let endDate = marker.calEvent["endDate"].substr(0,10);
       let endTime = marker.calEvent["endDateTime"]  === undefined || marker.calEvent["endDateTime"] === null ? "" : marker.calEvent["endDateTime"].substr(11,5);
+      if(marker.calEvent["endDateTime"]  === undefined || marker.calEvent["endDateTime"] === null || marker.calEvent["endDateTime"] === "") {
+        del = "";
+      } else {
+        del = " - ";
+      }
       let name = marker.calEvent["eventName"];
       let shortDesc =  marker.calEvent["shortDescription"];
       if(shortDesc === undefined){
@@ -139,9 +149,7 @@ export class EventMapPage {
       let webSite = marker.calEvent["eventWebsite"];
       let description = marker.calEvent["description"];
       let orgPhone = marker.calEvent["orgPhone"];
-      let orgAddress = marker.calEvent["orgAddress"];
-      //let orgName = marker.calEvent["orgName"];
-      //let orgEmail = marker.calEvent["orgEmail"];  
+      let orgAddress = marker.calEvent["orgAddress"]; 
       let categories = marker.calEvent["categoryString"];
       let img = "http://mnlct.org/wp-content/uploads/2014/10/toronto-skyline.jpg";
       if( marker.calEvent["image"] !== undefined)
@@ -154,10 +162,10 @@ export class EventMapPage {
                     '<p><span id="eventWebsite" hidden>' + webSite + '</span></p>' + 
                     '<p><span id="eventLat" hidden>' + lat + '</span></p>' + 
                     '<p><span id="eventLng" hidden>' + lng + '</span></p>' + 
-                    '<div class="iw-title">' + "From: " +
-                      '<p><span id="eventStartDate">' + startDate + '</span>  <span id="eventStartTime">' + startTime + '</span></p>' + "To: " +
-                      '<p><span id="eventEndDate">' + endDate + '</span>  <span id="eventEndTime">' + endTime + '</span></p>' +
-                      '<p><span id="eventName">' + name + '</span></p>' + 
+                    '<div class="iw-title">' +
+                    '<p class="title"><span id="eventName">' + name + '</span></p>' + 
+                      '<p ><span id="eventStartDate">' + "Date: " + startDate + '</span>  <span id="eventEndDate">' + " - " + endDate + '</span></p>' + 
+                      '<p><span id="eventStartTime">' + "Time: " + startTime + '</span>  <span id="eventEndTime">' + del + endTime + '</span></p>' +
                       '</div>' + 
                       '<div>' + 
                       '<input type="button" id="bookmarkImage" value="Bookmark"/>' +
@@ -165,17 +173,17 @@ export class EventMapPage {
                       '<div class="iw-content">' +
                         shortDesc +
                       '</div>' +
-                      '<img src= "' + img + '" height="210" width="230">' +
+                      '<img src= "' + img + '" height="230" width="238">' +
                       '<div class="iw-subTitle"> Event Details: </div>' +
-                      '<p><span id="eventDescription">' + description + '</span></p>' +
-                      '<div class="iw-subTitle">More information: </div>' + '<a href="'+ webSite +'">'  +  'link'     +       '</a>'    +              
+                      '<p class="description"><span id="eventDescription">' + description + '</span></p>' +
+                      '<div class="iw-subTitle">More information: </div>' + '<p class="content"><a href="'+ webSite +'">'  +  webSite     +       '</a></p>'    +              
                       '<div class="iw-subTitle">Event Location: </div> '   +
-                      '<p><span id="eventAddress">'    + orgAddress    + '</span></p>'   +
+                      '<p class="content"><span id="eventAddress">'    + orgAddress    + '</span></p>'   +
                       '<div class="iw-subTitle">Contact Information: </div> '   +
-                      '<p><span id="eventPhone">'    + orgPhone    + '</span></p>'   +                                          
+                      '<p class="content"><span id="eventPhone">'    + orgPhone    + '</span></p>'   +                                          
                       '<div class="iw-subTitle">Category(s): </div> '  + 
-                      '<p><span id="eventCat">' + categories  + '</span></p>' +
-                      '<p><span id="eventPrice">' + price  + '</span></p>' +
+                      '<p class="content"><span id="eventCat">' + categories  + '</span></p>' +
+                      '<p class="content"><span id="eventPrice">' + price  + '</span></p>' +
                     '</div>'; 
         
       var mapmarker = new google.maps.Marker({
@@ -239,26 +247,26 @@ export class EventMapPage {
                     '<p><span id="eventWebsite" hidden>' + e.website + '</span></p>' + 
                     '<p><span id="eventLat" hidden>' + e.latitude + '</span></p>' + 
                     '<p><span id="eventLng" hidden>' + e.longitude + '</span></p>' + 
-                    '<div class="iw-title">' + "From: " +
-                      '<p><span id="eventStartDate">' + e.startDate + '</span> <span id="eventStartTime">' + e.startTime + '</span></p>' + "To: " +
-                      '<p><span id="eventEndDate">' + e.endDate + '</span> <span id="eventEndTime">' + e.endTime + '</span></p>' +
-                      '<p><span id="eventName">' + e.name + '</span></p>' + 
+                    '<div class="iw-title">' +
+                    '<p class="title"><span id="eventName">' + e.name + '</span></p>' + 
+                      '<p ><span id="eventStartDate">' + "Date: " + e.startDate + '</span>  <span id="eventEndDate">' + " - " + e.endDate + '</span></p>' + 
+                      '<p><span id="eventStartTime">' + "Time: " + e.startTime + '</span>  <span id="eventEndTime">' + " - " + e.endTime + '</span></p>' +
                       '</div>' + 
                       '<div>' + 
                       '<input type="button" id="bookmarkImage" value="Bookmark"/>' +
                       '</div>' +
-                      '<img src= "' + img + '" height="210" width="230">' +
+                      '<img src= "' + img + '" height="230" width="238">' +
                       '<div class="iw-subTitle"> Event Details: </div>' +
-                      '<p><span id="eventDescription">' + e.description + '</span></p>' +
-                      '<div class="iw-subTitle">More information: </div>' + '<a href="'+ e.website +'">'  +  'link'     +       '</a>'    +              
+                      '<p class="description"><span id="eventDescription">' + e.description + '</span></p>' +
+                      '<div class="iw-subTitle">More information: </div>' + '<p class="content"><a href="'+ e.website +'">'  +  e.website     +       '</a></p>'    +              
                       '<div class="iw-subTitle">Event Location: </div> '   +
-                      '<p><span id="eventAddress">'    + e.address    + '</span></p>'   +
+                      '<p class="content"><span id="eventAddress">'    + e.address    + '</span></p>'   +
                       '<div class="iw-subTitle">Contact Information: </div> '   +
-                      '<p><span id="eventPhone">'    + e.phone    + '</span></p>'   +                                          
+                      '<p class="content"><span id="eventPhone">'    + e.phone    + '</span></p>'   +                                          
                       '<div class="iw-subTitle">Category(s): </div> '  + 
-                      '<p><span id="eventCat">' + e.categoryString  + '</span></p>' +
-                      '<p><span id="eventPrice">' + e.price  + '</span></p>' +
-                    '</div>';
+                      '<p class="content"><span id="eventCat">' + e.categoryString  + '</span></p>' +
+                      '<p class="content"><span id="eventPrice">' + "Price: $" + e.price + '</span></p>' +
+                    '</div>'; 
 
         let loc = {lng: e.longitude, lat: e.latitude};
         var marker = new google.maps.Marker({

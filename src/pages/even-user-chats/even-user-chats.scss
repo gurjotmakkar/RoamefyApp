@@ -2,7 +2,7 @@ page-even-user-chats {
 
     .card-title-left {
         text-align: left;
-        color: color($colors, ligth_text, base);
+        color: color($colors, primary_text, base);
         opacity: 1;
         font-size: 8px;
         font-weight: 900;
@@ -11,7 +11,7 @@ page-even-user-chats {
 
     .card-title-right {
         text-align: right;
-        color: color($colors, ligth_text, base);
+        color: color($colors, primary_text, base);
         opacity: 1;
         font-size: 8px;
         font-weight: 900;
@@ -38,8 +38,7 @@ page-even-user-chats {
         text-align: left;
         padding: 10px;
         border-radius: 20px;
-        background-color: color($colors, secondary, base);
-        color: color($colors, ligth_text, base);
+        color: color($colors,  dark_text, base);
         margin-top: 2px;
         margin-bottom: 2px;
         font-size: 14px;
