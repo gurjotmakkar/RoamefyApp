@@ -14,10 +14,6 @@ interface userInterest {
   name: string;
 }
 
-interface User {
-  configured: boolean;
-}
-
 @IonicPage()
 @Component({
   selector: 'page-interest',
@@ -38,17 +34,13 @@ export class InterestPage {
       public alertCtrl: AlertController, private afs: AngularFirestore, public viewCtrl: ViewController) {
     console.log("in constructor");
     
+    // get current user id
     this.userID = this.firebase.getUserId();
-    
-    this.afs.collection('users').doc<User>(this.userID).valueChanges()
-    .subscribe(a => {
-      this.config = a.configured == null ? false : a.configured;
-    })
 
+    // get the interest collection from firebase database
     this.interestCollection = this.afs.collection<Interest>('interest', ref => {
       return ref.orderBy('name')
     });
-    
     this.interest = this.interestCollection.snapshotChanges().map(actions => {
       return actions.map(snap => {
         let id = snap.payload.doc.id;
@@ -57,6 +49,7 @@ export class InterestPage {
       });
     });
     
+    // get user selected interest
     this.userInterestCollection = this.afs.collection('users').doc(this.userID).collection<userInterest>('userInterest');
     this.userInterest = this.userInterestCollection.valueChanges().forEach(a => {
       this.interestArr = [];
@@ -65,6 +58,7 @@ export class InterestPage {
     });
   }
 
+  // check if user is selected the interest using interest id
   isChecked(id){
     var checker = 'interest';
     this.interestArr.forEach(i => {
@@ -74,6 +68,7 @@ export class InterestPage {
     return checker;
   }
 
+  // check / uncheck interest
   toggleCheck(id){
     if(this.isChecked(id) == 'interestActive'){
       console.log("uncheck")
@@ -90,18 +85,18 @@ export class InterestPage {
     }
   }
 
-  isConfigured(){
-    return this.config;
-  }
-
+  // get interest count
   interestCount(){
     return this.interestArr.length;
   }
 
+  // go to next page
   nextSetupPage(){
-    this.navCtrl.setRoot(TimeDistancePage);
+    this.firebase.configureUser();
+    this.navCtrl.setRoot(SettingsPage);
   }
 
+  // check if at lease 1 and at most 5 interests are selected before leaving
   ionViewWillLeave(){
     if(this.interestCount() == 0 || this.interestCount() > 5){
       this.navCtrl.setRoot(InterestPage);
@@ -117,20 +112,14 @@ export class InterestPage {
       alert.present();
     } else {
       console.log("leaving interest page")
-      if( this.config )
-        this.navCtrl.setRoot(SettingsPage);
-      else
-        this.navCtrl.setRoot(TimeDistancePage);
+
+      // redirect to settings page
+      this.navCtrl.setRoot(SettingsPage);
     }
   }
 
+  // redirect to settings page
   goHome(){
     this.navCtrl.setRoot(SettingsPage);
   }
-
-  ngOnDestroy() {
-    //this.viewCtrl.dismiss();
-  }
-
-
 }

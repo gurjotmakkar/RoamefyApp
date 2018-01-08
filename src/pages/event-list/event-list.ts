@@ -23,7 +23,7 @@ interface Member{
 })
 
 export class EventListPage {
-  api: string = 'http://app.toronto.ca/cc_sr_v1_app/data/edc_eventcal_APR?limit=500';
+  api: string
   eventData: any;
   userEventData: any;
   imgLink: string = "https://secure.toronto.ca";
@@ -33,16 +33,22 @@ export class EventListPage {
   userEvents: any;
   userID: string;
   eventArr: string[] = [];
+  time: number;
 
   constructor(public navCtrl: NavController, private http: HttpClient, 
     private firebase: FirebaseProvider, private afs: AngularFirestore,
     public loading: LoadingController) {
+
+    // get toronto events api
+    this.api = this.firebase.getTorontoEvents();
+
+    // get user id
     this.userID = this.firebase.getUserId();
 
+    // get list of bookmarked events
     this.eventCollection = this.afs.collection<Event>('bookmarkedEvents', ref => {
       return ref.orderBy('name')
     });
-    
     this.events = this.eventCollection.snapshotChanges().map(actions => {
       return actions.map(snap => {
         let id = snap.payload.doc.id;
@@ -51,6 +57,7 @@ export class EventListPage {
       });
     });
     
+    // get list of events bookmarked by user
     this.userEventCollection = this.afs.collection('users').doc(this.userID).collection<Member>('bookmarkedEvents');
     this.userEvents = this.userEventCollection.snapshotChanges().forEach(a => {
       this.eventArr = [];
@@ -58,6 +65,7 @@ export class EventListPage {
         this.eventArr.push(a[i].payload.doc.id);
     });
 
+    // get events created by all users
     this.userEventData = this.afs.collection<UserEvent>("events").snapshotChanges()
     .map(actions => {
       return actions.map(snap => {
@@ -68,6 +76,7 @@ export class EventListPage {
     });
   }
 
+  // get event data from api when page loads
   ionViewDidLoad(){
 
     let loader = this.loading.create({
@@ -78,6 +87,7 @@ export class EventListPage {
     this.http.get(this.api)
     .subscribe(data => {
       this.eventData = data;
+      console.log(data);
     }, err => {
       console.log(err);
     }, () => {
@@ -85,6 +95,7 @@ export class EventListPage {
     }); 
   }
 
+  // check if event is bookmarked by user
   icon(id){
     var checker = false;
     this.eventArr.forEach(i => {
@@ -96,41 +107,55 @@ export class EventListPage {
     return 'bookmark';
   }
 
+  // bookmark / unbookmark event
   addEvent(item){
     console.log(item);
     if( this.icon(item.recId) == 'bookmark' ){
+
       let id = item.recId;
-      let lat = item.locations[0]["coords"].lat;
-      let lng = item.locations[0]["coords"].lng;
-      let startDate = item.startDate.substr(0,10);
-      let endDate = item.endDate.substr(0,10);
+      let lat = item.locations[0]["coords"].lat === undefined ? (item.locations[0]["coords"][0].lat === undefined ? "" : item.locations[0]["coords"][0].lat) : item.locations[0]["coords"].lat;
+      let lng = item.locations[0]["coords"].lng === undefined ? (item.locations[0]["coords"][0].lng === undefined ? "" : item.locations[0]["coords"][0].lng) : item.locations[0]["coords"].lng;
+      let startDate = item["startDate"].substr(0,10);
+      let startTime = item["startDateTime"] === undefined || item["startDateTime"] === null ? "" : item["startDateTime"].substr(11,5);
+      let endDate = item["endDate"].substr(0,10);
+      let endTime = item["endDateTime"]  === undefined || item["endDateTime"] === null ? "" : item["endDateTime"].substr(11,5);
       let name = item.eventName;
-      let shortDesc =  item.shortDescription;
       let webSite = item.eventWebsite;
       let description = item.description;
       let orgPhone = item.orgPhone;
       let orgAddress = item.orgAddress;
       let categories = item.categoryString;
-      let endTime = item.endDateTime  === undefined || item.endDateTime === null ? "" : item.endDateTime;
-      let startTime = item.startDateTime === undefined || item.startDateTime === null ? "" : item.startDateTime;
-      let price = item.otherCostInfo;
+      let price = item["otherCostInfo"] === undefined || item["otherCostInfo"] === null ? "" : item["otherCostInfo"];
       
       this.firebase.bookmarkEvent(lat, lng, startDate, startTime, endDate, endTime, name,
         price, webSite, description, orgPhone, orgAddress, categories, id);
       this.eventArr.push(item.recId);
+
+      //this.firebase.scheduleNotification(item.recId, startDate, startTime, this.time);
     } else {
+
       this.firebase.unbookmarkEvent(item.recId);
       this.eventArr.splice(item.recId);
+
+      //this.firebase.cancelNotification(item.recId);
     }
   }
 
+  // bookmark / unbookmark user created events
   addUserEvent(item){
     if( this.icon(item.id) == 'bookmark' ){
+
       this.firebase.bookmarkUserEvent(item, item.id);
       this.eventArr.push(item.id);
+
+     //this.firebase.scheduleNotification(item.id, item.startDate, item.startTime, this.time);
+
     } else {
+
       this.firebase.unbookmarkEvent(item.id);
       this.eventArr.splice(item.id);
+
+      //this.firebase.cancelNotification(item.id);
     }
   }
 

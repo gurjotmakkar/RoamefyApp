@@ -49,10 +49,13 @@ export class UserEventEditPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, private firebase: FirebaseProvider,
     public alertCtrl: AlertController, private modalCtrl: ModalController, private afs: AngularFirestore) {
 
+    // get user id
     this.userID = this.firebase.getUserId();
 
+    // get event id from previous page
     this.eventKey = this.navParams.get('id');
 
+    // get other field values where event id = eventKey
     this.eventDocument = this.afs.collection("events").doc<UserEvent>(this.eventKey);
     this.eventDoc = this.eventDocument.valueChanges().take(1).forEach( e => {
         this.event.address = e.address;
@@ -72,6 +75,7 @@ export class UserEventEditPage {
         this.event.website = e.website;
     });
 
+    // get list of interests
     this.interestCollection = this.afs.collection<Interest>('interest', ref => {
       return ref.orderBy('name')
     });
@@ -83,6 +87,7 @@ export class UserEventEditPage {
       });
     });
 
+    // push interest id and name into arrays
     this.afs.collection<Interest>('interest').snapshotChanges()
     .forEach(i => {
       i.forEach(a => {
@@ -93,10 +98,12 @@ export class UserEventEditPage {
 
   }
 
+  // on page load
   ionViewDidLoad() {
     console.log('ionViewDidLoad UserEventEditPage');
   }
 
+  // check if the interest is selected by user
   checkornot(interestKey){
     var checker = false;
     if(this.event.categories != null)
@@ -107,7 +114,9 @@ export class UserEventEditPage {
     return checker;
   }
 
+  // update event
   updateEvent() {
+    // check if atleast 1 and atmost 5 interests are selected
     if(this.event.categories.length > 5 || this.event.categories.length == 0){
       //this.navCtrl.setRoot(EditUserEventPage);
       let alert = this.alertCtrl.create({
@@ -127,6 +136,7 @@ export class UserEventEditPage {
     }
   }
 
+  // create string from selected interests
   createString(categories){
     var catString = null;
     for(var i in categories){
@@ -142,6 +152,7 @@ export class UserEventEditPage {
     return catString;
   }
 
+  // get address string using autocomplete api
   showAddressModal (){
     let modal = this.modalCtrl.create(AutocompletePage);
     modal.onDidDismiss(data => {
@@ -153,11 +164,13 @@ export class UserEventEditPage {
     modal.present();
   }
   
+  // remove event from database
   removeEvent(event: UserEvent) {
     this.firebase.removeEvent(this.eventKey);
     this.navCtrl.setRoot(UserCreatedEventPage);
   }
   
+  // redirect to user created events page
   cancel(){
     this.navCtrl.setRoot(UserCreatedEventPage);
   }

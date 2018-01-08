@@ -5,12 +5,13 @@
             <ion-icon name="arrow-back"></ion-icon>
         </button>
     </ion-buttons>
-    <ion-title>Time and Distance Setup</ion-title>
+    <ion-title>Time</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
   <ion-list>
+    <!--
     <ion-item>
       <ion-label>Distance ({{distance}} meters )</ion-label>
       <ion-range min="10" max="1000" debounce="500" [(ngModel)]="distance" color="secondary" pin="true" (ionChange)="updateDistance(distance)">
@@ -18,8 +19,9 @@
         <ion-label range-right>1000</ion-label>
       </ion-range>
     </ion-item>
+    -->
     <ion-item>
-        <ion-label>Time ({{time}} hours )</ion-label>
+        <ion-label>Time ({{time}} minutes )</ion-label>
         <ion-range min="1" max="24" debounce="500" [(ngModel)]="time" color="secondary" pin="true" (ionChange)="updateTime(time)">
           <ion-label range-left>1</ion-label>
           <ion-label range-right>24</ion-label>

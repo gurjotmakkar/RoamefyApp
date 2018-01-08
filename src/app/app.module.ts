@@ -36,6 +36,8 @@ import { SignupProPage } from '../pages/signup-pro/signup-pro';
 import { UserProfileEditProPage } from '../pages/user-profile-edit-pro/user-profile-edit-pro';
 import { AddAttractionPage } from '../pages/add-attraction/add-attraction';
 import { EditAttractionPage } from '../pages/edit-attraction/edit-attraction';
+import { OneSignal } from '@ionic-native/onesignal';
+import { Calendar } from '@ionic-native/calendar';
 
 //Firebase database configuration data
 //DO NOT CHANGE ANYTHING
@@ -114,7 +116,9 @@ const firebaseConfig = {
     StatusBar,
     SplashScreen,
     FirebaseProvider,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    OneSignal,
+    Calendar
   ]
 })
 export class AppModule {}

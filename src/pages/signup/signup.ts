@@ -18,6 +18,8 @@ export class SignupPage {
 
   constructor(public nav: NavController, public authData: FirebaseProvider, public formBuilder: FormBuilder, 
     public loadingCtrl: LoadingController, public alertCtrl: AlertController, public menu: MenuController) {
+    
+    // signup page form builder with field validations
     this.signupForm = formBuilder.group({
       firstName: ['', Validators.compose([Validators.required, Validators.minLength(2), 
         Validators.maxLength(64), Validators.pattern("^[a-zA-z]+$")])],
@@ -29,11 +31,16 @@ export class SignupPage {
     });
   }
 
+  // signup user function
   signupUser(){
     this.submitAttempt = true;
+
+    // check if the signup form was valid
     if (!this.signupForm.valid){
       console.log(this.signupForm.value);
     } else {
+
+      // create new normal user
       this.authData.signupUser(this.signupForm.value.email, this.signupForm.value.password, this.signupForm.value.firstName, 
         this.signupForm.value.lastName)
       .then(() => {
@@ -47,6 +54,8 @@ export class SignupPage {
           ]
         });
         alert.present();
+
+        // redirect to login page afte successful signup
         this.nav.setRoot(LoginPage);
       }, (error) => {
         this.loading.dismiss().then( () => {
@@ -71,6 +80,7 @@ export class SignupPage {
     }
   }
 
+  // redirect to loginpage
   goHome(){
     this.nav.setRoot(LoginPage);
   }

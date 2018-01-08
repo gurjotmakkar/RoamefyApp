@@ -16,15 +16,19 @@ import { PlacesViewPage } from '../places-view/places-view';
 
 export class HomePage {
 
+  // page address variables
   mapView = EventMapPage;
   listView = EventListPage;
   placesView = PlacesViewPage;
+
   constructor(public navCtrl: NavController, private firebase: FirebaseProvider) {}
 
+  // go to settings page
   goToMore(){
     this.navCtrl.setRoot(SettingsPage);
   }
 
+  // logout user and redirect to login page
   logout(){
     this.navCtrl.setRoot(LoginPage);
     this.firebase.logoutUser();

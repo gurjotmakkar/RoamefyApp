@@ -25,6 +25,7 @@ export class EventChatsPage {
     private firebase: FirebaseProvider, private afs: AngularFirestore) {
     this.userID = this.firebase.getUserId();
 
+    // get list of chatrooms current user is assigned to
     this.chatCollection = this.afs.collection('users').doc(this.userID).collection<Chat>('chatrooms', ref => {
       return ref.orderBy('name')
     });
@@ -37,14 +38,17 @@ export class EventChatsPage {
     });
   }
 
+  // on page load
   ionViewDidLoad() {
     console.log('ionViewDidLoad EventChatsPage');
   }
 
+  // open the clicked chat
   openChat(key, name){
     this.navCtrl.setRoot(EvenUserChatsPage, {id: key, name: name})
   }
 
+  // redirect to settings page
   goHome(){
     this.navCtrl.setRoot(SettingsPage);
   }

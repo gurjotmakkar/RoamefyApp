@@ -20,6 +20,8 @@ export class SignupProPage {
   constructor(public nav: NavController, public authData: FirebaseProvider, public formBuilder: FormBuilder, 
     public loadingCtrl: LoadingController, public alertCtrl: AlertController, public menu: MenuController, 
     public modalCtrl: ModalController) {
+
+    // building signup form
     this.signupForm = formBuilder.group({
       firstName: ['', Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(64),
         Validators.pattern("^[a-zA-z]+$")])],
@@ -36,9 +38,12 @@ export class SignupProPage {
 
   signupUser(){
     this.submitAttempt = true;
+
+    // check if the form is valid
     if (!this.signupForm.valid){
       console.log(this.signupForm.value);
     } else {
+      // signup the user as a pro
       this.authData.signupProUser(this.signupForm.value.email, this.signupForm.value.password, this.signupForm.value.firstName, 
         this.signupForm.value.lastName, this.signupForm.value.address, this.signupForm.value.dateOfBirth, 
         this.signupForm.value.driverLicenceNumber, this.signupForm.value.phoneNumber)
@@ -77,6 +82,7 @@ export class SignupProPage {
     }
   }
 
+  // get autocomplete address string
   showAddressModal(){
     let modal = this.modalCtrl.create(AutocompletePage);
     modal.onDidDismiss(data => {
@@ -85,6 +91,8 @@ export class SignupProPage {
     modal.present();
   }
 
+
+  // redirect to homepage
   goHome(){
     this.nav.setRoot(LoginPage);
   }

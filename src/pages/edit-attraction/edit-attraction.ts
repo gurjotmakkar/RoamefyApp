@@ -33,11 +33,14 @@ export class EditAttractionPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private firebase: FirebaseProvider, private modalCtrl: ModalController,
     private afs: AngularFirestore) {
-      this.userID = this.firebase.getUserId();
 
-      this.attKey = this.navParams.get('id');
+    // get user id
+    this.userID = this.firebase.getUserId();
 
+    // get id sent from previous page
+    this.attKey = this.navParams.get('id');
 
+    // get other fields of the object with id = 'id'
     this.attDocument = this.afs.collection("attractions").doc<Attractions>(this.attKey);
     this.attDoc = this.attDocument.valueChanges().forEach( e => {
         this.attraction.address = e.address;
@@ -52,15 +55,18 @@ export class EditAttractionPage {
     })
   }
 
+  // on page load
   ionViewDidLoad() {
     console.log('ionViewDidLoad AddAttractionPage');
   }
 
+  // update attraction
   editAttraction(attraction) {
       this.firebase.updateAttraction(attraction, this.attKey);
       this.navCtrl.setRoot(PlacesViewPage);
   }
   
+  // get address string from autocomplete api
   showAddressModal (){
     let modal = this.modalCtrl.create(AutocompletePage);
     modal.onDidDismiss(data => {
@@ -72,15 +78,13 @@ export class EditAttractionPage {
     modal.present();
   }
   
+  // redirect to places page
   cancel(){
     this.navCtrl.setRoot(PlacesViewPage);
   }
 
+  // delete attraction from database
   delete(){
     this.firebase.deleteAttraction(this.attKey);
-  }
-  
-  ngOnDestroy() {
-    console.log("exiting AddEventPage")
   }
 }
