@@ -8,8 +8,7 @@
     
     <ion-item>
       <ion-label stacked class="loginC">Email</ion-label>
-      <ion-input #email formControlName="email" type="email" placeholder="Enter email address" [class.invalid]="!loginForm.controls.email.valid  &&
-      (loginForm.controls.email.dirty || submitAttempt)"></ion-input>
+      <ion-input #email formControlName="email" type="email" placeholder="Enter email address"></ion-input>
     </ion-item>
     
     <ion-item class="error-message" *ngIf="!loginForm.controls.email.valid  &&

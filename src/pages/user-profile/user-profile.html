@@ -9,21 +9,21 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content class="card-background-page">
+<ion-content class="card-background-page" padding>
       <ion-card>
         <img src="assets/imgs/logo.png"/>
         <div class="card-title">{{userEmail}}</div>
       </ion-card>    
-      <button ion-button block color="danger" (click)="edit()"> 
+      <button ion-button block color="primary" class="button" (click)="edit()"> 
         Update User Info
       </button> 
-      <button ion-button block color="danger" (click)="goToResetPassword()">
+      <button ion-button block color="primary" class="button" (click)="goToResetPassword()">
         Update Password
       </button>
-      <button *ngIf="!isUserPro()" ion-button block color="danger" (click)="switchToPro()">
+      <button *ngIf="!isUserPro()" ion-button block color="primary" class="button" (click)="switchToPro()">
         Switch to Pro
       </button>
-      <button ion-button block color="danger" (click)="deleteAccount()">
+      <button ion-button block color="primary" outline class="button" (click)="deleteAccount()">
         Delete Account
       </button>
 </ion-content>

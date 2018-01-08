@@ -12,7 +12,7 @@
     
     <ion-list *ngFor="let chat of chats | async">
       <ion-card (click)="openChat(chat.id, chat.name)">
-        <ion-card-header>
+        <ion-card-header text-wrap>
             <div class="card-title">{{chat.name}}</div>
         </ion-card-header>
       </ion-card>   

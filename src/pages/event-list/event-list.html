@@ -1,8 +1,13 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>Events - List View</ion-title>
+  </ion-navbar>
+</ion-header>
 <ion-content>
     <ion-list *ngFor="let event of userEventData | async">
-      <ion-card>
+      <ion-card class="shadow">
         <img src = "http://css1.www.cntower.ca/site_Files/Content/rotator/View_shot_-_Slacker_-_1024x380.jpg"/>
-        <ion-card-header>
+        <ion-card-header text-wrap>
             <div class="card-title">{{event.name}} <ion-icon icon-end class="bookmark" [name]="icon(event.id)" (click)="addUserEvent(event)"></ion-icon></div>
         </ion-card-header>
         <ion-card-content>
@@ -13,29 +18,44 @@
         </div>
         <a href src="event.website">{{event.website}}</a>
         <div class="card-subtitle"><ion-icon name="call" class="call"></ion-icon> {{event.phone}}</div>
-        <div>Start: {{event.startDate}}  {{event.startTime}}</div>
-        <div>End: {{event.endDate}}  {{event.endTime}}</div>
-        <div>Categories: {{event.categoryString}}</div>
+        <div class="card-subtitle">Categories: </div>
+        <p>{{event.categoryString}}</p>
       </ion-card-content>
       </ion-card>   
     </ion-list>
     <ion-list *ngFor="let event of eventData">
-      <ion-card>
+      <ion-card class="shadow">
         <img [src]= imgLink+event.calEvent.image?.url/>
-        <ion-card-header>
+        <ion-card-header text-wrap>
             <div class="card-title">{{event.calEvent.eventName}}<ion-icon icon-end class="bookmark" [name]="icon(event.calEvent.recId)" (click)="addEvent(event.calEvent)"></ion-icon></div>
         </ion-card-header>
         <ion-card-content>
-        <div class="card-subtitle">Description: </div>
-        <p>{{event.calEvent.description}}</p>
-        <div class="card-subtitle">
-            Website: 
-          </div>
+          <ion-item *ngIf="event.calEvent.presentedBy === undefined || event.calEvent.presentedBy === null">
+          <p [hidden] class="card-subtitle">Presented By: </p>
+            <p [hidden]>{{event.calEvent.presentedBy}}</p> 
+          </ion-item> 
+          <div class="card-subtitle">Description: </div>
+            <p>{{event.calEvent.description}}</p>
+          <div class="card-subtitle">When: </div>
+            <p>{{event.calEvent.startDate.substr(0,10)}} - {{event.calEvent.endDate.substr(0,10)}}</p>
+          <div class="card-subtitle">Time: </div>
+            <p>{{event.calEvent.startDateTime.substr(11,5)}} - {{event.calEvent.startDateTime.substr(11,5)}}</p>
+            <p>{{event.calEvent.timeInfo}}</p>
+          <div class="card-subtitle">Where: </div>
+            <p>{{event.calEvent.orgName}}</p>
+            <p>{{event.calEvent.orgAddress}}</p>
+          <div class="card-subtitle">Cost: </div>
+            <p>{{event.calEvent.otherCostInfo}}</p>
+          <div class="card-subtitle">Website: </div>
           <a href src="event.calEvent.eventWebsite">{{event.calEvent.eventWebsite}}</a>
-        <div class="card-subtitle"><ion-icon name="call"></ion-icon> {{event.calEvent.orgPhone}}</div>
-        <div>Start: {{event.calEvent.startDate.substr(0,10)}}  {{event.calEvent.startDateTime?.substr(11,5)}}</div>
-        <div>End: {{event.calEvent.endDate.substr(0,10)}}  {{event.calEvent.endDateTime?.substr(11,5)}}</div>
-        <div>Categories: {{event.calEvent.categoryString}}</div>
+          <div class="card-subtitle">Categories: </div>
+            <p>{{event.calEvent.categoryString}}</p>
+            <div class="card-subtitle">Contact Information: </div>
+          <div class="card-subtitle"><ion-icon name="email" class="call"></ion-icon>{{event.calEvent.orgEmail}}</div>
+          <div class="card-subtitle"><ion-icon name="call" class="call"></ion-icon> {{event.calEvent.orgPhone}}</div>
+          <div class="card-subtitle">Additional info: </div>
+            <p>{{event.calEvent.alcoholServed}}</p>
+            <p>{{event.calEvent.orgType}}</p>
       </ion-card-content>
       </ion-card>   
     </ion-list>

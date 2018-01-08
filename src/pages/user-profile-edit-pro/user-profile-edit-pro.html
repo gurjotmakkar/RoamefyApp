@@ -1,37 +1,34 @@
 <ion-header>
   <ion-navbar color="primary">
-    <ion-title>Profile</ion-title>
+    <ion-title>Edit Profile</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
     <form [formGroup]="editForm" (submit)="editUserProfile()" novalidate>
         <ion-item>
-            <ion-label stacked>First Name</ion-label>
-            <ion-input [disabled]="isItSwitch()" formControlName="firstName" type="text" placeholder="Your first name"
-              [class.invalid]="!editForm.controls.firstName.valid && (editForm.controls.firstName.dirty || submitAttempt)"></ion-input>
-          </ion-item>
-          <ion-item class="error-message" *ngIf="!editForm.controls.firstName.valid  && (editForm.controls.firstName.dirty || submitAttempt)">
-            <p>Please enter your first name.</p>
-          </ion-item>
+          <ion-label stacked>First Name</ion-label>
+          <ion-input [disabled]="isItSwitch()" formControlName="firstName" type="text" placeholder="Your first name"></ion-input>
+        </ion-item>
+        <ion-item class="error-message" *ngIf="!editForm.controls.firstName.valid  && (editForm.controls.firstName.dirty || submitAttempt)">
+          <p>Please enter your first name.</p>
+        </ion-item>
     
-          <ion-item>
-            <ion-label stacked>Last Name</ion-label>
-            <ion-input [disabled]="isItSwitch()" formControlName="lastName" type="text" placeholder="Your last name"
-              [class.invalid]="!editForm.controls.lastName.valid && (editForm.controls.lastName.dirty || submitAttempt)"></ion-input>
-          </ion-item>
-          <ion-item class="error-message" *ngIf="!editForm.controls.lastName.valid  && (editForm.controls.lastName.dirty || submitAttempt)">
-            <p>Please enter your last name.</p>
-          </ion-item>
+        <ion-item>
+          <ion-label stacked>Last Name</ion-label>
+          <ion-input [disabled]="isItSwitch()" formControlName="lastName" type="text" placeholder="Your last name"></ion-input>
+        </ion-item>
+        <ion-item class="error-message" *ngIf="!editForm.controls.lastName.valid  && (editForm.controls.lastName.dirty || submitAttempt)">
+          <p>Please enter your last name.</p>
+        </ion-item>
     
-          <ion-item>
-            <ion-label stacked>Email</ion-label>
-            <ion-input [disabled]="isItSwitch()" formControlName="email" type="email" placeholder="Your email address"
-              [class.invalid]="!editForm.controls.email.valid && (editForm.controls.email.dirty || submitAttempt)"></ion-input>
-          </ion-item>
-          <ion-item class="error-message" *ngIf="!editForm.controls.email.valid  && (editForm.controls.email.dirty || submitAttempt)">
-            <p>Please enter a valid email.</p>
-          </ion-item> 
+        <ion-item>
+          <ion-label stacked>Email</ion-label>
+          <ion-input [disabled]="isItSwitch()" formControlName="email" type="email" placeholder="Your email address"></ion-input>
+        </ion-item>
+        <ion-item class="error-message" *ngIf="!editForm.controls.email.valid  && (editForm.controls.email.dirty || submitAttempt)">
+          <p>Please enter a valid email.</p>
+        </ion-item> 
 
         <ion-item (click)="showAddressModal()">
           <ion-label stacked>Address</ion-label>
@@ -69,14 +66,14 @@
           <p>Please enter your phone number.</p>
         </ion-item>
     
-        <button *ngIf="!isItSwitch()" ion-button block color="danger" type="submit">
+        <button *ngIf="!isItSwitch()" ion-button block color="primary" class="button" type="submit">
           Verify Change
         </button>
     
-        <button *ngIf="isItSwitch()" ion-button block color="danger" type="submit">
+        <button *ngIf="isItSwitch()" ion-button block color="primary" outline class="button" type="submit">
           Switch to pro
         </button>
       </form>
         
-      <button ion-button block clear color="danger" (click) = "cancel()">Cancel</button>  
+      <button ion-button block color="primary" outline class="button" (click) = "cancel()">Cancel</button>  
 </ion-content>

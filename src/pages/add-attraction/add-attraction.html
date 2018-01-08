@@ -8,99 +8,90 @@
   <form #addattractionForm="ngForm">
 
     <ion-item>
-      <ion-label floating>attraction Name</ion-label>
+      <ion-label floating>Enter attraction name</ion-label>
       <ion-input [(ngModel)]="attraction.name" type="text" name="name" required minlength="2"
-      maxlength="64" pattern="[^0-9]*" #name="ngModel" [class.invalid]="name.errors 
-      && (name.dirty || name.touched)"></ion-input>
+      maxlength="64" pattern="[^0-9]*" #name="ngModel"></ion-input>
     </ion-item>
     <ion-item class="error-message" *ngIf="name.errors && (name.dirty || name.touched)">
       <p [hidden]="!name.errors.required">
-        attraction name is required!
+        Please enter attraction name.
       </p>
       <p [hidden]="!name.errors.minlength">
-          attraction name must be at least 2 characters long.
+        Oops, name is too short.
       </p>
       <p [hidden]="!name.errors.maxlength">
-          attraction name cannot be more than 64 characters long.
+        Oops, name is too long.
       </p>
       <p [hidden]="!name.errors.pattern">
-        Only letters are allowed.
+        Oops, numbers are not allowed.
       </p>
     </ion-item>
 
   <ion-item>
-    <ion-label floating>attraction Description</ion-label>
+    <ion-label floating>Enter attraction description</ion-label>
     <ion-input [(ngModel)]="attraction.description" type="text" name="description" required minlength="5" 
-    maxlength="5000" #description="ngModel" [class.invalid]="description.errors 
-    && (description.dirty || description.touched)"></ion-input>
+    maxlength="5000" #description="ngModel"></ion-input>
   </ion-item>
 
   <ion-item class="error-message" *ngIf="description.errors && (description.dirty || description.touched)">
       <p [hidden]="!description.errors.required">
-        attraction description is required!
+        Please enter attraction description.
       </p>
       <p [hidden]="!description.errors.minlength">
-        attraction description must be at least 5 characters long.
+        Oops, description is too short.
       </p>
       <p [hidden]="!description.errors.maxlength">
-        attraction description cannot be more than 5000 characters long.
+        Oops, description is too long.
       </p>
   </ion-item>
 
   <ion-item (click)="showAddressModal()">
-      <ion-label floating>attraction Address</ion-label>
+      <ion-label floating>Enter attraction address</ion-label>
       <ion-input [(ngModel)]="attraction.address" name="address" type="search" required 
-      #address="ngModel" [class.invalid]="address.errors && (address.dirty || address.touched)"></ion-input>
+      #address="ngModel"></ion-input>
   </ion-item>
 
   <ion-item class="error-message" *ngIf="address.errors && (address.dirty || address.touched)">
-    <p [hidden]="!address.errors.required">Address is required!</p>
+    <p [hidden]="!address.errors.required">Please enter attraction location.</p>
   </ion-item>
 
   <ion-item>
-    <ion-label floating>Website</ion-label>
-    <ion-input [(ngModel)]="attraction.website" name="website" minlength = 10 pattern="(https?://|www\.)..[0-9a-zA-Z]+\..[0-9a-zA-Z]+" #website="ngModel" 
-    [class.invalid]="website.errors && (website.dirty || website.touched)"></ion-input>
+    <ion-label floating>Enter website information</ion-label>
+    <ion-input [(ngModel)]="attraction.website" name="website" minlength = 10 pattern="(https?://|www\.)..[0-9a-zA-Z]+\..[0-9a-zA-Z]+" #website="ngModel" ></ion-input>
   </ion-item>
 
   <ion-item class="error-message" *ngIf="website.errors && (website.dirty || website.touched)">
-      <p [hidden]="!website.errors.pattern">Website url is not valid.</p>
+      <p [hidden]="!website.errors.pattern">Oops, website url is not valid.</p>
   </ion-item>
 
   <ion-item>
-    <ion-label floating>Contact Phone</ion-label>
-    <ion-input [(ngModel)]="attraction.phone" name="phone" required pattern="[^a-zA-Z!@#$%^\&*( )\t_-]*" minlength="10"
-      maxlength="10" #phone="ngModel" [class.invalid]="phone.errors 
-    && (phone.dirty || phone.touched)"></ion-input>
+    <ion-label floating>Enter contact phone information</ion-label>
+    <ion-input [(ngModel)]="attraction.phone" name="phone" pattern="[^a-zA-Z!@#$%^\&*( )\t_-]*" minlength="10"
+      maxlength="10" #phone="ngModel"></ion-input>
   </ion-item>
 
   <ion-item class="error-message" *ngIf="phone.errors && (phone.dirty || phone.touched)">
-    <p [hidden]="!phone.errors.required">Phone number is required!</p>
-    <p [hidden]="!phone.errors.pattern">Phone number is not valid</p>
-    <p [hidden]="!phone.errors.minlength">Phone number is too short</p>
+    <p [hidden]="!phone.errors.pattern">Oops, phone number is not valid.</p>
+    <p [hidden]="!phone.errors.minlength">Oops, phone number is too short.</p>
   </ion-item>
 
   <ion-item>
-    <ion-label floating>attraction hours</ion-label>
-    <ion-input [(ngModel)]="attraction.hours" type="text" name="hours" required minlength="5" 
-    maxlength="5000" #hours="ngModel" [class.invalid]="hours.errors 
-    && (hours.dirty || hours.touched)"></ion-input>
+    <ion-label floating>Hours of operation</ion-label>
+    <ion-input [(ngModel)]="attraction.hours" type="text" name="hours" required 
+    maxlength="64" #hours="ngModel"></ion-input>
   </ion-item>
 
   <ion-item class="error-message" *ngIf="hours.errors && (hours.dirty || hours.touched)">
       <p [hidden]="!hours.errors.required">
-        attraction hours is required!
-      </p>
-      <p [hidden]="!hours.errors.minlength">
-        attraction hours must be at least 5 characters long.
+        Please enter hours of operation.
       </p>
       <p [hidden]="!hours.errors.maxlength">
-        attraction hours cannot be more than 5000 characters long.
+        Oops, too long.
       </p>
   </ion-item>
 
-  <button ion-button black clear (click)="addattraction(attraction)" [disabled]="!addattractionForm.form.valid">Create</button> 
+  <button ion-button clear class="create" (click)="addattraction(attraction)" [disabled]="!addattractionForm.form.valid">Create</button> 
   
-  <button ion-button black clear (click)="cancel()" [disabled]="addattractionForm.form.valid">Cancel</button>      
+  <button ion-button clear class="cancel" (click)="cancel()" [disabled]="addattractionForm.form.valid">Cancel</button>      
 </form>
 </ion-content>
