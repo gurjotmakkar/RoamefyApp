@@ -152,6 +152,7 @@ export class EventMapPage {
       let orgAddress = marker.calEvent["orgAddress"]; 
       let categories = marker.calEvent["categoryString"];
       let img = "http://mnlct.org/wp-content/uploads/2014/10/toronto-skyline.jpg";
+ 
       if( marker.calEvent["image"] !== undefined)
         img = "https://secure.toronto.ca" + marker.calEvent["image"]["url"];
 

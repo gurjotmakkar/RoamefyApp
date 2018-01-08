@@ -1,3 +1,30 @@
 page-add-attraction {
 
+    ion-label {
+        color: color($colors, dark_text, base);
+        opacity: 0.8;
+    }
+
+    .item {
+        margin-bottom: 5px;
+    }
+
+    .error-message .item-inner {
+        border-bottom: 0 !important;
+      } 
+      
+    .error-message p {
+        border-bottom: 0 !important;
+        color: color($colors, darkDanger, base);
+    }
+
+    .create {
+        margin-top: 20px;
+        margin-left: 20px;
+    }
+
+    .cancel {
+        margin-top: 20px;
+        margin-left: 95px;
+    }
 }

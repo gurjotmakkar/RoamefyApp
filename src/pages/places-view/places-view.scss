@@ -1,28 +1,32 @@
 page-places-view {
     
-    .shadow {
-        box-shadow: 0px 2px 2px color($colors, darkSecondary, base);
+    .bookmark{
+        padding: 10px;
+        size: 100px;
     }
 
     ion-card-header {
         background-color: #008291;
         text-align: center;
         margin-bottom: 20px;
-        font-size: 28px;
         opacity: 1;
-        font-weight: bolder;
-        font-family: "Helvetica";
-        box-shadow: 0px 2px 4px color($colors, darkSecondary, base);
+        box-shadow: 0px 1px 2px color($colors, darkSecondary, base);
     }
 
     .card-title {
         color: color($colors, primary_text, base);
         opacity: 1;
+        font-size: 14px;
+        font-weight: 900;
+        letter-spacing: 0.01em;
     }   
 
     .card-subtitle {
         margin-top: 10px;
         margin-bottom: 10px;
+        font-size: 14px;
+        font-weight: bolder;
+        opacity: 0.7;
     }
 
     .icon-edit {
@@ -32,10 +36,15 @@ page-places-view {
     div {
         font-size: 14px;
         font-weight: bolder;
-        opacity: 0.7;
+        opacity: 1;
     }
 
     .call {
         margin-right: 5px;
     }
+
+    .shadow {
+        box-shadow: 0px 2px 2px color($colors, darkSecondary, base);
+    }
+
 }
