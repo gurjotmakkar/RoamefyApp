@@ -69,7 +69,7 @@ export class EventListPage {
   }
 
   ionViewDidLoad(){
-/*
+
     let loader = this.loading.create({
       content: "loading...."
     });  
@@ -82,7 +82,7 @@ export class EventListPage {
       console.log(err);
     }, () => {
       loader.dismiss();
-    }); */
+    }); 
   }
 
   icon(id){

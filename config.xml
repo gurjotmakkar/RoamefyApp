@@ -3,7 +3,7 @@
     <name>Roamefy</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
-    <content original-src="index.html" src="http://198.96.33.14:8100" />
+    <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -83,6 +83,7 @@
     <allow-navigation href="http://10.35.231.144:8100" />
     <allow-navigation href="http://10.43.237.242:8100" />
     <allow-navigation href="http://198.96.33.14:8100" />
+    <allow-navigation href="http://10.35.227.173:8100" />
     <engine name="android" spec="6.3.0" />
     <engine name="ios" spec="4.5.4" />
     <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
