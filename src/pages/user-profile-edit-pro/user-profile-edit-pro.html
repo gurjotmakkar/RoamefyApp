@@ -8,23 +8,46 @@
     <form [formGroup]="editForm" (submit)="editUserProfile()" novalidate>
         <ion-item>
           <ion-label stacked>First Name</ion-label>
-          <ion-input [disabled]="isItSwitch()" formControlName="firstName" type="text" placeholder="Your first name"></ion-input>
+          <ion-input [disabled]="isItSwitch()" formControlName="firstName" type="text"></ion-input>
         </ion-item>
         <ion-item class="error-message" *ngIf="!editForm.controls.firstName.valid  && (editForm.controls.firstName.dirty || submitAttempt)">
-          <p>Please enter your first name.</p>
-        </ion-item>
+      
+            <p *ngIf="editForm.controls.firstName.errors.required">
+              Please enter your name.
+            </p>
+            <p *ngIf="editForm.controls.firstName.errors.minlength">
+              Oops, name is too short.
+            </p>
+            <p *ngIf="editForm.controls.firstName.errors.maxlength">
+              Oops, name is too long.
+            </p>
+            <p *ngIf="editForm.controls.firstName.errors.pattern">
+              Oops, numbers are not allowed.
+            </p>  
+          </ion-item>
     
         <ion-item>
           <ion-label stacked>Last Name</ion-label>
-          <ion-input [disabled]="isItSwitch()" formControlName="lastName" type="text" placeholder="Your last name"></ion-input>
+          <ion-input [disabled]="isItSwitch()" formControlName="lastName" type="text"></ion-input>
         </ion-item>
         <ion-item class="error-message" *ngIf="!editForm.controls.lastName.valid  && (editForm.controls.lastName.dirty || submitAttempt)">
-          <p>Please enter your last name.</p>
-        </ion-item>
+            <p *ngIf="editForm.controls.lastName.errors.required">
+              Please enter your last name.
+            </p>
+            <p *ngIf="editForm.controls.lastName.errors.minlength">
+              Oops, last name is too short.
+            </p>
+            <p *ngIf="editForm.controls.lastName.errors.maxlength">
+              Oops, last name is too long.
+            </p>
+            <p *ngIf="editForm.controls.lastName.errors.pattern">
+              Oops, numbers are not allowed.
+            </p>  
+          </ion-item>
     
         <ion-item>
           <ion-label stacked>Email</ion-label>
-          <ion-input [disabled]="isItSwitch()" formControlName="email" type="email" placeholder="Your email address"></ion-input>
+          <ion-input [disabled]="isItSwitch()" formControlName="email" type="email"></ion-input>
         </ion-item>
         <ion-item class="error-message" *ngIf="!editForm.controls.email.valid  && (editForm.controls.email.dirty || submitAttempt)">
           <p>Please enter a valid email.</p>
@@ -32,8 +55,7 @@
 
         <ion-item (click)="showAddressModal()">
           <ion-label stacked>Address</ion-label>
-          <ion-input formControlName="address" type="text" placeholder="Your address"
-            [class.invalid]="!editForm.controls.address.valid && (editForm.controls.address.dirty || submitAttempt)"></ion-input>
+          <ion-input formControlName="address" type="text"></ion-input>
         </ion-item>
         <ion-item class="error-message" *ngIf="!editForm.controls.address.valid  && (editForm.controls.address.dirty || submitAttempt)">
           <p>Please enter your address.</p>
@@ -41,29 +63,44 @@
   
         <ion-item>
           <ion-label stacked>Date of Birth</ion-label>
-          <ion-input formControlName="dateOfBirth" type="text" placeholder="Your date of birth"
-            [class.invalid]="!editForm.controls.dateOfBirth.valid && (editForm.controls.dateOfBirth.dirty || submitAttempt)"></ion-input>
+          <ion-input formControlName="dateOfBirth" type="text"></ion-input>
         </ion-item>
         <ion-item class="error-message" *ngIf="!editForm.controls.dateOfBirth.valid  && (editForm.controls.dateOfBirth.dirty || submitAttempt)">
-          <p>Please enter your date of birth.</p>
+          <p *ngIf="editForm.controls.dateOfBirth.errors.required">
+              Please enter your date of birth.
+          </p>
+          <p *ngIf="editForm.controls.dateOfBirth.errors.pattern">
+              Oops, date of bith is not valid.
+          </p> 
         </ion-item>
   
         <ion-item>
           <ion-label stacked>Driver Licence Number</ion-label>
-          <ion-input formControlName="driverLicenceNumber" type="text" placeholder="Your driver's licence number"
-            [class.invalid]="!editForm.controls.driverLicenceNumber.valid && (editForm.controls.driverLicenceNumber.dirty || submitAttempt)"></ion-input>
+          <ion-input formControlName="driverLicenceNumber" type="text"></ion-input>
         </ion-item>
         <ion-item class="error-message" *ngIf="!editForm.controls.driverLicenceNumber.valid  && (editForm.controls.driverLicenceNumber.dirty || submitAttempt)">
-          <p>Please enter your driver's licence number.</p>
+          <p *ngIf="editForm.controls.driverLicenceNumber.errors.required">
+            Please enter your driver licence number.
+          </p>
+          <p *ngIf="editForm.controls.driverLicenceNumber.errors.pattern">
+            Oops, driver licence number is not valid.
+          </p> 
         </ion-item>
   
         <ion-item>
           <ion-label stacked>Phone Number</ion-label>
-          <ion-input formControlName="phoneNumber" type="text" placeholder="Your phone number"
-            [class.invalid]="!editForm.controls.phoneNumber.valid && (editForm.controls.phoneNumber.dirty || submitAttempt)"></ion-input>
+          <ion-input formControlName="phoneNumber" type="text"></ion-input>
         </ion-item>
         <ion-item class="error-message" *ngIf="!editForm.controls.phoneNumber.valid  && (editForm.controls.phoneNumber.dirty || submitAttempt)">
-          <p>Please enter your phone number.</p>
+          <p *ngIf="editForm.controls.phoneNumber.errors.required">
+            Please enter your phone number.
+          </p>
+          <p *ngIf="editForm.controls.phoneNumber.errors.pattern">
+            Oops, phone number is not valid.
+          </p>
+          <p *ngIf="editForm.controls.phoneNumber.errors.maxlength">
+            Oops, phone number is not valid.
+          </p>          
         </ion-item>
     
         <button *ngIf="!isItSwitch()" ion-button block color="primary" class="button" type="submit">
