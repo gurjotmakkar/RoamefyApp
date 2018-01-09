@@ -1,29 +1,41 @@
 page-user-event-add {
-    form {
-        margin-bottom: 32px;
-        button {
-          margin-top: 20px;
-        }
-      }
-    
-      p {
-        font-size: 0.8em;
-        color: #d2d2d2;
-      }
-    
-      ion-label {
-        margin-left: 5px;
+
+  form {
+    margin-top: 10px;;      
+  }
+      .item .create {
+        color: color($colors, darkSecondary, base);
+        opacity: 1;
       }
     
       ion-input {
-        padding: 5px;
+        color: #000000;
+        opacity: 0.8;
       }
-    
-      .invalid {
-        border-bottom: 1px solid #FF6153;
+        
+      .item {
+        margin-bottom: 5px;
       }
-
+        
       .error-message .item-inner {
         border-bottom: 0 !important;
+      } 
+          
+      .error-message p{
+        border-bottom: 0 !important;
+        color: color($colors, darkDanger, base);
       }
+    
+      .button:not(:last-child) {
+        margin-top: 30px;
+      }
+
+      #or {
+        text-align: center;
+        color: color($colors, dark_text, base);
+        opacity: 0.7;
+        margin-bottom: 20px;
+        margin-top: 20px;
+      }
+    
 }

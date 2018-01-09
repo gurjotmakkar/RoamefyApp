@@ -90,8 +90,8 @@
       </p>
   </ion-item>
 
-  <button ion-button clear class="create" (click)="addattraction(attraction)" [disabled]="!addattractionForm.form.valid">Create</button> 
+  <button ion-button block color="primary" class="add" (click)="addattraction(attraction)" [disabled]="!addattractionForm.form.valid">Create</button> 
   
-  <button ion-button clear class="cancel" (click)="cancel()" [disabled]="addattractionForm.form.valid">Cancel</button>      
+  <button ion-button block color="primary" outline class="add" (click)="cancel()" [disabled]="addattractionForm.form.valid">Cancel</button>      
 </form>
 </ion-content>

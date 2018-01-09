@@ -6,36 +6,56 @@
 
 <ion-content padding>
     <form [formGroup]="editForm" (submit)="editUserProfile()" novalidate>
-          <ion-item>
-            <ion-label stacked>First Name</ion-label>
-            <ion-input formControlName="firstName" type="text" placeholder="Your first name"
-              [class.invalid]="!editForm.controls.firstName.valid && (editForm.controls.firstName.dirty || submitAttempt)"></ion-input>
+        <ion-item>
+            <ion-label stacked class="update">First Name</ion-label>
+            <ion-input [disabled]="isItSwitch()" formControlName="firstName" type="text"></ion-input>
           </ion-item>
           <ion-item class="error-message" *ngIf="!editForm.controls.firstName.valid  && (editForm.controls.firstName.dirty || submitAttempt)">
-            <p>Please enter your first name.</p>
-          </ion-item>
-    
+        
+              <p *ngIf="editForm.controls.firstName.errors.required">
+                Please enter your name.
+              </p>
+              <p *ngIf="editForm.controls.firstName.errors.minlength">
+                Oops, name is too short.
+              </p>
+              <p *ngIf="editForm.controls.firstName.errors.maxlength">
+                Oops, name is too long.
+              </p>
+              <p *ngIf="editForm.controls.firstName.errors.pattern">
+                Oops, numbers are not allowed.
+              </p>  
+            </ion-item>
+      
           <ion-item>
-            <ion-label stacked>Last Name</ion-label>
-            <ion-input formControlName="lastName" type="text" placeholder="Your last name"
-              [class.invalid]="!editForm.controls.lastName.valid && (editForm.controls.lastName.dirty || submitAttempt)"></ion-input>
+            <ion-label stacked class="update">Last Name</ion-label>
+            <ion-input [disabled]="isItSwitch()" formControlName="lastName" type="text"></ion-input>
           </ion-item>
           <ion-item class="error-message" *ngIf="!editForm.controls.lastName.valid  && (editForm.controls.lastName.dirty || submitAttempt)">
-            <p>Please enter your last name.</p>
-          </ion-item>
-    
+              <p *ngIf="editForm.controls.lastName.errors.required">
+                Please enter your last name.
+              </p>
+              <p *ngIf="editForm.controls.lastName.errors.minlength">
+                Oops, last name is too short.
+              </p>
+              <p *ngIf="editForm.controls.lastName.errors.maxlength">
+                Oops, last name is too long.
+              </p>
+              <p *ngIf="editForm.controls.lastName.errors.pattern">
+                Oops, numbers are not allowed.
+              </p>  
+            </ion-item>
+      
           <ion-item>
-            <ion-label stacked>Email</ion-label>
-            <ion-input formControlName="email" type="email" placeholder="Your email address"
-              [class.invalid]="!editForm.controls.email.valid && (editForm.controls.email.dirty || submitAttempt)"></ion-input>
+            <ion-label stacked class="update">Email</ion-label>
+            <ion-input [disabled]="isItSwitch()" formControlName="email" type="email"></ion-input>
           </ion-item>
           <ion-item class="error-message" *ngIf="!editForm.controls.email.valid  && (editForm.controls.email.dirty || submitAttempt)">
             <p>Please enter a valid email.</p>
           </ion-item> 
           
-        <button ion-button block color="danger" type="submit">
+        <button ion-button block color="primary" type="submit">
           Verify Change
         </button>
       </form>
-      <button ion-button block clear color="danger" (click) = "cancel()">Cancel</button>  
+      <button ion-button block color="primary" outline (click) = "cancel()">Cancel</button>  
 </ion-content>

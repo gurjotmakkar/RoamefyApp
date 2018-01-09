@@ -11,16 +11,22 @@
             <div class="card-title">{{event.name}} <ion-icon icon-end class="bookmark" [name]="icon(event.id)" (click)="addUserEvent(event)"></ion-icon></div>
         </ion-card-header>
         <ion-card-content>
-        <div class="card-subtitle">Description: </div>
-        <p>{{event.description}}</p>
-        <div class="card-subtitle">
-          Website: 
-        </div>
-        <a href src="event.website">{{event.website}}</a>
-        <div class="card-subtitle"><ion-icon name="call" class="call"></ion-icon> {{event.phone}}</div>
-        <div class="card-subtitle">Categories: </div>
-        <p>{{event.categoryString}}</p>
-      </ion-card-content>
+          <div class="card-subtitle">Description: </div>
+            <p>{{event.description}}</p>
+          <div class="card-subtitle">When: </div>
+            <p>{{event.startDate}} - {{event.endDate}}</p>
+          <div class="card-subtitle">Time: </div>
+            <p>{{event.startTime}} - {{event.endTime}}</p>
+          <div class="card-subtitle">Where: </div>
+            <p>{{event.address}}</p>
+          <div class="card-subtitle">Cost: </div>
+            <p>${{event.price}}</p>
+          <div class="card-subtitle">Website: </div>
+            <a href src="event.website">{{event.website}}</a>
+          <div class="card-subtitle"><ion-icon name="call" class="call"></ion-icon> {{event.phone}}</div>
+          <div class="card-subtitle">Categories: </div>
+            <p>{{event.categoryString}}</p>
+        </ion-card-content>
       </ion-card>   
     </ion-list>
     <ion-list *ngFor="let event of eventData">

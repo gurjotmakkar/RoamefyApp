@@ -89,10 +89,10 @@
       </p>
   </ion-item>
 
-  <button ion-button black clear class="update" (click)="editAttraction(attraction)" [disabled]="!editAttractionForm.form.valid">Update</button> 
+  <button ion-button block class="update" color="primary" (click)="editAttraction(attraction)" [disabled]="!editAttractionForm.form.valid">Update</button> 
   
-  <button ion-button black clear class="update" (click)="cancel()">Cancel</button>    
+  <button ion-button block class="update" color="primary" outline (click)="cancel()">Cancel</button>    
 
-  <button ion-button black clear class="update" (click)="delete()">Remove</button>      
+  <button ion-button block class="update" color="primary" outline (click)="delete()">Remove</button>      
 </form>
 </ion-content>
