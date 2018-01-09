@@ -809,11 +809,9 @@ scheduleNotification(userID, id, startDate, startTime, time = 1, title){
 
   let self = this;
 
-  var success = false;
-
   // construct notification object to be delivered to a specific user and save notification ID from http response in database
   window["plugins"].OneSignal.getIds(function(ids) {
-    var notificationObj = { contents: {en: title + " is going to begin soon!\n" + "at " +  dateString},
+    var notificationObj = { contents: {en: title + " is going to begin soon\n" + "Date: " +  dateString.substr(0, 10) + "\nTime: " + dateString.substr(11)},
                             send_after: sdate,
                             include_player_ids: [ids.userId] };
     console.log("User ID is: " + ids.userId);
@@ -821,9 +819,9 @@ scheduleNotification(userID, id, startDate, startTime, time = 1, title){
       function(successResponse) {
         console.log("Notification Post Success:", id + " " + successResponse);
         console.log(successResponse.id);
-        self.setNotificationID(userID, id, successResponse.id, time);
-        success = true;
+        self.setNotificationID(userID, id, successResponse.id, sdate);
         //alert(id + " " + successResponse.id);
+        return true;
       },
       function (failedResponse) {
         console.log("Notification Post Failed: ", failedResponse);
@@ -832,7 +830,7 @@ scheduleNotification(userID, id, startDate, startTime, time = 1, title){
     );
   });
 
-  return success;
+  return false;
 
 }
 

@@ -87,7 +87,6 @@ export class EventListPage {
     this.http.get(this.api)
     .subscribe(data => {
       this.eventData = data;
-      console.log(data);
     }, err => {
       console.log(err);
     }, () => {
@@ -149,6 +148,13 @@ export class EventListPage {
       this.firebase.unbookmarkEvent(item.id);
       this.eventArr.splice(item.id);
     }
+  }
+
+  checkIfNull(value){
+    if(value == null || value === undefined || value == "")
+      return true;
+
+    return false;
   }
 
 }

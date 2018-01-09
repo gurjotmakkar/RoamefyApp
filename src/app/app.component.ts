@@ -70,12 +70,12 @@ export class MyApp {
       var notificationOpenedCallback = function(jsonData) {
         console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
       };
-  /*
+  
       window["plugins"].OneSignal
         .startInit("e979d775-d7e2-46e7-88c9-864d62ac51b2", "844616883402")
         .handleNotificationOpened(notificationOpenedCallback)
         .endInit();
-*/
+
       this.platform.registerBackButtonAction(() => {  
                 const alert = this.alertCtrl.create({
                     title: 'Exit app?',

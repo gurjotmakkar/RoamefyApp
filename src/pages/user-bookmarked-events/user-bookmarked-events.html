@@ -16,7 +16,7 @@
               <div class="card-title">{{event.name}} 
               <ion-icon icon-end class="bookmark" name="star" (click)="removeEvent(event.id)"></ion-icon>
               <ion-icon icon-end class="reminder" [name]="checkIfNotificationExists(event.id)" (click)="reminder(event)"></ion-icon>
-              <ion-icon icon-end class="calendar" [name]="checkIfCalendarExists(event.id)" (click)="scheduleCalendar(event)"></ion-icon></div>
+              <ion-icon icon-end class="calendar" name="calendar" (click)="scheduleCalendar(event)"></ion-icon></div>
           </ion-card-header>
           <ion-card-content>
           <div class="card-subtitle">Description: </div>

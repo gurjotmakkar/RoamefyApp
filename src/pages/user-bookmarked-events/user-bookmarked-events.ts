@@ -10,7 +10,7 @@ import { Calendar } from '@ionic-native/calendar';
 interface UserNotificationId{
   id: string;
   notificationID: string;
-  calID: string;
+  //calID: string;
 }
 
 @IonicPage()
@@ -25,7 +25,7 @@ export class UserBookmarkedEventsPage {
   userID: string;
   time: number;
   eventArr: string[] = [];
-  calArr: string[] = [];
+  //calArr: string[] = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, 
     private firebase: FirebaseProvider, private afs: AngularFirestore, 
@@ -46,23 +46,40 @@ export class UserBookmarkedEventsPage {
       });
     });
 
+    // remove notificationID if notification is done
+    this.afs.collection("users").doc(this.userID).collection<UserNotificationId>("bookmarkedEvents")
+    .snapshotChanges()
+    .take(1)
+    .forEach(a => {
+      for ( var i in a )
+        if(a[i].payload.doc.data().time !== null && a[i].payload.doc.data().time !== undefined){
+          var now = new Date();
+          var t = new Date(a[i].payload.doc.data().time);
+          if(t.valueOf() >= now.valueOf())
+            this.firebase.cancelNotification(this.userID, a[i].payload.doc.id);
+        }
+    });
+
     // get list of events for which notification is scheduled
     this.afs.collection("users").doc(this.userID).collection<UserNotificationId>("bookmarkedEvents")
-    .snapshotChanges().forEach(a => {
+    .snapshotChanges()
+    .forEach(a => {
       this.eventArr = [];
       for ( var i in a )
         if(a[i].payload.doc.data().notificationID !== null && a[i].payload.doc.data().notificationID !== undefined)
           this.eventArr.push(a[i].payload.doc.id);
     });
 
+    /*
     // get list of events for which calendar is scheduled
     this.afs.collection("users").doc(this.userID).collection<UserNotificationId>("bookmarkedEvents")
     .snapshotChanges().forEach(a => {
-      this.eventArr = [];
+      this.calArr = [];
       for ( var i in a )
         if(a[i].payload.doc.data().calID !== null && a[i].payload.doc.data().calID !== undefined)
           this.calArr.push(a[i].payload.doc.id);
     });
+    */
   }
 
   // on page load
@@ -92,6 +109,7 @@ export class UserBookmarkedEventsPage {
     return 'notifications';
   }
 
+  /*
   // check if calendar is scheduled for an event
   checkIfCalendarExists(id){
     var checker = false;
@@ -103,6 +121,7 @@ export class UserBookmarkedEventsPage {
       return 'calendar';
     return 'browsers';
   }
+  */
 
   // set / remove a reminder for an events for a user
   reminder(item){
@@ -120,9 +139,10 @@ export class UserBookmarkedEventsPage {
       },{
           text: 'Yes',
           handler: () => {
-            this.eventArr.splice(item.id);
-            this.firebase.cancelNotification(this.userID, item.id);
-            alert.dismiss();
+            var a = this.firebase.cancelNotification(this.userID, item.id);
+            if(a)
+              this.eventArr.splice(item.id);
+            //alert.dismiss();
           }
         }]
         });
@@ -147,19 +167,61 @@ export class UserBookmarkedEventsPage {
           {
             text: 'Remind Me',
             handler: data => {
-              this.firebase.scheduleNotification(this.userID, item.id, item.startDate, item.startTime, data.time, item.name);
-              this.eventArr.push(item.id);
-              alert.dismiss();
-              }
+              var a = this.firebase.scheduleNotification(this.userID, item.id, item.startDate, item.startTime, data.time, item.name);
+              if(a)
+                this.eventArr.push(item.id);
+              //alert.dismiss();
+            }
           }]
       });
       alert.present();
     }
   }
 
+  // set calendar event on user's device calendar app
+  scheduleCalendar(item){
+    const alert = this.alertCtrl.create({
+      title: 'Set up a calendar event',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Set Calendar Event',
+          handler: data => {
+            var start;
+            var end;
+
+            if(item.startTime == null || item.startTime == "" || item.startTime === undefined)
+              start = new Date(item.startDate + 'T' + "09:00");
+            else
+              start = new Date(item.startDate + 'T' + item.startTime);
+
+            if(item.endTime == null || item.endTime == "" || item.endTime === undefined)
+              end = new Date(item.endDate + 'T' + "09:00");
+            else
+              end = new Date(item.endDate + 'T' + item.endTime);
+
+            this.calendar.createEvent(item.name, item.address, item.website, start, end).then(
+              (msg) => { console.log(msg); },
+              (err) => { console.log(err); }
+            );
+
+            alert.dismiss();
+            }
+        }]
+    });
+    alert.present();
+  }
+
+
+  /*
   // set / remove a calendar for an events for a user
   scheduleCalendar(item){
-    console.log(this.eventArr);
     if(this.checkIfCalendarExists(item.id) == 'calendar'){
       const alert = this.alertCtrl.create({
       title: 'Cancel calendar reminder',
@@ -174,16 +236,25 @@ export class UserBookmarkedEventsPage {
           text: 'Yes',
           handler: () => {
             this.calArr.splice(item.id);
-/*
-            var start = new Date(item.startDate + 'T' + (item.startTime == ));
-            var end = new Date(item.startDate + 'T' + item.startTime)
 
-            this.calendar.createEvent(item.name, item.address, item.website, item.startDate + 'T' + item.startTime, item.endDate).then(
+            var start;
+            var end;
+
+            if(item.startTime == null || item.startTime == "" || item.startTime === undefined)
+              start = new Date(item.startDate + 'T' + "09:00");
+            else
+              start = new Date(item.startDate + 'T' + item.startTime);
+
+            if(item.endTime == null || item.endTime == "" || item.endTime === undefined)
+              end = new Date(item.endDate + 'T' + "09:00");
+            else
+              end = new Date(item.endDate + 'T' + item.endTime);
+
+            this.calendar.createEvent(item.name, item.address, item.website, start, end).then(
               (msg) => { console.log(msg); },
               (err) => { console.log(err); }
             );
-*/
-            //this.firebase.cancelNotification(item.id);
+
             alert.dismiss();
           }
         }]
@@ -191,7 +262,7 @@ export class UserBookmarkedEventsPage {
         alert.present();
       } else {
         const alert = this.alertCtrl.create({
-        title: 'Set up a calendar reminder',
+        title: 'Set up a calendar event',
         inputs: [
           {
             name: 'time',
@@ -207,12 +278,28 @@ export class UserBookmarkedEventsPage {
             }
           },
           {
-            text: 'Remind Me',
+            text: 'Set in Calendar',
             handler: data => {
               this.calArr.push(item.id);
 
+              var start;
+              var end;
+  
+              if(item.startTime == null || item.startTime == "" || item.startTime === undefined)
+                start = new Date(item.startDate + 'T' + "09:00");
+              else
+                start = new Date(item.startDate + 'T' + item.startTime);
+  
+              if(item.endTime == null || item.endTime == "" || item.endTime === undefined)
+                end = new Date(item.endDate + 'T' + "09:00");
+              else
+                end = new Date(item.endDate + 'T' + item.endTime);
 
-              //this.firebase.scheduleNotification(item.id, item.startDate, item.startTime, data.time, item.name);
+              this.calendar.createEvent(item.name, item.address, item.website, start, end).then(
+                (msg) => { console.log(msg); },
+                (err) => { console.log(err); }
+              );
+
               alert.dismiss();
               }
           }]
@@ -220,4 +307,5 @@ export class UserBookmarkedEventsPage {
       alert.present();
     }
   }
+  */
 }
