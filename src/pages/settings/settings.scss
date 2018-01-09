@@ -3,17 +3,8 @@ page-settings {
     .nav_buttons {
         color: color($colors, dark_text, base);
         opacity: 0.7;
-        padding: 37.5px;
-        border: 2px ridge #008291;
-    }
-
-    // Prevent double borders
-    .nav_buttons:not(:last-child) {
-        border-bottom: none;
-    }
-
-    .nav_buttons:first-of-type {
-        border-top: none;
+        padding: 43px;
+        font-size: 14px;
     }
 
     // change the color of the buttons when select
@@ -21,4 +12,5 @@ page-settings {
         background-color: color($colors, primary, base);
         color: color($colors, primary_text, base);
     }
+
 }

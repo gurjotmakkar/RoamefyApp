@@ -1,27 +1,33 @@
 page-user-profile-edit-pro {
-    form {  
-        margin-top: 10px;
-      }
     
-      .item .register {
-        color: color($colors, dark_text, base);
-        opacity: 0.8;
-      }
+  form {  
+    margin-top: 10px;
+  }
     
-      .item {
-        margin-bottom: 5px;
-      }
-    
-      .error-message .item-inner {
-        border-bottom: 0 !important;
-      } 
-      
-      .error-message p{
-        border-bottom: 0 !important;
-        color: color($colors, darkDanger, base);
-      }
+  .item .update {
+    color: color($colors, darkSecondary, base);
+    opacity: 1;
+  }
 
-      .button {
-          margin-top: 30px;
-      }
+  ion-input {
+    color: #000000;
+    opacity: 0.8;
+  }
+    
+  .item {
+    margin-bottom: 5px;
+  }
+    
+  .error-message .item-inner {
+    border-bottom: 0 !important;
+  } 
+      
+  .error-message p{
+    border-bottom: 0 !important;
+    color: color($colors, darkDanger, base);
+  }
+
+  .button {
+    margin-top: 30px;
+  }
 }
