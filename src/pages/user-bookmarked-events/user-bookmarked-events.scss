@@ -19,14 +19,14 @@ page-user-bookmarked-events {
         text-align: center;
         margin-bottom: 20px;
         opacity: 1;
-        box-shadow: color($colors, darkSecondary, base);
+        box-shadow: 0px 1px 2px color($colors, darkSecondary, base);
     }
 
     .card-title {
         color: color($colors, primary_text, base);
         opacity: 1;
-        font-size: 14px;
-        font-weight: 900;
+        font-size: 18px;
+        font-weight: 700;
         letter-spacing: 0.01em;
     }   
 
@@ -38,23 +38,17 @@ page-user-bookmarked-events {
         opacity: 0.7;
     }
 
-    .icon-edit {
-        margin-left: 20px;
-    }
-
     div {
         font-size: 14px;
         font-weight: bolder;
         opacity: 1;
     }
-/*
-    div item-text-wrap {
-        color: color($colors, primary_text, base);
-        opacity: 1;
-        font-size: 18px;
-    }
-*/
+
     .call {
         margin-right: 5px;
+    }
+
+    .shadow {
+        box-shadow: 0px 2px 2px color($colors, darkSecondary, base);
     }
 }
