@@ -12,7 +12,7 @@
     <ion-list class="list" *ngFor="let chat of chats | async">
         <div [ngClass]="cardTitle(chat.userName)">{{chat.userName}}</div>
         <div [ngClass]="cardTime(chat.userName)">{{formatTime(chat.time)}}</div>
-        <div [ngClass]="cardSubtitle(chat.userName)">{{chat.message}}</div>   
+        <div [ngClass]="cardMessage(chat.userName)">{{chat.message}}</div>   
     </ion-list>
 </ion-content>
 <ion-footer class="footer">

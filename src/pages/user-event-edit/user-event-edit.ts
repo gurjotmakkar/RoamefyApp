@@ -27,7 +27,6 @@ export class UserEventEditPage {
   eventDocument: AngularFirestoreDocument<UserEvent>;
   eventDoc: any;
   event: UserEvent = {
-    id: null,
     name: null,
     description: null,
     price: 0,
@@ -104,13 +103,13 @@ export class UserEventEditPage {
   }
 
   // check if the interest is selected by user
-  checkornot(interestKey){
+  checkornot(interestKey, categories){
     var checker = false;
-    if(this.event.categories != null)
-      this.event.categories.forEach(i => {
-        if ( i == interestKey )
+    if(categories != null)
+      for (var i in categories)
+        if ( categories[i] == interestKey ){
           checker = true;
-      })
+        }
     return checker;
   }
 

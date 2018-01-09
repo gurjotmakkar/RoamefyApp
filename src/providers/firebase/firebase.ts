@@ -532,20 +532,77 @@ export class FirebaseProvider {
   // update event
   updateEvent(id, event: UserEvent) {
     console.log(event);
-    this.afdOf.doc("events/" + id).update(event);
+    console.log(id);
+    this.afdOf.collection("events").doc(id).update({
+      name: event.name,
+      description: event.description,
+      price: event.price,
+      startDate: event.startDate,
+      startTime: event.startTime,
+      endDate: event.endDate,
+      endTime: event.endTime,
+      address: event.address, 
+      addressID: event.addressID,
+      latitude: event.latitude,
+      longitude: event.longitude,
+      website: event.website,
+      phone: event.phone,
+      categories: Object.assign({}, event.categories),
+      categoryString: event.categoryString
+    });
 
-    this.afdOf.doc("bookmarkedEvents/" + id).update(event);
+    this.afdOf.doc("bookmarkedEvents/" + id).update({
+      name: event.name,
+      description: event.description,
+      price: event.price,
+      startDate: event.startDate,
+      startTime: event.startTime,
+      endDate: event.endDate,
+      endTime: event.endTime,
+      address: event.address, 
+      addressID: event.addressID,
+      latitude: event.latitude,
+      longitude: event.longitude,
+      website: event.website,
+      phone: event.phone,
+      categories: Object.assign({}, event.categories),
+      categoryString: event.categoryString
+    });
 
     this.afdOf.collection("users").snapshotChanges()
     .forEach(user => {
       user.forEach(u => {
-        this.afdOf.collection("users").doc(u.payload.doc.id).collection("bookmarkedEvents").doc(id).update(event);
-        if(this.cancelNotification(id)){
-          this.afdOf.collection("users").doc(u.payload.doc.id).collection("bookmarkedEvents").doc<UserNotificationId>(id).valueChanges()
-          .forEach(e => {
-            this.scheduleNotification(id, event.startDate, event.startTime, e.time, event.name);
-          });
-        }
+
+        this.afdOf.collection("users").doc(u.payload.doc.id).collection("bookmarkedEvents").doc(id).snapshotChanges()
+        .forEach(a => {
+          console.log(a.payload.exists)
+          if(a.payload.exists){
+            this.afdOf.collection("users").doc(u.payload.doc.id).collection("bookmarkedEvents").doc(id)
+            .update({
+              name: event.name,
+              description: event.description,
+              price: event.price,
+              startDate: event.startDate,
+              startTime: event.startTime,
+              endDate: event.endDate,
+              endTime: event.endTime,
+              address: event.address, 
+              addressID: event.addressID,
+              latitude: event.latitude,
+              longitude: event.longitude,
+              website: event.website,
+              phone: event.phone,
+              categories: Object.assign({}, event.categories),
+              categoryString: event.categoryString
+            });
+            if(this.cancelNotification(u.payload.doc.id, id)){
+              this.afdOf.collection("users").doc(u.payload.doc.id).collection("bookmarkedEvents").doc<UserNotificationId>(id).valueChanges()
+              .forEach(e => {
+                this.scheduleNotification(u.payload.doc.id, id, event.startDate, event.startTime, e.time, event.name);
+              });
+            }
+          }
+        })
       })
     });
 
@@ -559,14 +616,16 @@ export class FirebaseProvider {
     this.afdOf.collection("users").snapshotChanges()
     .forEach(user => {
       user.forEach(u => {
-        this.afdOf.collection("users").doc(u.payload.doc.id).collection("bookmarkedEvents").doc(id).delete();
-      })
-    });
 
-    this.afdOf.collection("users").snapshotChanges()
-    .forEach(user => {
-      user.forEach(u => {
-        this.afdOf.collection("users").doc(u.payload.doc.id).collection("chatrooms").doc(id).delete();
+        this.afdOf.collection("users").doc(u.payload.doc.id).collection("bookmarkedEvents").doc(id).snapshotChanges()
+        .forEach(a => {
+          console.log(a.payload.exists)
+          if(a.payload.exists){
+            this.cancelNotification(u.payload.doc.id, id)
+            this.afdOf.collection("users").doc(u.payload.doc.id).collection("bookmarkedEvents").doc(id).delete();
+            this.afdOf.collection("users").doc(u.payload.doc.id).collection("chatrooms").doc(id).delete();
+          }
+        })
       })
     });
 
@@ -716,8 +775,8 @@ deleteAttraction(id){
 //-------------- notifications ----------------
 
 // set notification id
-setNotificationID(eventKey, id, time){
-  this.afdOf.collection("users").doc(this.userID).collection("bookmarkedEvents").doc(eventKey)
+setNotificationID(userID, eventKey, id, time){
+  this.afdOf.collection("users").doc(userID).collection("bookmarkedEvents").doc(eventKey)
   .set({
     notificationID: id,
     time: time
@@ -726,7 +785,7 @@ setNotificationID(eventKey, id, time){
   });  
 }
 
-scheduleNotification(id, startDate, startTime, time = 1, title){
+scheduleNotification(userID, id, startDate, startTime, time = 1, title){
   var dateString = '';
   if(startTime == null || startTime === undefined)
     dateString = startDate.toString();
@@ -762,7 +821,7 @@ scheduleNotification(id, startDate, startTime, time = 1, title){
       function(successResponse) {
         console.log("Notification Post Success:", id + " " + successResponse);
         console.log(successResponse.id);
-        self.setNotificationID(id, successResponse.id, time);
+        self.setNotificationID(userID, id, successResponse.id, time);
         success = true;
         //alert(id + " " + successResponse.id);
       },
@@ -777,13 +836,13 @@ scheduleNotification(id, startDate, startTime, time = 1, title){
 
 }
 
-cancelNotification(id){
+cancelNotification(userID, id){
   var eventId = id;
   var app_id = this.getOSKey();
   var rest_id = this.getOSRest();
   
   //Reference to database
-  this.afdOf.collection("users").doc(this.userID).collection("bookmarkedEvents").doc<UserNotificationId>(eventId).valueChanges().take(1)
+  this.afdOf.collection("users").doc(userID).collection("bookmarkedEvents").doc<UserNotificationId>(eventId).valueChanges().take(1)
   .forEach(u => {
     var notificationId = u.notificationID;
     console.log(notificationId);
@@ -797,7 +856,7 @@ cancelNotification(id){
       headers : headers
     }).subscribe( response => console.log("Notification Deleted"));
   }).then(() => {
-    this.afdOf.collection("users").doc(this.userID).collection("bookmarkedEvents").doc(eventId)
+    this.afdOf.collection("users").doc(userID).collection("bookmarkedEvents").doc(eventId)
     .update({
       notificationID: null
     });

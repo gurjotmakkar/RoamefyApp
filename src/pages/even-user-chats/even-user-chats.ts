@@ -88,11 +88,11 @@ export class EvenUserChatsPage {
   }
 
   // to align message depending on if it is current user or not
-  cardSubtitle(name){
+  cardMessage(name){
     if(name == this.userName)
-      return 'card-subtitle-right';
+      return 'card-message-right';
     else
-      return 'card-subtitle-left';
+      return 'card-message-left';
   }
 
   // to align time depending on if it is current user or not

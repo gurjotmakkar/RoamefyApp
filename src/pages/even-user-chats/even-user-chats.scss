@@ -34,11 +34,12 @@ page-even-user-chats {
         letter-spacing: 0.01em;
     }  
 
-    .card-subtitle-left {
+    .card-message-left {
         text-align: left;
         padding: 10px;
-        border-radius: 20px;
+        border-radius: 50px 50px 50px 10px;
         color: color($colors,  dark_text, base);
+        background-color: color($colors, secondary, base);
         margin-top: 2px;
         margin-bottom: 2px;
         font-size: 14px;
@@ -46,12 +47,12 @@ page-even-user-chats {
         width: fit-content;
     }  
 
-    .card-subtitle-right {
+    .card-message-right {
         margin-left:auto; 
         margin-right:0;
         text-align: right;
         padding: 10px;
-        border-radius: 20px;
+        border-radius: 50px 50px 10px 50px;
         background-color: color($colors, darkSecondary, base);
         color: color($colors, primary_text, base);
         margin-top: 2px;
@@ -69,7 +70,6 @@ page-even-user-chats {
     }
 
     .list{
-        
     }
 
 }

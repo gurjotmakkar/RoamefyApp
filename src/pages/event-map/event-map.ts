@@ -181,8 +181,8 @@ export class EventMapPage {
                     '<p><span id="eventLng" hidden>' + lng + '</span></p>' + 
                     '<div class="iw-title">' +
                     '<p class="title"><span id="eventName">' + name + '</span></p>' + 
-                      '<p ><span id="eventStartDate">' + "Date: " + startDate + '</span>  <span id="eventEndDate">' + " - " + endDate + '</span></p>' + 
-                      '<p><span id="eventStartTime">' + "Time: " + startTime + '</span>  <span id="eventEndTime">' + del + endTime + '</span></p>' +
+                      '<p >' + "Date: " + '<span id="eventStartDate">' + startDate + '</span> - <span id="eventEndDate">' + endDate + '</span></p>' + 
+                      '<p>' + "Time: " + '<span id="eventStartTime">' + startTime + '</span> ' + del + ' <span id="eventEndTime">' + endTime + '</span></p>' +
                       '</div>' + 
                       '<div>' + 
                       '<input type="button" id="bookmarkImage" value="Bookmark"/>' +
@@ -272,8 +272,8 @@ export class EventMapPage {
                     '<p><span id="eventLng" hidden>' + e.longitude + '</span></p>' + 
                     '<div class="iw-title">' +
                     '<p class="title"><span id="eventName">' + e.name + '</span></p>' + 
-                      '<p ><span id="eventStartDate">' + "Date: " + e.startDate + '</span>  <span id="eventEndDate">' + " - " + e.endDate + '</span></p>' + 
-                      '<p><span id="eventStartTime">' + "Time: " + e.startTime + '</span>  <span id="eventEndTime">' + " - " + e.endTime + '</span></p>' +
+                      '<p >'+"Date: " +'<span id="eventStartDate">' + e.startDate + '</span> - <span id="eventEndDate">' + e.endDate + '</span></p>' + 
+                      '<p>' + "Time: " + '<span id="eventStartTime">' + e.startTime + '</span> - <span id="eventEndTime">' + e.endTime + '</span></p>' +
                       '</div>' + 
                       '<div>' + 
                       '<input type="button" id="bookmarkImage" value="Bookmark"/>' +
@@ -288,7 +288,7 @@ export class EventMapPage {
                       '<p class="content"><span id="eventPhone">'    + e.phone    + '</span></p>'   +                                          
                       '<div class="iw-subTitle">Category(s): </div> '  + 
                       '<p class="content"><span id="eventCat">' + e.categoryString  + '</span></p>' +
-                      '<p class="content"><span id="eventPrice">' + "Price: $" + e.price + '</span></p>' +
+                      '<p class="content">' + "Price: $" + '<span id="eventPrice">' + e.price + '</span></p>' +
                     '</div>'; 
 
         // generating location object

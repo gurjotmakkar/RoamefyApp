@@ -121,7 +121,7 @@ export class UserBookmarkedEventsPage {
           text: 'Yes',
           handler: () => {
             this.eventArr.splice(item.id);
-            this.firebase.cancelNotification(item.id);
+            this.firebase.cancelNotification(this.userID, item.id);
             alert.dismiss();
           }
         }]
@@ -147,7 +147,7 @@ export class UserBookmarkedEventsPage {
           {
             text: 'Remind Me',
             handler: data => {
-              this.firebase.scheduleNotification(item.id, item.startDate, item.startTime, data.time, item.name);
+              this.firebase.scheduleNotification(this.userID, item.id, item.startDate, item.startTime, data.time, item.name);
               this.eventArr.push(item.id);
               alert.dismiss();
               }
