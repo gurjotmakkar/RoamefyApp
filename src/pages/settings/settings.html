@@ -8,12 +8,12 @@
  <!--  <ion-title>More</ion-title> -->
   </ion-navbar>
 </ion-header>
-<ion-content class="content">
+<ion-content>
     <ion-list>
-        <button ion-button full color="primary" outline class="nav_buttons" *ngFor="let p of pages" (click)="openPage(p)">
+        <button ion-button full clear class="nav_buttons" *ngFor="let p of pages" (click)="openPage(p)">
           {{p.title}}
         </button>
-        <button ion-button full color="primary" outline class="nav_buttons" *ngIf="checkUserRole()" (click)="openPage(userEventPage)">Events by you</button>
-        <button ion-button full color="primary" outline class="nav_buttons" *ngIf="checkIfDev()" (click)="openPage(addAttractionPage)">Add must see attractions</button>
+        <button ion-button full clear class="nav_buttons" *ngIf="checkUserRole()" (click)="openPage(userEventPage)">Events by you</button>
+        <button ion-button full clear class="nav_buttons" *ngIf="checkIfDev()" (click)="openPage(addAttractionPage)"><span>Add must see attractions</span></button>
   </ion-list>
 </ion-content>

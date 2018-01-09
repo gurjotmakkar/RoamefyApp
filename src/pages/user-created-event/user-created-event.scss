@@ -1,5 +1,6 @@
 page-user-created-event {
-    .bookmark{
+
+    .edit {
         padding: 10px;
         size: 100px;
     }
@@ -9,14 +10,14 @@ page-user-created-event {
         text-align: center;
         margin-bottom: 20px;
         opacity: 1;
-        box-shadow: color($colors, darkSecondary, base);
+        box-shadow: 0px 1px 2px color($colors, darkSecondary, base);
     }
 
     .card-title {
         color: color($colors, primary_text, base);
         opacity: 1;
-        font-size: 14px;
-        font-weight: 900;
+        font-size: 18px;
+        font-weight: 700;
         letter-spacing: 0.01em;
     }   
 
@@ -37,14 +38,17 @@ page-user-created-event {
         font-weight: bolder;
         opacity: 1;
     }
-/*
-    div item-text-wrap {
-        color: color($colors, primary_text, base);
-        opacity: 1;
-        font-size: 18px;
-    }
-*/
+
     .call {
         margin-right: 5px;
+    }
+
+    .shadow {
+        box-shadow: 0px 2px 2px color($colors, darkSecondary, base);
+    }
+
+    .add {
+        opacity: 1;
+        font-size: 28px;
     }
 }

@@ -7,7 +7,7 @@
 <ion-content padding>
     <form [formGroup]="editForm" (submit)="editUserProfile()" novalidate>
         <ion-item>
-          <ion-label stacked>First Name</ion-label>
+          <ion-label stacked class="update">First Name</ion-label>
           <ion-input [disabled]="isItSwitch()" formControlName="firstName" type="text"></ion-input>
         </ion-item>
         <ion-item class="error-message" *ngIf="!editForm.controls.firstName.valid  && (editForm.controls.firstName.dirty || submitAttempt)">
@@ -27,7 +27,7 @@
           </ion-item>
     
         <ion-item>
-          <ion-label stacked>Last Name</ion-label>
+          <ion-label stacked class="update">Last Name</ion-label>
           <ion-input [disabled]="isItSwitch()" formControlName="lastName" type="text"></ion-input>
         </ion-item>
         <ion-item class="error-message" *ngIf="!editForm.controls.lastName.valid  && (editForm.controls.lastName.dirty || submitAttempt)">
@@ -46,7 +46,7 @@
           </ion-item>
     
         <ion-item>
-          <ion-label stacked>Email</ion-label>
+          <ion-label stacked class="update">Email</ion-label>
           <ion-input [disabled]="isItSwitch()" formControlName="email" type="email"></ion-input>
         </ion-item>
         <ion-item class="error-message" *ngIf="!editForm.controls.email.valid  && (editForm.controls.email.dirty || submitAttempt)">
@@ -54,7 +54,7 @@
         </ion-item> 
 
         <ion-item (click)="showAddressModal()">
-          <ion-label stacked>Address</ion-label>
+          <ion-label stacked class="update">Address</ion-label>
           <ion-input formControlName="address" type="text"></ion-input>
         </ion-item>
         <ion-item class="error-message" *ngIf="!editForm.controls.address.valid  && (editForm.controls.address.dirty || submitAttempt)">
@@ -62,7 +62,7 @@
         </ion-item>
   
         <ion-item>
-          <ion-label stacked>Date of Birth</ion-label>
+          <ion-label stacked class="update">Date of Birth</ion-label>
           <ion-input formControlName="dateOfBirth" type="text"></ion-input>
         </ion-item>
         <ion-item class="error-message" *ngIf="!editForm.controls.dateOfBirth.valid  && (editForm.controls.dateOfBirth.dirty || submitAttempt)">
@@ -75,7 +75,7 @@
         </ion-item>
   
         <ion-item>
-          <ion-label stacked>Driver Licence Number</ion-label>
+          <ion-label stacked class="update">Driver Licence Number</ion-label>
           <ion-input formControlName="driverLicenceNumber" type="text"></ion-input>
         </ion-item>
         <ion-item class="error-message" *ngIf="!editForm.controls.driverLicenceNumber.valid  && (editForm.controls.driverLicenceNumber.dirty || submitAttempt)">
@@ -88,7 +88,7 @@
         </ion-item>
   
         <ion-item>
-          <ion-label stacked>Phone Number</ion-label>
+          <ion-label stacked class="update">Phone Number</ion-label>
           <ion-input formControlName="phoneNumber" type="text"></ion-input>
         </ion-item>
         <ion-item class="error-message" *ngIf="!editForm.controls.phoneNumber.valid  && (editForm.controls.phoneNumber.dirty || submitAttempt)">
