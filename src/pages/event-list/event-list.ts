@@ -40,7 +40,7 @@ export class EventListPage {
     public loading: LoadingController) {
 
     // get toronto events api
-    this.api = this.firebase.getTorontoEvents();
+    this.api = 'http://app.toronto.ca/cc_sr_v1_app/data/edc_eventcal_APR?limit=500';//this.firebase.getTorontoEvents();
 
     // get user id
     this.userID = this.firebase.getUserId();

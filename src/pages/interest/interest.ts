@@ -127,8 +127,8 @@ export class InterestPage {
     } else {
       console.log("leaving interest page")
 
-      // redirect to settings page
-      this.navCtrl.setRoot(SettingsPage);
+      // redirect to page
+        this.navCtrl.setRoot(SettingsPage);
     }
   }
 

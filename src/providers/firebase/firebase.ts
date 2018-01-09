@@ -3,6 +3,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { UserEvent } from '../../models/events/userevent.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AlertController } from 'ionic-angular/components/alert/alert-controller';
 
 // get chat object interface
 interface Chat{
@@ -66,7 +67,7 @@ export class FirebaseProvider {
   users: any;
 
   constructor(public afAuth: AngularFireAuth, public afdOf: AngularFirestore, 
-    private http: HttpClient) {
+    private http: HttpClient, public alertCtrl: AlertController) {
 
     // geting current user id when the provider is initialized
     const authObserver = afAuth.authState.subscribe( user => {
@@ -353,6 +354,17 @@ export class FirebaseProvider {
           this.afAuth.auth.currentUser.sendEmailVerification()
           .then(() => {
             console.log('verification email sent');
+            let alert = this.alertCtrl.create({
+              message: "Your email address has been changed.\n An email has been sent to you to verify.",
+              buttons: [
+                {
+                  text: "Ok",
+                  role: 'cancel'
+                }
+              ]
+            });
+            alert.present();
+            this.logoutUser();
           });
           this.updateUser(this.afAuth.auth.currentUser.uid, newFirstName, newLastName);
           //this.logoutUser();
@@ -382,9 +394,20 @@ export class FirebaseProvider {
           this.afAuth.auth.currentUser.sendEmailVerification()
           .then(() => {
             console.log('verification email sent');
+            let alert = this.alertCtrl.create({
+              message: "Your email address has been changed.\n An email has been sent to you to verify.",
+              buttons: [
+                {
+                  text: "Ok",
+                  role: 'cancel'
+                }
+              ]
+            });
+            alert.present();
+            this.logoutUser();
           });
           this.updateUserPro(this.afAuth.auth.currentUser.uid, newFirstName, newLastName, address, dob, driverLicense, phone);
-          //this.logoutUser();
+          
       });
     }
   }

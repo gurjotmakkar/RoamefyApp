@@ -60,38 +60,7 @@ export class UserProfileEditPage {
     } else {
       this.authData.editUserProfile(this.editForm.value.email, this.editForm.value.firstName, 
         this.editForm.value.lastName)
-      .then(() => {
-        let alert = this.alertCtrl.create({
-          message: "An email has been sent to your new email address to verify the changes",
-          buttons: [
-            {
-              text: "Ok",
-              role: 'cancel'
-            }
-          ]
-        });
-        alert.present();
-        this.nav.setRoot(LoginPage);
-      }, (error) => {
-        this.loading.dismiss().then( () => {
-          var errorMessage: string = error.message;
-            let alert = this.alertCtrl.create({
-              message: errorMessage,
-              buttons: [
-                {
-                  text: "Ok",
-                  role: 'cancel'
-                }
-              ]
-            });
-          alert.present();
-        });
-      });
-
-      this.loading = this.loadingCtrl.create({
-        dismissOnPageChange: true,
-      });
-      this.loading.present();
+      this.nav.setRoot(LoginPage);
     }
   }
 

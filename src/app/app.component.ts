@@ -29,6 +29,7 @@ export class MyApp {
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,
     public afAuth: AngularFireAuth, public firebase: FirebaseProvider, 
     private afs: AngularFirestore, public alertCtrl: AlertController) {
+      //this.rootPage = LoginPage;
       const authObserver = this.afAuth.authState.subscribe( user => {
         if (user) {
           this.afs.collection('users').doc<User>(user.uid).valueChanges()

@@ -8,7 +8,6 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { AutocompletePage } from '../autocomplete/autocomplete';
 import { LoginPage } from '../login/login';
 import { NavParams } from 'ionic-angular/navigation/nav-params';
-import { HomePage } from '../home/home';
 
 interface UserPro {
   role: string;
@@ -17,7 +16,7 @@ interface UserPro {
   address: string;
   dateOfBirth: string;
   driverLicenceNumber: string;
-  phoneNumber: string;
+  phoneNumber: number;
 }
 
 interface User {
@@ -36,6 +35,7 @@ export class UserProfileEditProPage {
   public editForm:FormGroup;
   public loading:Loading;
   public submitAttempt;
+  public userEmail;
   switch: boolean = false;
 
   constructor(public nav: NavController, public authData: FirebaseProvider, public formBuilder: FormBuilder, 
@@ -43,6 +43,8 @@ export class UserProfileEditProPage {
     private afs: AngularFirestore, private modalCtrl: ModalController, public navParams: NavParams) {
     
     this.switch = this.navParams.get('switch');
+
+    this.userEmail = this.firebase.getUserEmail();
 
     this.editForm = formBuilder.group({
       firstName: ['', Validators.compose([Validators.required])],
@@ -65,7 +67,7 @@ export class UserProfileEditProPage {
           address: '',
           dateOfBirth: '',
           driverLicenceNumber: '',
-          phoneNumber: ''
+          phoneNumber: 0
         });
       })
     } else {
@@ -101,43 +103,15 @@ export class UserProfileEditProPage {
       if (this.switch){
         this.authData.switchToPro(this.editForm.value.address, this.editForm.value.dateOfBirth,
           this.editForm.value.driverLicenceNumber, this.editForm.value.phoneNumber);
-        this.nav.setRoot(HomePage);
+        this.nav.setRoot(UserProfilePage);
       } else {
         this.authData.editUserProfilePro(this.editForm.value.email, this.editForm.value.firstName, 
           this.editForm.value.lastName, this.editForm.value.address, this.editForm.value.dateOfBirth,
           this.editForm.value.driverLicenceNumber, this.editForm.value.phoneNumber)
-        .then(() => {
-          let alert = this.alertCtrl.create({
-            message: "An email has been sent to your new email address to verify the changes",
-            buttons: [
-              {
-                text: "Ok",
-                role: 'cancel'
-              }
-            ]
-          });
-          alert.present();
+        if(this.editForm.value.email == this.userEmail)
+          this.nav.setRoot(UserProfilePage);
+        else
           this.nav.setRoot(LoginPage);
-        }, (error) => {
-          this.loading.dismiss().then( () => {
-            var errorMessage: string = error.message;
-              let alert = this.alertCtrl.create({
-                message: errorMessage,
-                buttons: [
-                  {
-                    text: "Ok",
-                    role: 'cancel'
-                  }
-                ]
-              });
-            alert.present();
-          });
-        });
-
-        this.loading = this.loadingCtrl.create({
-          dismissOnPageChange: true,
-        });
-        this.loading.present();
       }
     }
   }

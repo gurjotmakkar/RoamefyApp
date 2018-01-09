@@ -5,7 +5,6 @@ import 'rxjs/add/operator/map';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { UserEvent } from '../../models/events/userevent.model';
 import { FirebaseProvider } from '../../providers/firebase/firebase';
-import { NavParams } from 'ionic-angular/navigation/nav-params';
 
 declare var google: any;
 //declare var $: any;
@@ -39,10 +38,10 @@ export class EventMapPage {
   
   constructor(public navCtrl: NavController, public http: HttpClient, 
     public loading: LoadingController, private afs: AngularFirestore,
-    private firebase: FirebaseProvider, public navParams: NavParams) {
+    private firebase: FirebaseProvider) {
 
     // get toronto event api
-    this.api = this.firebase.getTorontoEvents();
+    this.api = 'http://app.toronto.ca/cc_sr_v1_app/data/edc_eventcal_APR?limit=500';//this.firebase.getTorontoEvents();
 
     // get user id
     this.userID = this.firebase.getUserId();
@@ -79,7 +78,7 @@ export class EventMapPage {
     loader.present();
 
     // get events from toronto api
-    this.http.get(this.api)
+    this.http.get('http://app.toronto.ca/cc_sr_v1_app/data/edc_eventcal_APR?limit=500')
     .subscribe(data => {
       this.addMarkersMap(data);
     }, err => {
