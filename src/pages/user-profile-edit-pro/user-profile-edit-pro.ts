@@ -8,6 +8,7 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { AutocompletePage } from '../autocomplete/autocomplete';
 import { LoginPage } from '../login/login';
 import { NavParams } from 'ionic-angular/navigation/nav-params';
+import { HomePage } from '../home/home';
 
 interface UserPro {
   role: string;
@@ -92,9 +93,6 @@ export class UserProfileEditProPage {
     return this.switch;
   }
 
-  switchToPro(){
-  }
-
   editUserProfile(){
     this.submitAttempt = true;
     if (!this.editForm.valid){
@@ -103,7 +101,7 @@ export class UserProfileEditProPage {
       if (this.switch){
         this.authData.switchToPro(this.editForm.value.address, this.editForm.value.dateOfBirth,
           this.editForm.value.driverLicenceNumber, this.editForm.value.phoneNumber);
-        this.nav.setRoot(UserProfilePage);
+        this.nav.setRoot(HomePage);
       } else {
         this.authData.editUserProfilePro(this.editForm.value.email, this.editForm.value.firstName, 
           this.editForm.value.lastName, this.editForm.value.address, this.editForm.value.dateOfBirth,

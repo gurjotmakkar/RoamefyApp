@@ -76,7 +76,7 @@ export class LoginPage {
 
           var configured = false;
 
-          this.afs.collection('users').doc<User>(userID).valueChanges()
+          this.afs.collection('users').doc<User>(userID).valueChanges().take(1)
           .subscribe(a => {
 
             configured = a.configured == null ? false : a.configured;

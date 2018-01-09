@@ -1,11 +1,18 @@
 <ion-header>
   <ion-navbar color="primary">
     <ion-title>Events - List View</ion-title>
+    <!--
+    <ion-select class="filter" [(ngModel)]="filter" (ionChange)="onSelectChange(filter)">
+      Filter
+      <ion-option value="filtered" selected>Your Interest</ion-option>
+      <ion-option value="all">All Events</ion-option>
+    </ion-select>
+    -->
   </ion-navbar>
 </ion-header>
 <ion-content>
     <ion-list *ngFor="let event of userEventData | async">
-      <ion-card class="shadow">
+      <ion-card class="shadow" *ngIf="futureEvent(event.startDate)">
         <img src = "http://css1.www.cntower.ca/site_Files/Content/rotator/View_shot_-_Slacker_-_1024x380.jpg"/>
         <ion-card-header text-wrap>
             <div class="card-title">{{event.name}} <ion-icon icon-end class="bookmark" [name]="icon(event.id)" (click)="addUserEvent(event)"></ion-icon></div>
@@ -30,7 +37,7 @@
       </ion-card>   
     </ion-list>
     <ion-list *ngFor="let event of eventData">
-      <ion-card class="shadow">
+      <ion-card class="shadow" *ngIf="futureEvent(event.calEvent.startDate.substr(0,10))">
         <img [src]= imgLink+event.calEvent.image?.url/>
         <ion-card-header text-wrap>
             <div class="card-title">{{event.calEvent.eventName}}<ion-icon icon-end class="bookmark" [name]="icon(event.calEvent.recId)" (click)="addEvent(event.calEvent)"></ion-icon></div>

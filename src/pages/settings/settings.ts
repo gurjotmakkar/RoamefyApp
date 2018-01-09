@@ -48,7 +48,7 @@ export class SettingsPage {
     
     // get user role
     this.userID = this.firebase.getUserId();
-    this.afs.collection('users').doc<User>(this.userID).valueChanges()
+    this.afs.collection('users').doc<User>(this.userID).valueChanges().take(1)
     .subscribe(a => {
       this.role = a.role == null ? 'normal' : a.role;
     })

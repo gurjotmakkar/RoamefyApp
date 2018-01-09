@@ -5,9 +5,16 @@ import 'rxjs/add/operator/map';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { UserEvent } from '../../models/events/userevent.model';
 import { FirebaseProvider } from '../../providers/firebase/firebase';
+import { NavParams } from 'ionic-angular/navigation/nav-params';
 
 declare var google: any;
 //declare var $: any;
+
+/*
+interface Interest {
+  name: string;
+}
+*/
 
 interface Member{
   id: string;
@@ -27,16 +34,19 @@ export class EventMapPage {
   userEvents: any;
   userID: string;
   eventArr: string[] = [];
-
+  //interestArr: string[] = [];
+  //interestId: string[] = [];
+  
   constructor(public navCtrl: NavController, public http: HttpClient, 
     public loading: LoadingController, private afs: AngularFirestore,
-    private firebase: FirebaseProvider) {
-      
+    private firebase: FirebaseProvider, public navParams: NavParams) {
+
     // get toronto event api
     this.api = this.firebase.getTorontoEvents();
 
     // get user id
     this.userID = this.firebase.getUserId();
+    
     
     // get events list bookmarked by user
     this.userEventCollection = this.afs.collection('users').doc(this.userID).collection<Member>('bookmarkedEvents');
@@ -45,6 +55,17 @@ export class EventMapPage {
       for ( var i in a )
         this.eventArr.push(a[i].payload.doc.id);
     });
+
+    /*
+    // get interest name and id into arrays
+    this.afs.collection<Interest>('interest').snapshotChanges()
+      .forEach(i => {
+        i.forEach(a => {
+          this.interestId.push(a.payload.doc.id);
+          this.interestArr.push(a.payload.doc.data().name);
+        })
+      })
+    */
     }
 
   // load events on map when the page is loaded
@@ -56,7 +77,7 @@ export class EventMapPage {
       content: "loading...."
     });  
     loader.present();
-    
+
     // get events from toronto api
     this.http.get(this.api)
     .subscribe(data => {
@@ -179,10 +200,12 @@ export class EventMapPage {
                     '<p><span id="eventWebsite" hidden>' + webSite + '</span></p>' + 
                     '<p><span id="eventLat" hidden>' + lat + '</span></p>' + 
                     '<p><span id="eventLng" hidden>' + lng + '</span></p>' + 
+                    '<p><span id="eventStartTime" hidden>' + startTime + '</span></p>' + 
+                    '<p><span id="eventEndTime" hidden>' + endTime + '</span></p>' + 
                     '<div class="iw-title">' +
                     '<p class="title"><span id="eventName">' + name + '</span></p>' + 
                       '<p >' + "Date: " + '<span id="eventStartDate">' + startDate + '</span> - <span id="eventEndDate">' + endDate + '</span></p>' + 
-                      '<p>' + "Time: " + '<span id="eventStartTime">' + startTimeInfo + '</span> ' + del + ' <span id="eventEndTime">' + endTimeInfo + '</span></p>' +
+                      '<p>' + "Time: " + startTimeInfo + del + endTimeInfo + '</p>' +
                       '</div>' + 
                       '<div>' + 
                       '<input type="button" id="bookmarkImage" value="Bookmark"/>' +
@@ -208,6 +231,28 @@ export class EventMapPage {
         position: loc,
         map: this.map
       });
+
+      var start = new Date(startDate + 'T' + "09:00");
+
+      var startYear = new Date(start).getFullYear();
+      var startMonth = new Date(start).getMonth();
+      var startDay = new Date(start).getDate();
+      var nowYear = new Date().getFullYear();
+      var nowMonth = new Date().getMonth();
+      var nowDate = new Date().getDate();
+
+
+      if(startYear >= nowYear && startMonth >= nowMonth && startDay >= nowDate)
+        mapmarker.setVisible(true);
+      else
+        mapmarker.setVisible(false);
+
+      /*
+      if(filterKey == 'interest'){
+        if(categories.contains)
+        mapmarker.setVisible(false);
+      }
+      */
 
       // generating info window and setting content
       var infoWindow = new google.maps.InfoWindow({
@@ -299,6 +344,21 @@ export class EventMapPage {
           position: loc,
           map: this.map,   
         });
+        
+        var start = new Date(e.startDate + 'T' + "09:00");
+
+        var startYear = new Date(start).getFullYear();
+        var startMonth = new Date(start).getMonth();
+        var startDay = new Date(start).getDate();
+        var nowYear = new Date().getFullYear();
+        var nowMonth = new Date().getMonth();
+        var nowDate = new Date().getDate();
+  
+  
+        if(startYear >= nowYear && startMonth >= nowMonth && startDay >= nowDate)
+          marker.setVisible(true);
+        else
+          marker.setVisible(false);
 
         // generating info window
         var infoWindow = new google.maps.InfoWindow({
@@ -349,5 +409,9 @@ export class EventMapPage {
           bookmarkImage.setAttribute('value','Bookmark')
         }
      });
+    }
+
+    onSelectChange(filter){
+      console.log(filter);
     }
 }

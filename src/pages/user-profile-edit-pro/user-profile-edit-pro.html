@@ -62,7 +62,7 @@
         </ion-item>
   
         <ion-item>
-          <ion-label stacked class="update">Date of Birth</ion-label>
+          <ion-label stacked class="update">Date of Birth (DD/MM/YYYY)</ion-label>
           <ion-input formControlName="dateOfBirth" type="text"></ion-input>
         </ion-item>
         <ion-item class="error-message" *ngIf="!editForm.controls.dateOfBirth.valid  && (editForm.controls.dateOfBirth.dirty || submitAttempt)">

@@ -83,7 +83,6 @@ export class EventListPage {
       content: "loading...."
     });  
     loader.present();
-    
     this.http.get(this.api)
     .subscribe(data => {
       this.eventData = data;
@@ -155,6 +154,27 @@ export class EventListPage {
       return true;
 
     return false;
+  }
+
+  onSelectChange(filter){
+    console.log(filter);
+  }
+
+  futureEvent(startDate){
+    var start = new Date(startDate + 'T' + "09:00");
+
+    var startYear = new Date(start).getFullYear();
+    var startMonth = new Date(start).getMonth();
+    var startDay = new Date(start).getDate();
+    var nowYear = new Date().getFullYear();
+    var nowMonth = new Date().getMonth();
+    var nowDate = new Date().getDate();
+
+
+    if(startYear >= nowYear && startMonth >= nowMonth && startDay >= nowDate)
+      return true;
+    else
+      return false;
   }
 
 }

@@ -27,7 +27,7 @@ export class UserProfilePage {
       this.userEmail = this.firebase.getUserEmail();
       this.userID = this.firebase.getUserId();
 
-      this.afs.collection('users').doc<User>(this.userID).valueChanges()
+      this.afs.collection('users').doc<User>(this.userID).valueChanges().take(1)
       .subscribe(a => {
         this.role = a.role == null ? 'normal' : a.role;
       })
@@ -75,40 +75,41 @@ export class UserProfilePage {
     });
   }
 
-goHome(){
-  this.navCtrl.setRoot(SettingsPage);
-}
+  goHome(){
+    this.navCtrl.setRoot(SettingsPage);
+  }
 
-deleteAccount(){
-  let alert = this.alertCtrl.create({
-    title: 'Confirm deleting account',
-    message: 'Do you want delete this account?',
-    buttons: [
-      {
-        text: 'Cancel',
-        role: 'cancel',
-        handler: () => {
-          console.log('Cancel clicked');
-          this.firebase.logoutUser();
+  deleteAccount(){
+    let alert = this.alertCtrl.create({
+      title: 'Confirm deleting account',
+      message: 'Do you want delete this account?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+            this.firebase.logoutUser();
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            console.log('Yes clicked');
+            this.navCtrl.setRoot(LoginPage);
+            this.firebase.deleteAccount();
+            this.firebase.deleteEmail();
+            this.firebase.logoutUser();
+          }
         }
-      },
-      {
-        text: 'Yes',
-        handler: () => {
-          console.log('Yes clicked');
-          this.navCtrl.setRoot(LoginPage);
-          this.firebase.deleteAccount();
-          this.firebase.logoutUser();
-        }
-      }
-    ]
-  });
-  alert.present();
-}
+      ]
+    });
+    alert.present();
+  }
 
-switchToPro(){
-  this.navCtrl.setRoot(UserProfileEditProPage, {switch: true});
-}
+  switchToPro(){
+    this.navCtrl.setRoot(UserProfileEditProPage, {switch: true});
+  }
 
   ngOnDestroy() {
     //this.viewCtrl.dismiss();

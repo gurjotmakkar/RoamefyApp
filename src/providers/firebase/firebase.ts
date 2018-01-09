@@ -112,7 +112,20 @@ export class FirebaseProvider {
     });
     this.events.forEach(e => {
       e.forEach(a => {
-        this.afdOf.collection('events').doc(a.id).delete();
+        this.afdOf.collection("users").snapshotChanges()
+        .forEach(user => {
+          user.forEach(u => {
+            this.afdOf.collection("users").doc(u.payload.doc.id).collection("bookmarkedEvents").doc(a.id).snapshotChanges()
+            .forEach(aa => {
+              console.log(aa.payload.exists)
+              if(aa.payload.exists){
+                this.cancelNotification(u.payload.doc.id, a.id)
+              }
+            })
+            this.afdOf.collection("users").doc(u.payload.doc.id).collection("bookmarkedEvents").doc(a.id).delete();
+            this.afdOf.collection("users").doc(u.payload.doc.id).collection("chatrooms").doc(a.id).delete();
+          })
+        });
       })
     });
 
@@ -212,8 +225,10 @@ export class FirebaseProvider {
 
 
     // ---------- user ---------------
-    this.afdOf.collection('users').doc(this.userID).delete();
+    this.afdOf.collection('users').doc(this.userID).delete()
+  }
 
+  deleteEmail(){
     // ---------- user account ---------------
     this.afAuth.auth.currentUser.delete()
     .then(() => {
@@ -221,7 +236,6 @@ export class FirebaseProvider {
     }).catch(err => {
       console.log('Account deletion error: ' + err);
     });
-
   }
 
   //-------------- user login ----------------
@@ -434,66 +448,8 @@ export class FirebaseProvider {
     return this.afAuth.auth.currentUser.email;
   }
 
-  /*
-
-  getObject(){
-    var userObj;
-    var docRef = this.afdOf.collection("users").doc(this.userID).ref;
-    docRef.get().then(doc => {
-      if (doc.exists) {
-        userObj = doc.data();
-      } else {
-        console.log('Document does not exists')
-      }
-    }).catch( err => {
-      console.log('Error in getting data: ' + err)
-    });
-
-    return userObj;
-  
-  }
-
-  checkUserRole(){
-    console.log(this.userID);
-    return this.afdOf.collection('users').doc(this.userID).valueChanges();
-  }
-
-  isUserConfigured(){
-    return this.afdOf.collection('users').doc(this.userID).valueChanges();
-  }
 
   //-------------- interest ----------------
-
-  getInterestList() {
-    return "interest";
-  }
-
-  addInterest(itemKey) {
-    this.afdOf.collection("interest").doc(itemKey).set({
-      members: [this.userID]
-    }, {
-      merge: true
-    });
-  }
-
-  removeInterest(itemKey) {
-    this.afdOf.collection("interest").doc(itemKey).set({
-      members: [this.userID]
-    }, {
-      merge: true
-    });
-  }
-
-
-  getInterestName(itemKey){
-    var interest = "";
-    this.afdOf.collection('interest').doc<Interest>(itemKey).valueChanges()
-    .subscribe(a => {
-      interest = a.name;
-    });
-    return interest;
-  }
-*/
 
 /* not in use
   //-------------- distance and time ----------------
@@ -513,16 +469,6 @@ export class FirebaseProvider {
   */
 
   //-------------- event ----------------
-
-  /*
-  getUserEvents() {
-    return this.afdOf.collection("events").snapshotChanges();
-  }
-
-  getSpecifiedEvent(eventID){
-    return this.afdOf.doc("events/" + eventID).snapshotChanges();
-  }
-*/
 
   // add event to database
   addEvent(event: UserEvent) {
@@ -605,23 +551,24 @@ export class FirebaseProvider {
         })
       })
     });
-
   }
 
   // remove event
   removeEvent(id) {
-    this.afdOf.doc("events/" + id).delete();
-    this.afdOf.collection("bookmarkedEvents").doc(id).delete();
-
     this.afdOf.collection("users").snapshotChanges()
     .forEach(user => {
       user.forEach(u => {
-
-        this.afdOf.collection("users").doc(u.payload.doc.id).collection("bookmarkedEvents").doc(id).snapshotChanges()
+        this.afdOf.collection("users").doc(u.payload.doc.id).collection("bookmarkedEvents").doc(id).snapshotChanges().take(1)
         .forEach(a => {
           console.log(a.payload.exists)
           if(a.payload.exists){
             this.cancelNotification(u.payload.doc.id, id)
+          }
+        })
+        this.afdOf.collection("users").doc(u.payload.doc.id).collection("bookmarkedEvents").doc(id).snapshotChanges().take(1)
+        .forEach(a => {
+          console.log(a.payload.exists)
+          if(a.payload.exists){
             this.afdOf.collection("users").doc(u.payload.doc.id).collection("bookmarkedEvents").doc(id).delete();
             this.afdOf.collection("users").doc(u.payload.doc.id).collection("chatrooms").doc(id).delete();
           }
@@ -629,6 +576,8 @@ export class FirebaseProvider {
       })
     });
 
+    this.afdOf.doc("events/" + id).delete();
+    this.afdOf.collection("bookmarkedEvents").doc(id).delete();
     this.afdOf.collection("chatrooms").doc(id).delete();
 }
   
@@ -736,6 +685,13 @@ bookmarkUserEvent(item, id) {
 
 // unbookmark event
 unbookmarkEvent(id) {
+  this.afdOf.collection("users").doc(this.userID).collection("bookmarkedEvents").doc(id).snapshotChanges()
+    .forEach(a => {
+      console.log(a.payload.exists)
+      if(a.payload.exists){
+        this.cancelNotification(this.userID, id);
+      }
+    });
   this.afdOf.collection("bookmarkedEvents").doc(id).collection("members").doc(this.userID).delete();
   this.afdOf.collection("users").doc(this.userID).collection("bookmarkedEvents").doc(id).delete();
   this.afdOf.collection("chatrooms").doc(id).collection("members").doc(this.userID).delete();
@@ -875,7 +831,6 @@ setCalendarID(eventKey, id, time){
     merge: true
   });  
 }
-
 
 }
 

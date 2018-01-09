@@ -4,6 +4,7 @@ import { FirebaseProvider } from './../../providers/firebase/firebase';
 import { SettingsPage } from '../settings/settings'
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
 import { ViewController } from 'ionic-angular/navigation/view-controller';
+import { HomePage } from '../home/home';
 
 interface Interest {
   name: string;
@@ -106,7 +107,7 @@ export class InterestPage {
   // go to next page
   nextSetupPage(){
     this.firebase.configureUser();
-    this.navCtrl.setRoot(SettingsPage);
+    this.navCtrl.setRoot(HomePage);
   }
 
   // check if at lease 1 and at most 5 interests are selected before leaving

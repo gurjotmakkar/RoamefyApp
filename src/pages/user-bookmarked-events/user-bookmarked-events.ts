@@ -46,6 +46,7 @@ export class UserBookmarkedEventsPage {
       });
     });
 
+    /*
     // remove notificationID if notification is done
     this.afs.collection("users").doc(this.userID).collection<UserNotificationId>("bookmarkedEvents")
     .snapshotChanges()
@@ -59,6 +60,7 @@ export class UserBookmarkedEventsPage {
             this.firebase.cancelNotification(this.userID, a[i].payload.doc.id);
         }
     });
+    */
 
     // get list of events for which notification is scheduled
     this.afs.collection("users").doc(this.userID).collection<UserNotificationId>("bookmarkedEvents")
@@ -139,9 +141,8 @@ export class UserBookmarkedEventsPage {
       },{
           text: 'Yes',
           handler: () => {
-            var a = this.firebase.cancelNotification(this.userID, item.id);
-            if(a)
-              this.eventArr.splice(item.id);
+            this.firebase.cancelNotification(this.userID, item.id);
+            this.eventArr.splice(item.id);
             //alert.dismiss();
           }
         }]
