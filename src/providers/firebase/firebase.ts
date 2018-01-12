@@ -299,7 +299,7 @@ export class FirebaseProvider {
   }
 
   // signup new user as a pro
-   signupProUser(newEmail: string, newPassword: string, newFirstName: string, newLastName: string, 
+  signupProUser(newEmail: string, newPassword: string, newFirstName: string, newLastName: string, 
     newAddress: string, newDOB: string, newDLN: string, newPhoneNumber: string) {
     return this.afAuth.auth.createUserWithEmailAndPassword(newEmail, newPassword)
     .then(() => {

@@ -10,8 +10,8 @@ import { LoginPage } from '../pages/login/login';
 import { HomePage } from '../pages/home/home';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { InterestPage } from '../pages/interest/interest';
-import { TimeDistancePage } from '../pages/time-distance/time-distance';
 import { AlertController } from 'ionic-angular/components/alert/alert-controller';
+//import { TimeDistancePage } from '../pages/time-distance/time-distance';
 
 interface User{
   configured: boolean;
@@ -23,7 +23,6 @@ interface User{
 export class MyApp {
   rootPage:any;
   config: boolean = false;
-  counter: number = 0;
   exitApp: boolean = false;
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,
@@ -35,21 +34,14 @@ export class MyApp {
           this.afs.collection('users').doc<User>(user.uid).valueChanges()
           .subscribe(a => {
             this.config = a.configured;
-            this.afs.collection('users').doc(user.uid).collection("userInterest").valueChanges()
-            .subscribe(a => {
-              a.forEach(() => { this.counter++ });
             if (this.config) {
               console.log('set home')
               this.rootPage = HomePage;
-            } else if (this.counter == 0) {
+            } else {
               console.log('set interest')
               this.rootPage = InterestPage;
-            } else {
-              console.log('set time&distance')
-              this.rootPage = TimeDistancePage;
             }
             authObserver.unsubscribe();
-            })
           })
         } else {
           this.rootPage = LoginPage;
