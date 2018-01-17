@@ -69,7 +69,7 @@
   <ion-item>
     <ion-label floating class="create">Select start date</ion-label>
     <ion-datetime [(ngModel)]="event.startDate" name="startDate" displayFormat="D MMMM YYYY" 
-    min="2017-12-07" max="2019-12-31" required #startDate="ngModel">
+    [min]="minStartDate" max="2019-12-31" required #startDate="ngModel" (ionChange)="setEndDate(event.startDate)">
     </ion-datetime>
   </ion-item>
 
@@ -90,7 +90,7 @@
 
   <ion-item>
     <ion-label floating class="create">Select end date</ion-label>
-    <ion-datetime [(ngModel)]="event.endDate" name="endDate" displayFormat="D MMMM YYYY" min="2017-12-07" 
+    <ion-datetime [(ngModel)]="event.endDate" name="endDate" displayFormat="D MMMM YYYY" [min]="minEndDate" 
     max="2019-12-31" required #endDate="ngModel">
     </ion-datetime>
   </ion-item>
@@ -101,7 +101,7 @@
 
   <ion-item>
     <ion-label floating class="create">Select end time</ion-label>
-    <ion-datetime [(ngModel)]="event.endTime" name="endTime" displayFormat="hh:mm A" 
+    <ion-datetime [(ngModel)]="event.endTime" name="endTime" displayFormat="hh:mm A"
     required #endTime="ngModel">
     </ion-datetime>
   </ion-item>
@@ -150,6 +150,6 @@
 
   <button ion-button block color="primary" (click)="addEvent(event, categories)" [disabled]="!addEventForm.form.valid">Create</button> 
   <p id="or">OR</p>
-  <button ion-button block color="primary" outline (click)="cancel()" [disabled]="addEventForm.form.valid">Cancel</button>      
+  <button ion-button block color="primary" outline (click)="cancel()">Cancel</button>      
 </form>
 </ion-content>

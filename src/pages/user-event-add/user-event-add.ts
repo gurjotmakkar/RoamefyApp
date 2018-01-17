@@ -42,6 +42,9 @@ export class UserEventAddPage {
   userID: string;
   categories: any[];
   catString: string = null;
+  
+  minStartDate = new Date().toISOString();
+  minEndDate = new Date().toISOString();
 
   constructor(public navCtrl: NavController, public navParams: NavParams, 
     public alertCtrl: AlertController, private firebase: FirebaseProvider, 
@@ -77,11 +80,28 @@ export class UserEventAddPage {
     console.log('ionViewDidLoad AddEventPage');
   }
 
-  // add event to the database
-  addEvent(event, categories) {
-    // check if atlease 1 and atmost 5 categories are selected
+  setEndDate(start) {
+    this.minEndDate = new Date(start).toISOString();
+  }
+
+/*
+  isValid(event){
+
+    if(this.event.startDate > this.event.endDate){
+      let alert = this.alertCtrl.create({
+        message: "Event cannot end before it starts",
+        buttons: [
+          {
+            text: "Ok",
+            role: 'cancel'
+          }
+        ]
+      });
+      alert.present();
+    }
+
     if(this.categories.length > 5 || this.categories.length == 0){
-      //this.navCtrl.setRoot(AddEventPage);
+    //this.navCtrl.setRoot(AddEventPage);
       let alert = this.alertCtrl.create({
       message: "Sorry, you can't select more than 5 categories",
       buttons: [
@@ -92,7 +112,39 @@ export class UserEventAddPage {
       ]
       });
       alert.present();
-    } else {
+    }
+}
+*/
+
+  // add event to the database
+  addEvent(event, categories) {
+   
+  if(this.event.startDate > this.event.endDate){
+    let alert = this.alertCtrl.create({
+      message: "Event cannot end before it starts",
+      buttons: [
+      {
+        text: "Ok",
+        role: 'cancel'
+      }
+      ]
+    });
+    alert.present();
+    } else if(this.categories.length > 5 || this.categories.length == 0){
+    //this.navCtrl.setRoot(AddEventPage);
+      let alert = this.alertCtrl.create({
+      message: "Sorry, you can't select more than 5 categories",
+      buttons: [
+        {
+          text: "Ok",
+          role: 'cancel'
+        }
+      ]
+      });
+      alert.present();
+    } else { // check if atlease 1 and atmost 5 categories are selected
+     // (this.isValid(event))
+
       event.categories = categories;
       event.host = this.userID;
 
