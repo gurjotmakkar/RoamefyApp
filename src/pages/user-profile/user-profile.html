@@ -15,15 +15,15 @@
         <div class="card-title">{{userEmail}}</div>
       </ion-card>    
       <button ion-button block color="primary" class="button" (click)="edit()"> 
-        Update User Info
+        UPDATE USER INFO
       </button> 
       <button ion-button block color="primary" class="button" (click)="goToResetPassword()">
-        Update Password
+        UPDATE PASSWORD
       </button>
       <button *ngIf="!isUserPro()" ion-button block color="primary" class="button" (click)="switchToPro()">
-        Switch to Pro
+        SWITCH TO PRO USER
       </button>
       <button ion-button block color="primary" outline class="button" (click)="deleteAccount()">
-        Delete Account
+        DELETE ACCOUNT
       </button>
 </ion-content>
