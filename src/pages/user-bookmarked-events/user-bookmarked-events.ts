@@ -125,6 +125,7 @@ export class UserBookmarkedEventsPage {
   }
   */
 
+ 
   // set / remove a reminder for an events for a user
   reminder(item){
     console.log(this.eventArr);
@@ -168,9 +169,28 @@ export class UserBookmarkedEventsPage {
           {
             text: 'Remind Me',
             handler: data => {
-              var a = this.firebase.scheduleNotification(this.userID, item.id, item.startDate, item.startTime, data.time, item.name);
-              if(a)
-                this.eventArr.push(item.id);
+
+              let errorAlert = this.alertCtrl.create({
+                title: 'ERROR',
+                subTitle: 'Time is invalid',
+                buttons: ['Ok']
+              });
+
+              var t = data.time;
+              console.log("time is: " + t);
+
+              var regx = /^[1-9][0-9]{1}$/;
+              var matches = regx.test(data.time);
+
+              if (matches) {
+                var a = this.firebase.scheduleNotification(this.userID, item.id, item.startDate, item.startTime, data.time, item.name);
+                if(a)
+                  this.eventArr.push(item.id);
+              } else {
+                console.log("INPUT WAS INVALID!");
+                alert.dismiss();
+                errorAlert.present();
+              }
               //alert.dismiss();
             }
           }]

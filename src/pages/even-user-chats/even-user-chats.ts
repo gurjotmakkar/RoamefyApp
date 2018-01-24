@@ -105,7 +105,7 @@ export class EvenUserChatsPage {
 
   // push the chat to database
   pushChat(){
-    if (this.message !== undefined && this.message != ''){
+    if (this.message !== undefined && this.message.trim() != ''){
       this.firebase.pushMessage(this.chatKey, this.message);
       this.message = '';
     }
