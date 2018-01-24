@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { HttpClient } from '@angular/common/http';
-import 'rxjs/add/operator/map';
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { LoadingController } from 'ionic-angular/components/loading/loading-controller';
 import { UserEvent } from '../../models/events/userevent.model';
+import 'rxjs/add/operator/map';
+import { AlertController } from 'ionic-angular/components/alert/alert-controller';
 
 interface Event{
   id: string;
@@ -34,13 +35,15 @@ export class EventListPage {
   userID: string;
   eventArr: string[] = [];
   time: number;
+  connectSubscription: any;
+  connectionType: string;
 
   constructor(public navCtrl: NavController, private http: HttpClient, 
     private firebase: FirebaseProvider, private afs: AngularFirestore,
-    public loading: LoadingController) {
+    public loading: LoadingController, public alertCtrl: AlertController) {
 
     // get toronto events api
-    this.api = 'http://app.toronto.ca/cc_sr_v1_app/data/edc_eventcal_APR?limit=500';//this.firebase.getTorontoEvents();
+    this.api = this.firebase.getTorontoEvents();
 
     // get user id
     this.userID = this.firebase.getUserId();
@@ -76,9 +79,7 @@ export class EventListPage {
     });
   }
 
-  // get event data from api when page loads
   ionViewDidLoad(){
-
     let loader = this.loading.create({
       content: "loading...."
     });  
@@ -88,6 +89,19 @@ export class EventListPage {
       this.eventData = data;
     }, err => {
       console.log(err);
+      loader.dismiss();
+      const alert = this.alertCtrl.create({
+        title: 'No network connection',
+        message: 'Please connect to a cellular or wifi connection',
+        buttons: [{
+            text: 'Ok',
+            role: 'cancel',
+            handler: () => {
+                console.log('did not able to get the events');
+            }
+        }]
+      });
+      alert.present();
     }, () => {
       loader.dismiss();
     }); 
@@ -176,5 +190,4 @@ export class EventListPage {
     else
       return false;
   }
-
 }

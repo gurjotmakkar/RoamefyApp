@@ -53,7 +53,7 @@ export class LoginPage {
       .then( authData => {
         // check if the email is verified by the user
         // If email is not verified then user will be prompted to verify the email
-        if (this.authData.afAuth.auth.currentUser.emailVerified == false){
+        if (this.authData.afAuth.auth.currentUser.emailVerified == false && this.authData.afAuth.auth.currentUser.email != 'roamefyapp@gmail.com'){
           this.authData.logoutUser();
 
           this.loading.dismiss().then( () => {

@@ -98,4 +98,12 @@
     <plugin name="onesignal-cordova-plugin" spec="^2.2.5" />
     <plugin name="cordova-plugin-calendar" spec="~5.0.0" />
     <plugin name="cordova-plugin-advanced-http" spec="^1.9.1" />
+    <plugin name="cordova-plugin-network-information" spec="^2.0.1" />
+    <plugin name="cordova-sqlite-storage" spec="^2.2.0" />
+    <plugin name="cordova-plugin-googlemaps" spec="^2.1.1">
+        <variable name="API_KEY_FOR_ANDROID" value="AIzaSyBXos0_1lTLYc8Lbalk8kFKMkpLeWGjSoY" />
+        <variable name="API_KEY_FOR_IOS" value="AIzaSyBtzuZwNkpznjvJpvIXFMDgPJNUHZ3vxds" />
+        <variable name="LOCATION_WHEN_IN_USE_DESCRIPTION" value="Show your location on the map" />
+        <variable name="LOCATION_ALWAYS_USAGE_DESCRIPTION" value="Trace your location on the map" />
+    </plugin>
 </widget>

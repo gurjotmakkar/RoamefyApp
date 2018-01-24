@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { FirebaseProvider } from '../providers/firebase/firebase';
 import { AngularFireAuth } from 'angularfire2/auth';
+import { CacheService } from "ionic-cache";
 
 import { LoginPage } from '../pages/login/login';
 import { HomePage } from '../pages/home/home';
@@ -26,7 +27,7 @@ export class MyApp {
   exitApp: boolean = false;
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,
-    public afAuth: AngularFireAuth, public firebase: FirebaseProvider, 
+    public afAuth: AngularFireAuth, public firebase: FirebaseProvider, public cache: CacheService,
     private afs: AngularFirestore, public alertCtrl: AlertController) {
       //this.rootPage = LoginPage;
       const authObserver = this.afAuth.authState.subscribe( user => {
@@ -60,6 +61,12 @@ export class MyApp {
       this.statusBar.styleLightContent();
       this.splashScreen.hide();
 
+      // Set time to live for cache to 12 hours
+      this.cache.setDefaultTTL(60 * 60 * 12);
+      
+      // keep cached data if device is offline
+      this.cache.setOfflineInvalidate(false);
+
       var notificationOpenedCallback = function(jsonData) {
         console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
       };
@@ -68,26 +75,27 @@ export class MyApp {
         .startInit("e979d775-d7e2-46e7-88c9-864d62ac51b2", "844616883402")
         .handleNotificationOpened(notificationOpenedCallback)
         .endInit();
-
+  
       this.platform.registerBackButtonAction(() => {  
-                const alert = this.alertCtrl.create({
-                    title: 'Exit app?',
-                    message: 'Do you want to close the app?',
-                    buttons: [{
-                        text: 'Cancel',
-                        role: 'cancel',
-                        handler: () => {
-                            console.log('Application exit prevented!');
-                        }
-                    },{
-                        text: 'Close App',
-                        handler: () => {
-                            this.platform.exitApp(); // Close this application
-                        }
-                    }]
-                });
-                alert.present();
-            });
+        const alert = this.alertCtrl.create({
+          title: 'Exit app?',
+          message: 'Do you want to close the app?',
+          buttons: [{
+              text: 'Cancel',
+              role: 'cancel',
+              handler: () => {
+                  console.log('Application exit prevented!');
+              }
+          },{
+              text: 'Close App',
+              handler: () => {
+                  this.platform.exitApp(); // Close this application
+              }
+          }]
         });
-      }
+        alert.dismiss();
+        alert.present();
+      });
+    });
+  }
 }

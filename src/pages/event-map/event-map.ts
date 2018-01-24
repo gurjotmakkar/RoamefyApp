@@ -5,10 +5,10 @@ import 'rxjs/add/operator/map';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { UserEvent } from '../../models/events/userevent.model';
 import { FirebaseProvider } from '../../providers/firebase/firebase';
+import { AlertController } from 'ionic-angular/components/alert/alert-controller';
 
 declare var google: any;
 //declare var $: any;
-
 /*
 interface Interest {
   name: string;
@@ -38,11 +38,10 @@ export class EventMapPage {
   
   constructor(public navCtrl: NavController, public http: HttpClient, 
     public loading: LoadingController, private afs: AngularFirestore,
-    private firebase: FirebaseProvider) {
+    private firebase: FirebaseProvider, private alertCtrl: AlertController) {
 
     // get toronto event api
-    this.api = 'http://app.toronto.ca/cc_sr_v1_app/data/edc_eventcal_APR?limit=500';//this.firebase.getTorontoEvents();
-
+    this.api = this.firebase.getTorontoEvents();
     // get user id
     this.userID = this.firebase.getUserId();
     
@@ -70,22 +69,32 @@ export class EventMapPage {
   // load events on map when the page is loaded
   ionViewDidLoad(){
     this.setDefaultMap();
-    //this.displayGoogleMap(); // To get current user position
-    
+
     let loader = this.loading.create({
       content: "loading...."
     });  
     loader.present();
-
-    // get events from toronto api
-    this.http.get('http://app.toronto.ca/cc_sr_v1_app/data/edc_eventcal_APR?limit=500')
+    this.http.get(this.api)
     .subscribe(data => {
       this.addMarkersMap(data);
     }, err => {
       console.log(err);
-    }, () => { 
       loader.dismiss();
-    });
+      const alert = this.alertCtrl.create({
+        title: 'No network connection',
+        message: 'Please connect to a cellular or wifi connection',
+        buttons: [{
+            text: 'Ok',
+            role: 'cancel',
+            handler: () => {
+                console.log('did not able to get the events');
+            }
+        }]
+      });
+      alert.present();
+    }, () => {
+      loader.dismiss();
+    }); 
 
     // get events created by user
     this.afs.collection<UserEvent>("events").snapshotChanges()
@@ -409,8 +418,4 @@ export class EventMapPage {
         }
      });
     }
-
-    onSelectChange(filter){
-      console.log(filter);
-    }
-}
+  }

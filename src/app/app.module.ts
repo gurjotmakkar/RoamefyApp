@@ -38,6 +38,10 @@ import { AddAttractionPage } from '../pages/add-attraction/add-attraction';
 import { EditAttractionPage } from '../pages/edit-attraction/edit-attraction';
 import { OneSignal } from '@ionic-native/onesignal';
 import { Calendar } from '@ionic-native/calendar';
+import { CacheModule } from 'ionic-cache';
+import { Network } from '@ionic-native/network';
+import { IonicStorageModule } from '@ionic/storage';
+import { GoogleMaps } from '@ionic-native/google-maps';
 
 //Firebase database configuration data
 //DO NOT CHANGE ANYTHING
@@ -83,7 +87,9 @@ const firebaseConfig = {
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireAuthModule,
     AngularFirestoreModule.enablePersistence(),
-    HttpClientModule
+    HttpClientModule,
+    CacheModule.forRoot(),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -118,7 +124,9 @@ const firebaseConfig = {
     FirebaseProvider,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     OneSignal,
-    Calendar
+    Calendar,
+    Network,
+    GoogleMaps
   ]
 })
 export class AppModule {}
