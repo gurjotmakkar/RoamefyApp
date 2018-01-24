@@ -57,7 +57,7 @@
       </ion-item>
       <ion-item class="error-message" *ngIf="!signupForm.controls.password.valid  && (signupForm.controls.password.dirty || submitAttempt)">
         <p>Your password needs more than 8 </p>
-        <p>characters with atleast one </p>
+        <p>characters with at least one </p>
         <p>lowercase, uppercase and a number.</p>
       </ion-item>
 
@@ -99,7 +99,7 @@
       </ion-item>
 
     <button ion-button block class="loginButton" type="submit">
-      Sign me up as a Pro please!
+      REGISTER AS A PRO USER
     </button>
 
   </form>
@@ -107,7 +107,7 @@
   <p id="or">OR</p>
 
   <button ion-button block class="otherButton" (click)="goHome()">
-      Nah! I will login instead!
+      LOGIN
   </button>
 
 </ion-content>

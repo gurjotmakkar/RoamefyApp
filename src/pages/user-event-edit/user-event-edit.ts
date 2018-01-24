@@ -116,7 +116,33 @@ export class UserEventEditPage {
   // update event
   updateEvent() {
     // check if atleast 1 and atmost 5 interests are selected
-    if(this.event.categories.length > 5 || this.event.categories.length == 0){
+    if(this.event.startDate > this.event.endDate){
+      let alert = this.alertCtrl.create({
+        message: "Event cannot end before it starts",
+        buttons: [
+          {
+            text: "Ok",
+            role: 'cancel'
+          }
+        ]
+      });
+      alert.present();
+    } else if(this.event.startDate = this.event.endDate){
+      if(this.event.startTime > this.event.endTime){
+        let alert = this.alertCtrl.create({
+          message: "Event can't end before it starts",
+          buttons: [
+            {
+              text: "Ok",
+              role: 'cancel'
+            }
+          ]
+        });
+        alert.present();
+      }
+      
+    }
+    else if(this.event.categories.length > 5 || this.event.categories.length == 0){
       //this.navCtrl.setRoot(EditUserEventPage);
       let alert = this.alertCtrl.create({
       message: "Please select atleas 1 but not more than 5 events",
