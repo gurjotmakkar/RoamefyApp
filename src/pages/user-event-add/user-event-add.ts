@@ -118,19 +118,19 @@ export class UserEventAddPage {
 
   // add event to the database
   addEvent(event, categories) {
-   
-  if(this.event.startDate > this.event.endDate){
-    let alert = this.alertCtrl.create({
-      message: "Event cannot end before it starts",
-      buttons: [
-      {
-        text: "Ok",
-        role: 'cancel'
-      }
-      ]
-    });
-    alert.present();
-    } else if(this.categories.length > 5 || this.categories.length == 0){
+    if(this.event.startDate > this.event.endDate){
+      let alert = this.alertCtrl.create({
+        message: "Event cannot end before it starts",
+        buttons: [
+          {
+            text: "Ok",
+            role: 'cancel'
+          }
+        ]
+      });
+      alert.present();
+    }
+    else if(this.categories.length > 5 || this.categories.length == 0){
     //this.navCtrl.setRoot(AddEventPage);
       let alert = this.alertCtrl.create({
       message: "Sorry, you can't select more than 5 categories",
@@ -142,6 +142,18 @@ export class UserEventAddPage {
       ]
       });
       alert.present();
+    }
+    else if(this.event.startDate == this.event.endDate && this.event.startTime >= this.event.endTime){
+    let alert = this.alertCtrl.create({
+      message: "Event cannot end before it starts",
+      buttons: [
+      {
+        text: "Ok",
+        role: 'cancel'
+      }
+      ]
+    });
+    alert.present();
     } else { // check if atlease 1 and atmost 5 categories are selected
      // (this.isValid(event))
 
@@ -185,6 +197,7 @@ export class UserEventAddPage {
     });
     modal.present();
   }
+
 
   // redirect to user created event page
   cancel(){
